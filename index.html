@@ -231,12 +231,6 @@
 
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .meaning-section {
@@ -265,12 +259,11 @@
             border-left: 4px solid var(--primary);
         }
 
-        .definition-item:hover, .synonym-item:hover, .antonym-item:hover, .example-item:hover, .saved-word-item:hover {
-            transform: translateY(-2px);
+        .definition-item:hover, .example-item:hover, .saved-word-item:hover {
             box-shadow: var(--shadow);
         }
 
-        .definition-text, .synonym-word, .antonym-word {
+        .definition-text {
             font-weight: 700;
             color: var(--primary);
             font-size: 1.1rem;
@@ -316,7 +309,6 @@
 
         .save-btn:hover {
             background: var(--primary-light);
-            transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
@@ -361,8 +353,6 @@
         }
 
         .synonym-tag:hover, .antonym-tag:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             background: #3d8b40;
             color: white;
         }
@@ -421,7 +411,6 @@
         }
 
         .floating-button:hover {
-            transform: translateY(-3px) rotate(5deg);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
         }
 
@@ -528,8 +517,16 @@
 
         .gre-button:hover {
             background: #e67e22;
-            transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Frequency indicator */
+        .frequency-indicator {
+            font-size: 0.8rem;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
         }
 
         @media (max-width: 768px) {
@@ -754,6 +751,8 @@
             const MW_THESAURUS_API_KEY = "2d6da755-c39a-435e-9f84-9e9040de8449";
             const MW_DICTIONARY_API = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/";
             const MW_THESAURUS_API = "https://www.dictionaryapi.com/api/v3/references/thesaurus/json/";
+            const WORD_FREQUENCY_API = "https://word-frequency.p.rapidapi.com/word-frequency/keywords";
+            const WORD_FREQUENCY_API_KEY = "f0446ddbabmshca883f43d94c93fp19fd0bjsn3df580dbe957";
 
             // App state
             let currentWord = '';
@@ -964,8 +963,33 @@
                 }
             }
 
+            // Function to fetch word frequency
+            async function fetchWordFrequency(word) {
+                try {
+                    const response = await fetch(WORD_FREQUENCY_API, {
+                        method: 'POST',
+                        headers: {
+                            'X-RapidAPI-Key': WORD_FREQUENCY_API_KEY,
+                            'X-RapidAPI-Host': 'word-frequency.p.rapidapi.com',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ text: word })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch word frequency');
+                    }
+                    
+                    const data = await response.json();
+                    return data;
+                } catch (error) {
+                    console.error('Error fetching word frequency:', error);
+                    return null;
+                }
+            }
+
             // Function to display word data from multiple sources
-            function displayWordData(freeDictionaryData, mwDictionaryData, mwThesaurusData) {
+            async function displayWordData(freeDictionaryData, mwDictionaryData, mwThesaurusData) {
                 // Set word title
                 if (freeDictionaryData && freeDictionaryData[0]) {
                     wordTitle.textContent = freeDictionaryData[0].word;
@@ -1155,17 +1179,30 @@
                         
                         // Display all synonyms as tags
                         if (allSynonyms.length > 0) {
-                            allSynonyms.forEach(synonym => {
+                            hasSynonyms = true;
+                            
+                            // Process each synonym with frequency data
+                            for (const synonym of allSynonyms) {
                                 const synonymTag = document.createElement('button');
                                 synonymTag.className = 'synonym-tag';
                                 synonymTag.textContent = synonym;
+                                
+                                // Add frequency data
+                                const frequencyData = await fetchWordFrequency(synonym);
+                                if (frequencyData && frequencyData.keywords && frequencyData.keywords[synonym]) {
+                                    const frequency = frequencyData.keywords[synonym];
+                                    const frequencySpan = document.createElement('span');
+                                    frequencySpan.className = 'frequency-indicator';
+                                    frequencySpan.textContent = `${frequency.toFixed(2)}`;
+                                    synonymTag.appendChild(frequencySpan);
+                                }
+                                
                                 synonymTag.onclick = () => {
                                     wordInput.value = synonym;
                                     searchWord();
                                 };
                                 synonymsTags.appendChild(synonymTag);
-                            });
-                            hasSynonyms = true;
+                            }
                         }
                     }
                     
@@ -1175,17 +1212,30 @@
                         
                         // Display all antonyms as tags
                         if (allAntonyms.length > 0) {
-                            allAntonyms.forEach(antonym => {
+                            hasAntonyms = true;
+                            
+                            // Process each antonym with frequency data
+                            for (const antonym of allAntonyms) {
                                 const antonymTag = document.createElement('button');
                                 antonymTag.className = 'antonym-tag';
                                 antonymTag.textContent = antonym;
+                                
+                                // Add frequency data
+                                const frequencyData = await fetchWordFrequency(antonym);
+                                if (frequencyData && frequencyData.keywords && frequencyData.keywords[antonym]) {
+                                    const frequency = frequencyData.keywords[antonym];
+                                    const frequencySpan = document.createElement('span');
+                                    frequencySpan.className = 'frequency-indicator';
+                                    frequencySpan.textContent = `${frequency.toFixed(2)}`;
+                                    antonymTag.appendChild(frequencySpan);
+                                }
+                                
                                 antonymTag.onclick = () => {
                                     wordInput.value = antonym;
                                     searchWord();
                                 };
                                 antonymsTags.appendChild(antonymTag);
-                            });
-                            hasAntonyms = true;
+                            }
                         }
                     }
                 }
@@ -1199,32 +1249,56 @@
                         
                         // Display synonyms if not already displayed
                         if (!hasSynonyms && synonyms && synonyms.length > 0) {
-                            synonyms.forEach(synonym => {
+                            hasSynonyms = true;
+                            
+                            for (const synonym of synonyms) {
                                 const synonymTag = document.createElement('button');
                                 synonymTag.className = 'synonym-tag';
                                 synonymTag.textContent = synonym;
+                                
+                                // Add frequency data
+                                const frequencyData = await fetchWordFrequency(synonym);
+                                if (frequencyData && frequencyData.keywords && frequencyData.keywords[synonym]) {
+                                    const frequency = frequencyData.keywords[synonym];
+                                    const frequencySpan = document.createElement('span');
+                                    frequencySpan.className = 'frequency-indicator';
+                                    frequencySpan.textContent = `${frequency.toFixed(2)}`;
+                                    synonymTag.appendChild(frequencySpan);
+                                }
+                                
                                 synonymTag.onclick = () => {
                                     wordInput.value = synonym;
                                     searchWord();
                                 };
                                 synonymsTags.appendChild(synonymTag);
-                            });
-                            hasSynonyms = true;
+                            }
                         }
                         
                         // Display antonyms if not already displayed
                         if (!hasAntonyms && antonyms && antonyms.length > 0) {
-                            antonyms.forEach(antonym => {
+                            hasAntonyms = true;
+                            
+                            for (const antonym of antonyms) {
                                 const antonymTag = document.createElement('button');
                                 antonymTag.className = 'antonym-tag';
                                 antonymTag.textContent = antonym;
+                                
+                                // Add frequency data
+                                const frequencyData = await fetchWordFrequency(antonym);
+                                if (frequencyData && frequencyData.keywords && frequencyData.keywords[antonym]) {
+                                    const frequency = frequencyData.keywords[antonym];
+                                    const frequencySpan = document.createElement('span');
+                                    frequencySpan.className = 'frequency-indicator';
+                                    frequencySpan.textContent = `${frequency.toFixed(2)}`;
+                                    antonymTag.appendChild(frequencySpan);
+                                }
+                                
                                 antonymTag.onclick = () => {
                                     wordInput.value = antonym;
                                     searchWord();
                                 };
                                 antonymsTags.appendChild(antonymTag);
-                            });
-                            hasAntonyms = true;
+                            }
                         }
                     }
                 }
