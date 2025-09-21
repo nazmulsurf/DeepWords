@@ -57,18 +57,12 @@
             cursor: pointer;
         }
 
-        .logo-symbol {
+        .logo-img {
             width: 40px;
             height: 40px;
-            background: black;
-            color: white;
             border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 800;
             margin-right: 10px;
+            object-fit: contain;
         }
 
         .logo-text {
@@ -329,33 +323,6 @@
             font-weight: 600;
         }
 
-        .actions {
-            display: flex;
-            justify-content: center;
-            margin-top: 25px;
-            gap: 15px;
-        }
-
-        .save-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .save-btn:hover {
-            background: var(--primary-light);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
         .error-message {
             background: #ffebee;
             color: var(--error);
@@ -373,35 +340,6 @@
             color: var(--text-secondary);
             font-size: 0.9rem;
             border-top: 1px solid var(--border);
-        }
-
-        .synonym-tag, .antonym-tag {
-            display: inline-block;
-            background: var(--synonym-color);
-            color: black;
-            padding: 8px 16px;
-            border-radius: 20px;
-            margin: 6px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-
-        .synonym-tag:hover, .antonym-tag:hover {
-            background: #3d8b40;
-            color: white;
-        }
-
-        .antonym-tag {
-            background: var(--error);
-            color: white;
-        }
-
-        .antonym-tag:hover {
-            background: #000000;
-            color: white;
         }
 
         .saved-words-container {
@@ -539,22 +477,19 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
-        /* Frequency indicator */
-        .frequency-indicator {
-            font-size: 0.8rem;
-            background: rgba(0, 0, 0, 0.1);
-            padding: 2px 8px;
-            border-radius: 10px;
-            margin-left: 8px;
-        }
-
         /* Synonyms and antonyms list styles */
         .synonym-item {
             border-left-color: var(--synonym-color);
+            cursor: pointer;
         }
 
         .antonym-item {
             border-left-color: var(--error);
+            cursor: pointer;
+        }
+
+        .synonym-item:hover, .antonym-item:hover {
+            box-shadow: var(--shadow);
         }
 
         @media (max-width: 768px) {
@@ -589,10 +524,6 @@
                 justify-content: space-between;
             }
             
-            .actions {
-                flex-direction: column;
-            }
-            
             .tab-container {
                 overflow-x: auto;
                 white-space: nowrap;
@@ -604,7 +535,7 @@
     <div class="container">
         <header>
             <div class="logo-container" id="logo">
-                <div class="logo-symbol">DW</div>
+                <img src="fav.png" alt="DeepWords Logo" class="logo-img">
                 <div class="logo-text">DeepWords</div>
             </div>
         </header>
@@ -789,95 +720,59 @@
             let currentWord = '';
             let savedWords = JSON.parse(localStorage.getItem('savedWords')) || [];
             let audioUrl = null;
-
-            // Word database with Bangla meanings, IELTS and GRE words
-            const wordDatabase = {
-                "prosperity": { bangla: "সমৃদ্ধি", ielts: true, gre: true },
-                "diligent": { bangla: "পরিশ্রমী", ielts: true, gre: true },
-                "ubiquitous": { bangla: "সর্বব্যাপী", ielts: true, gre: true },
-                "eloquent": { bangla: "বাক্পটু", ielts: true, gre: true },
-                "ambiguous": { bangla: "অস্পষ্ট", ielts: true, gre: true },
-                "conspicuous": { bangla: "সুস্পষ্ট", ielts: true, gre: true },
-                "feasible": { bangla: "সম্ভব", ielts: true, gre: true },
-                "prudent": { bangla: "বিচক্ষণ", ielts: true, gre: true },
-                "versatile": { bangla: "বহুমুখী", ielts: true, gre: true },
-                "vulnerable": { bangla: "আক্রান্ত হওয়ার সম্ভাবনা", ielts: true, gre: true },
-                "abate": { bangla: "হ্রাস পাওয়া", ielts: true, gre: true },
-                "advocate": { bangla: "ওকালতি করা", ielts: true, gre: true },
-                "aesthetic": { bangla: "নান্দনিক", ielts: true, gre: true },
-                "affluent": { bangla: "ধনী", ielts: true, gre: true },
-                "aggregate": { bangla: "সমষ্টি", ielts: true, gre: true },
-                "alleviate": { bangla: "উপশম করা", ielts: true, gre: true },
-                "ambiguous": { bangla: "অস্পষ্ট", ielts: true, gre: true },
-                "ambitious": { bangla: "উচ্চাকাঙ্ক্ষী", ielts: true, gre: true },
-                "analogous": { bangla: "সদৃশ", ielts: true, gre: true },
-                "assess": { bangla: "মূল্যায়ন করা", ielts: true, gre: true },
-                "authentic": { bangla: "আসল", ielts: true, gre: true },
-                "autonomous": { bangla: "স্বায়ত্তশাসিত", ielts: true, gre: true },
-                "beneficial": { bangla: "উপকারী", ielts: true, gre: true },
-                "benevolent": { bangla: "পরোপকারী", ielts: true, gre: true },
-                "biased": { bangla: "পক্ষপাতদুষ্ট", ielts: true, gre: true },
-                "brevity": { bangla: "সংক্ষিপ্ততা", ielts: true, gre: true },
-                "capacity": { bangla: "ধারণক্ষমতা", ielts: true, gre: true },
-                "coherent": { bangla: "সঙ্গতিপূর্ণ", ielts: true, gre: true },
-                "comprehensive": { bangla: "বিস্তৃত", ielts: true, gre: true },
-                "conspicuous": { bangla: "সুস্পষ্ট", ielts: true, gre: true },
-                "controversial": { bangla: "বিতর্কিত", ielts: true, gre: true },
-                "conventional": { bangla: "প্রচলিত", ielts: true, gre: true },
-                "crucial": { bangla: "অত্যন্ত গুরুত্বপূর্ণ", ielts: true, gre: true },
-                "cumulative": { bangla: "ক্রমবর্ধমান", ielts: true, gre: true },
-                "dedicate": { bangla: "উত্সর্গ করা", ielts: true, gre: true },
-                "defer": { bangla: "মুলতুবি রাখা", ielts: true, gre: true },
-                "deficient": { bangla: "অপূর্ণ", ielts: true, gre: true },
-                "demonstrate": { bangla: "প্রদর্শন করা", ielts: true, gre: true },
-                "derive": { bangla: "উদ্ভূত হওয়া", ielts: true, gre: true },
-                "discrete": { bangla: "পৃথক", ielts: true, gre: true },
-                "diversity": { bangla: "বিবিধতা", ielts: true, gre: true },
-                "dynamic": { bangla: "গতিশীল", ielts: true, gre: true },
-                "eliminate": { bangla: "বাতিল করা", ielts: true, gre: true },
-                "empirical": { bangla: "প্রায়োগিক", ielts: true, gre: true },
-                "enhance": { bangla: "বৃদ্ধি করা", ielts: true, gre: true },
-                "epitomize": { bangla: "সংক্ষিপ্তসার প্রকাশ করা", ielts: true, gre: true },
-                "equivocal": { bangla: "দ্ব্যর্থক", ielts: true, gre: true },
-                "eradicate": { bangla: "সম্পূর্ণ ধ্বংস করা", ielts: true, gre: true },
-                "facilitate": { bangla: "সহজতর করা", ielts: true, gre: true },
-                "fundamental": { bangla: "মৌলিক", ielts: true, gre: true },
-                "generate": { bangla: "উৎপাদন করা", ielts: true, gre: true },
-                "hypothesis": { bangla: "অনুমান", ielts: true, gre: true },
-                "ideology": { bangla: "আদর্শ", ielts: true, gre: true },
-                "imperative": { bangla: "অপরিহার্য", ielts: true, gre: true },
-                "implement": { bangla: "বাস্তবায়ন করা", ielts: true, gre: true },
-                "incentive": { bangla: "প্রেরণা", ielts: true, gre: true },
-                "inherent": { bangla: "স্বাভাবিক", ielts: true, gre: true },
-                "innovate": { bangla: "নতুনত্ব আনা", ielts: true, gre: true },
-                "integral": { bangla: "অবিচ্ছেদ্য", ielts: true, gre: true },
-                "intermittent": { bangla: "মধ্যবর্তী", ielts: true, gre: true },
-                "methodology": { bangla: "পদ্ধতিবিদ্যা", ielts: true, gre: true },
-                "migrate": { bangla: "স্থানান্তরিত করা", ielts: true, gre: true },
-                "neutral": { bangla: "নিরপেক্ষ", ielts: true, gre: true },
-                "notion": { bangla: "ধারণা", ielts: true, gre: true },
-                "obsolete": { bangla: "অপ্রচলিত", ielts: true, gre: true },
-                "paradigm": { bangla: "উদাহরণ", ielts: true, gre: true },
-                "phenomenon": { bangla: "ঘটনা", ielts: true, gre: true },
-                "pragmatic": { bangla: "ব্যবহারিক", ielts: true, gre: true },
-                "predominant": { bangla: "প্রধান", ielts: true, gre: true },
-                "rational": { bangla: "যৌক্তিক", ielts: true, gre: true },
-                "reluctant": { bangla: "অনিচ্ছুক", ielts: true, gre: true },
-                "subsequent": { bangla: "পরবর্তী", ielts: true, gre: true },
-                "supplement": { bangla: "সম্পূরক", ielts: true, gre: true },
-                "theoretical": { bangla: "তাত্ত্বিক", ielts: true, gre: true },
-                "valid": { bangla: "বৈধ", ielts: true, gre: true },
-                "volatile": { bangla: "পরিবর্তনশীল", ielts: true, gre: true }
-            };
-
-            // IELTS words list for random word generation
-            const ieltsWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].ielts);
-            
-            // GRE words list for random word generation
-            const greWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].gre);
+            let wordDatabase = {};
+            let ieltsWords = [];
+            let greWords = [];
 
             // Initialize the app
-            updateSavedWordsList();
+            fetchWordsData().then(() => {
+                updateSavedWordsList();
+            });
+
+            // Fetch words data from JSON file
+            async function fetchWordsData() {
+                try {
+                    const response = await fetch('Words.json');
+                    if (!response.ok) {
+                        throw new Error('Failed to load word database');
+                    }
+                    const data = await response.json();
+                    
+                    // Process the JSON data
+                    if (data.Words && Array.isArray(data.Words)) {
+                        data.Words.forEach(item => {
+                            const word = item.Words.toLowerCase();
+                            wordDatabase[word] = {
+                                bangla: item["Bangla Meaning"],
+                                ielts: item.ILETS && item.ILETS !== "N/A",
+                                gre: item.GRE && item.GRE !== "N/A"
+                            };
+                        });
+                        
+                        // Create IELTS and GRE word lists
+                        ieltsWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].ielts);
+                        greWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].gre);
+                    }
+                } catch (error) {
+                    console.error('Error loading word database:', error);
+                    // Fallback to a minimal dataset if JSON loading fails
+                    initializeFallbackData();
+                }
+            }
+
+            // Fallback data in case JSON loading fails
+            function initializeFallbackData() {
+                wordDatabase = {
+                    "prosperity": { bangla: "সমৃদ্ধি", ielts: true, gre: true },
+                    "diligent": { bangla: "পরিশ্রমী", ielts: true, gre: true },
+                    "ubiquitous": { bangla: "সর্বব্যাপী", ielts: true, gre: true },
+                    "eloquent": { bangla: "বাক্পটু", ielts: true, gre: true },
+                    "ambiguous": { bangla: "অস্পষ্ট", ielts: true, gre: true }
+                };
+                
+                ieltsWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].ielts);
+                greWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].gre);
+            }
 
             // Tab functionality
             tabs.forEach(tab => {
