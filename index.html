@@ -678,13 +678,6 @@
                         <!-- FD Definitions will be inserted here -->
                     </ul>
                 </div>
-
-                <div class="meaning-section">
-                    <h3 class="section-title">Definitions <span class="data-source-tag mw-tag">Merriam-Webster</span></h3>
-                    <ul class="definitions-list" id="mwDefinitionsList">
-                        <!-- MW Definitions will be inserted here -->
-                    </ul>
-                </div>
             </div>
 
             <div class="tab-content" id="synonyms-tab">
@@ -740,7 +733,7 @@
 
     <footer>
         <div class="container">
-            <p>DeepWords &copy; 2023 - Vocabulary Excellence</p>
+            <p>&nbsp;</p>
         </div>
     </footer>
 
@@ -754,7 +747,6 @@
             const wordType = document.getElementById('wordType');
             const phonetic = document.getElementById('phonetic');
             const banglaTranslation = document.getElementById('banglaTranslation');
-            const mwDefinitionsList = document.getElementById('mwDefinitionsList');
             const fdDefinitionsList = document.getElementById('fdDefinitionsList');
             const synonymsList = document.getElementById('synonymsList');
             const antonymsList = document.getElementById('antonymsList');
@@ -781,10 +773,6 @@
 
             // API endpoints and keys
             const FREE_DICTIONARY_API = "https://api.dictionaryapi.dev/api/v2/entries/en/";
-            const MW_DICTIONARY_API_KEY = "daaf009b-6991-4def-bed0-9329b34bea22";
-            const MW_THESAURUS_API_KEY = "2d6da755-c39a-435e-9f84-9e9040de8449";
-            const MW_DICTIONARY_API = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/";
-            const MW_THESAURUS_API = "https://www.dictionaryapi.com/api/v3/references/thesaurus/json/";
 
             // Full IELTS word list (from provided Excel file)
             const ieltsWords = [
@@ -1023,7 +1011,7 @@
                 "Underscore", "Unearth", "Unequivocal", "Unprecedented", "Unseemly", "Venerate", "Veracity", "Verbose", "Vintage", "Virtual",
                 "Vituperate", "Volatile", "Warranted", "Whereas", "Wily", "Zeal", "abase", "abeyance", "abreast", "abscission",
                 "abscond", "abyss", "accede", "accretion", "acerbic", "acidulous", "acumen", "adulterate", "adumbrate", "aerie",
-                "albeit", "amalgamate", "amortize", "anachronism", "analgesia", "annul", "anodyne", "antedate", "antithetical", "apostle",
+                "albeit", "am amalgamate", "amortize", "anachronism", "analgesia", "annul", "anodyne", "antedate", "antithetical", "apostle",
                 "apposite", "apprise", "approbation", "appropriate", "arrogate", "ascribe", "aseptic", "aspersions", "assail", "attenuate",
                 "attuned", "augury", "august", "axiom", "balloon", "baying", "beneficent", "bent", "bevy", "bifurcate",
                 "bilk", "blight", "blithe", "bombastic", "bonhomie", "brandish", "brook", "bucolic", "burnish", "cardinal",
@@ -1147,12 +1135,12 @@
                 "Waft", "Wag", "Waive", "Wax", "Waylay", "Weighty", "Whelp", "Whittle", "Willful", "Wispy",
                 "Wry", "Xenophobe", "Zany", "Zealot", "wanting", "chastise", "impertinent", "maintain", "qualify", "artful",
                 "venality", "amenable", "anomalous", "intimate", "amalgam", "betray", "involved", "acrimony", "eponym", "enamor",
-                "bastardization", "splenetic", "adjudicate", "pillory", "misattribute", "cataclysm", "palaver", "exorbitant", "dissipate", "despot",
+                "bastardization", "splenetic", "ad adjudicate", "pillory", "misattribute", "cataclysm", "palaver", "exorbitant", "dissipate", "despot",
                 "simulacrum", "demonstrative", "exiguity", "ineluctable", "countermand", "raillery", "verisimilitude", "obtain", "infelicitous", "afford",
                 "stultify", "bridle", "coterminous", "enormity", "bromide", "gumption", "conflate", "desideratum", "autocratic", "self-effacing",
                 "dolorous", "elegiac", "hauteur", "ethereal", "inequity", "unassailable", "transmute", "doughty", "unimpeachable", "aplomb",
                 "assiduously", "vaunted", "desiccated", "complicit", "proselytize", "meteoric", "solicitude", "reprisal", "appurtenant", "nettlesome",
-                "broadside", "antic", "unstinting", "rapprochement", "apothegm", "empiricism", "browbeat", "recrudesce", "untrammeled", "objurgate",
+                "broadside", "antic", "unstinting", "rapprochement", "apothegm", "empiricism", " browbeat", "recrudesce", "untrammeled", "objurgate",
                 "inanity", "embryonic", "truculence", "effervescent", "chimera", "besotted", "debonair", "lacerate", "decry", "stalwart",
                 "improvident", "cosseted", "immure", "crestfallen", "hubris", "machinate", "encumber", "inimitable", "denouement", "crystallize",
                 "unpropitious", "irrefutable", "tempestuous", "hobble", "magisterial", "unflappable", "dispensation", "firebrand", "inviolate", "nonchalant",
@@ -1166,14 +1154,14 @@
                 "apogee", "jingoist", "zeitgeist", "cow", "saturnine", "champion", "inkling", "obliging", "decimation", "dilapidated",
                 "vanquish", "aphorism", "inarticulate", "perquisite", "evasive", "miscreant", "constraint", "snub", "convivial", "chivalrous",
                 "vie", "colossal", "differentiate", "malodorous", "behooves", "incense", "finagle", "delegate", "cohesive", "prevail",
-                "profusion", "rakish", "uncanny", "rile", "piquant", "industrious", "cavalier", "tribulation", "evenhanded", "implicate",
+                "profusion", "rakish", "uncanny", "rile", "piquant", "industrious", "cavalier", "t tribulation", "evenhanded", "implicate",
                 "humdrum", "avert", "tact", "pastoral", "enmity", "impending", "elude", "devolve", "taxing", "steadfast",
                 "peevish", "derogative", "squander", "perturb", "destitute", "impregnable", "travail", "ploy", "retract", "credulity",
                 "smug", "tout", "candidness", "reservation", "savvy", "eke", "presumption", "exasperate", "brusquely", "irk",
                 "tarnish", "smattering", "sentimental", "derisive", "empathetic", "spurn", "genteel", "buck", "banish", "illicit",
                 "egotist", "genial", "martial", "unruly", "euphoria", "rankle", "uncompromising", "hamstrung", "commendable", "credence",
                 "flounder", "muted", "entice", "disenfranchise", "ascendancy", "raffish", "ingenuity", "fete", "appreciable", "snide",
-                "pithy", "moot", "boon", "proponent", "amuck", "beatific", "aboveboard", "check", "melee", "apex", "vicarious",
+                "pithy", "m moot", "boon", "proponent", "amuck", "beatific", "aboveboard", "check", "melee", "apex", "vicarious",
                 "start", "fleece", "cadaverous", "raft", "checkered", "preemptive", "scintillating", "ferret", "imponderable", "flush",
                 "becoming", "virago", "heyday", "moment", "stem", "powwow", "junta", "extenuating", "slapdash", "hound",
                 "unnerve", "screed", "inflammable", "indignant", "embroiled", "thoroughgoing", "demure", "insolvent", "censor", "mesmerize",
@@ -1194,6 +1182,7 @@
             let searchHistory = [];
             let currentHistoryIndex = -1;
             let banglaData = {};
+            let searchCache = {}; // Cache for search results
 
             // Initialize the app
             updateSavedWordsList();
@@ -1204,7 +1193,15 @@
                 try {
                     const response = await fetch('bangla.json');
                     if (response.ok) {
-                        banglaData = await response.json();
+                        const data = await response.json();
+                        // Convert the array structure to a simple key-value object
+                        if (data.Words && Array.isArray(data.Words)) {
+                            data.Words.forEach(item => {
+                                if (item.Words && item["Bangla Meaning"]) {
+                                    banglaData[item.Words.toLowerCase()] = item["Bangla Meaning"];
+                                }
+                            });
+                        }
                     } else {
                         console.warn('Bangla translation file not found');
                     }
@@ -1273,7 +1270,14 @@
                     const prevWord = searchHistory[currentHistoryIndex];
                     wordInput.value = prevWord;
                     currentWord = prevWord;
-                    searchWord();
+                    
+                    // Check if we have cached data for this word
+                    if (searchCache[prevWord]) {
+                        displayWordData(searchCache[prevWord]);
+                    } else {
+                        searchWord();
+                    }
+                    
                     updateHistoryButtons();
                 }
             });
@@ -1285,7 +1289,14 @@
                     const nextWord = searchHistory[currentHistoryIndex];
                     wordInput.value = nextWord;
                     currentWord = nextWord;
-                    searchWord();
+                    
+                    // Check if we have cached data for this word
+                    if (searchCache[nextWord]) {
+                        displayWordData(searchCache[nextWord]);
+                    } else {
+                        searchWord();
+                    }
+                    
                     updateHistoryButtons();
                 }
             });
@@ -1324,6 +1335,12 @@
                     return;
                 }
                 
+                // Check if we have cached data for this word
+                if (searchCache[word]) {
+                    displayWordData(searchCache[word]);
+                    return;
+                }
+                
                 // Add to search history
                 if (searchHistory[searchHistory.length - 1] !== word) {
                     searchHistory.push(word);
@@ -1339,53 +1356,23 @@
                 errorMessage.style.display = 'none';
                 
                 try {
-                    // Fetch from all APIs in parallel
-                    const [freeDictionaryResponse, mwDictionaryResponse, mwThesaurusResponse] = await Promise.allSettled([
-                        fetch(`${FREE_DICTIONARY_API}${word}`),
-                        fetch(`${MW_DICTIONARY_API}${word}?key=${MW_DICTIONARY_API_KEY}`),
-                        fetch(`${MW_THESAURUS_API}${word}?key=${MW_THESAURUS_API_KEY}`)
-                    ]);
+                    // Fetch from Free Dictionary API
+                    const freeDictionaryResponse = await fetch(`${FREE_DICTIONARY_API}${word}`);
                     
                     let freeDictionaryData = null;
-                    let mwDictionaryData = null;
-                    let mwThesaurusData = null;
                     
                     // Process Free Dictionary response
-                    if (freeDictionaryResponse.status === 'fulfilled' && freeDictionaryResponse.value.ok) {
-                        freeDictionaryData = await freeDictionaryResponse.value.json();
+                    if (freeDictionaryResponse.ok) {
+                        freeDictionaryData = await freeDictionaryResponse.json();
                     } else {
-                        console.warn('Free Dictionary API not available');
-                    }
-                    
-                    // Process Merriam-Webster Dictionary response
-                    if (mwDictionaryResponse.status === 'fulfilled' && mwDictionaryResponse.value.ok) {
-                        mwDictionaryData = await mwDictionaryResponse.value.json();
-                        // Check if the response contains suggestions instead of word data
-                        if (Array.isArray(mwDictionaryData) && mwDictionaryData.length > 0 && typeof mwDictionaryData[0] === 'string') {
-                            mwDictionaryData = null; // It's a suggestion array, not word data
-                        }
-                    } else {
-                        console.warn('Merriam-Webster Dictionary API not available');
-                    }
-                    
-                    // Process Merriam-Webster Thesaurus response
-                    if (mwThesaurusResponse.status === 'fulfilled' && mwThesaurusResponse.value.ok) {
-                        mwThesaurusData = await mwThesaurusResponse.value.json();
-                        // Check if the response contains suggestions instead of word data
-                        if (Array.isArray(mwThesaurusData) && mwThesaurusData.length > 0 && typeof mwThesaurusData[0] === 'string') {
-                            mwThesaurusData = null; // It's a suggestion array, not word data
-                        }
-                    } else {
-                        console.warn('Merriam-Webster Thesaurus API not available');
-                    }
-                    
-                    // If no data from any API, show error
-                    if (!freeDictionaryData && !mwDictionaryData && !mwThesaurusData) {
                         throw new Error('Word not found. Please try another word.');
                     }
                     
+                    // Cache the result
+                    searchCache[word] = freeDictionaryData;
+                    
                     // Display the data
-                    displayWordData(freeDictionaryData, mwDictionaryData, mwThesaurusData);
+                    displayWordData(freeDictionaryData);
                     
                     // Show results, hide loading
                     resultsContainer.style.display = 'block';
@@ -1398,31 +1385,12 @@
                 }
             }
 
-            // Function to construct Merriam-Webster audio URL
-            function getMWAudioUrl(audioId) {
-                if (!audioId) return null;
-                
-                // Determine the subdirectory based on the audio ID
-                let subdirectory = audioId.charAt(0);
-                if (audioId.startsWith('bix')) {
-                    subdirectory = 'bix';
-                } else if (audioId.startsWith('gg')) {
-                    subdirectory = 'gg';
-                } else if (audioId.startsWith('px')) {
-                    subdirectory = 'px';
-                }
-                
-                return `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subdirectory}/${audioId}.mp3`;
-            }
-
-            // Function to display word data from all APIs
-            function displayWordData(freeDictionaryData, mwDictionaryData, mwThesaurusData) {
+            // Function to display word data
+            function displayWordData(freeDictionaryData) {
                 // Set word title
                 let wordText = currentWord;
                 if (freeDictionaryData && freeDictionaryData[0]) {
                     wordText = freeDictionaryData[0].word;
-                } else if (mwDictionaryData && mwDictionaryData[0] && mwDictionaryData[0].hwi) {
-                    wordText = mwDictionaryData[0].hwi.hw.replace(/\*/g, '');
                 }
                 
                 wordTitle.textContent = wordText;
@@ -1450,20 +1418,11 @@
                 // Get phonetic text
                 let phoneticText = "No phonetic available";
                 
-                // First try Free Dictionary
+                // Try Free Dictionary
                 if (freeDictionaryData && freeDictionaryData[0] && freeDictionaryData[0].phonetics) {
                     for (let phoneticData of freeDictionaryData[0].phonetics) {
                         if (phoneticData.text) {
                             phoneticText = phoneticData.text;
-                            break;
-                        }
-                    }
-                }
-                // Then try Merriam-Webster
-                else if (mwDictionaryData && mwDictionaryData[0] && mwDictionaryData[0].hwi && mwDictionaryData[0].hwi.prs) {
-                    for (let prs of mwDictionaryData[0].hwi.prs) {
-                        if (prs.mw) {
-                            phoneticText = `/${prs.mw}/`;
                             break;
                         }
                     }
@@ -1474,22 +1433,12 @@
                 // Get audio pronunciation
                 audioUrl = null;
                 
-                // First try Free Dictionary
+                // Try Free Dictionary
                 if (freeDictionaryData && freeDictionaryData[0] && freeDictionaryData[0].phonetics) {
                     for (let phoneticData of freeDictionaryData[0].phonetics) {
                         if (phoneticData.audio && phoneticData.audio.trim() !== '') {
                             audioUrl = phoneticData.audio;
                             break;
-                        }
-                    }
-                }
-                
-                // Then try Merriam-Webster
-                if (!audioUrl && mwDictionaryData && mwDictionaryData[0] && mwDictionaryData[0].hwi && mwDictionaryData[0].hwi.prs) {
-                    for (let prs of mwDictionaryData[0].hwi.prs) {
-                        if (prs.sound && prs.sound.audio) {
-                            audioUrl = getMWAudioUrl(prs.sound.audio);
-                            if (audioUrl) break;
                         }
                     }
                 }
@@ -1506,7 +1455,6 @@
                 }
                 
                 // Clear previous definitions
-                mwDefinitionsList.innerHTML = '';
                 fdDefinitionsList.innerHTML = '';
                 synonymsList.innerHTML = '';
                 antonymsList.innerHTML = '';
@@ -1546,148 +1494,20 @@
                         fdDefinitionsList.innerHTML = '<li class="definition-item">No definitions found</li>';
                     }
                 } else {
-                    fdDefinitionsList.innerHTML = '<li class="definition-item">No Free Dictionary definitions available</li>';
+                    fdDefinitionsList.innerHTML = '<li class="definition-item">No definitions available</li>';
                 }
                 
-                // Process Merriam-Webster definitions
-                if (mwDictionaryData && mwDictionaryData[0]) {
-                    const entry = mwDictionaryData[0];
-                    
-                    if (entry.def && entry.def.length > 0) {
-                        // Process each definition
-                        entry.def.forEach((defObj, defIndex) => {
-                            if (defObj.sseq) {
-                                defObj.sseq.forEach(sseqArray => {
-                                    sseqArray.forEach(sseqItem => {
-                                        if (sseqItem[0] === 'sense') {
-                                            const sense = sseqItem[1];
-                                            if (sense.dt) {
-                                                const definitionItem = document.createElement('li');
-                                                definitionItem.className = 'definition-item mw-highlight';
-                                                
-                                                let definitionText = '';
-                                                sense.dt.forEach(dtItem => {
-                                                    if (dtItem[0] === 'text') {
-                                                        definitionText += dtItem[1] + ' ';
-                                                    }
-                                                });
-                                                
-                                                const definitionTextEl = document.createElement('div');
-                                                definitionTextEl.className = 'definition-text';
-                                                definitionTextEl.textContent = `${defIndex + 1}. ${definitionText.trim()}`;
-                                                definitionItem.appendChild(definitionTextEl);
-                                                
-                                                // Add examples if available
-                                                if (sense.vis) {
-                                                    sense.vis.forEach(visItem => {
-                                                        const example = document.createElement('div');
-                                                        example.className = 'example';
-                                                        example.textContent = visItem.t;
-                                                        definitionItem.appendChild(example);
-                                                    });
-                                                }
-                                                
-                                                mwDefinitionsList.appendChild(definitionItem);
-                                            }
-                                        }
-                                    });
-                                });
-                            }
-                        });
-                    } else {
-                        mwDefinitionsList.innerHTML = '<li class="definition-item">No Merriam-Webster definitions found</li>';
-                    }
-                } else {
-                    mwDefinitionsList.innerHTML = '<li class="definition-item">No Merriam-Webster definitions available</li>';
-                }
-                
-                // Process synonyms and antonyms from Merriam-Webster Thesaurus
+                // Process synonyms and antonyms from Free Dictionary
                 let hasSynonyms = false;
                 let hasAntonyms = false;
-                let hasRelatedWords = false;
                 
-                if (mwThesaurusData && mwThesaurusData[0] && mwThesaurusData[0].meta && mwThesaurusData[0].meta.syns) {
-                    // Process synonyms
-                    const synonyms = mwThesaurusData[0].meta.syns[0];
-                    if (synonyms && synonyms.length > 0) {
-                        hasSynonyms = true;
-                        
-                        // Create list items for synonyms
-                        synonyms.slice(0, 10).forEach(synonym => {
-                            const synonymItem = document.createElement('li');
-                            synonymItem.className = 'synonym-item';
-                            synonymItem.textContent = synonym;
-                            
-                            synonymItem.onclick = () => {
-                                wordInput.value = synonym;
-                                searchWord();
-                            };
-                            
-                            synonymsList.appendChild(synonymItem);
-                        });
-                    }
-                    
-                    // Process antonyms if available
-                    if (mwThesaurusData[0].meta.ants && mwThesaurusData[0].meta.ants[0]) {
-                        const antonyms = mwThesaurusData[0].meta.ants[0];
-                        if (antonyms && antonyms.length > 0) {
-                            hasAntonyms = true;
-                            
-                            // Create list items for antonyms
-                            antonyms.slice(0, 10).forEach(antonym => {
-                                const antonymItem = document.createElement('li');
-                                antonymItem.className = 'antonym-item';
-                                antonymItem.textContent = antonym;
-                                
-                                antonymItem.onclick = () => {
-                                    wordInput.value = antonym;
-                                    searchWord();
-                                };
-                                
-                                antonymsList.appendChild(antonymItem);
-                            });
-                        }
-                    }
-                    
-                    // Process related words if available in the def array
-                    if (mwThesaurusData[0].def && mwThesaurusData[0].def[0] && mwThesaurusData[0].def[0].sseq) {
-                        mwThesaurusData[0].def[0].sseq.forEach(sseqArray => {
-                            sseqArray.forEach(sseqItem => {
-                                if (sseqItem[0] === 'sense') {
-                                    const sense = sseqItem[1];
-                                    if (sense.rel_list) {
-                                        hasRelatedWords = true;
-                                        
-                                        sense.rel_list.forEach(relGroup => {
-                                            relGroup.forEach(relWord => {
-                                                const relatedWordItem = document.createElement('li');
-                                                relatedWordItem.className = 'related-word-item';
-                                                relatedWordItem.textContent = relWord.wd;
-                                                
-                                                relatedWordItem.onclick = () => {
-                                                    wordInput.value = relWord.wd;
-                                                    searchWord();
-                                                };
-                                                
-                                                relatedWordsList.appendChild(relatedWordItem);
-                                            });
-                                        });
-                                    }
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    // Fallback to our internal data if Merriam-Webster API fails
-                    if (IELTS_SYNONYMS_ANTONYMS[wordLower]) {
-                        const { synonyms, antonyms } = IELTS_SYNONYMS_ANTONYMS[wordLower];
-                        
-                        // Display synonyms if available
-                        if (synonyms && synonyms.length > 0) {
+                if (freeDictionaryData && freeDictionaryData[0] && freeDictionaryData[0].meanings) {
+                    freeDictionaryData[0].meanings.forEach(meaning => {
+                        // Process synonyms
+                        if (meaning.synonyms && meaning.synonyms.length > 0) {
                             hasSynonyms = true;
                             
-                            // Create list items for synonyms
-                            synonyms.slice(0, 10).forEach(synonym => {
+                            meaning.synonyms.slice(0, 10).forEach(synonym => {
                                 const synonymItem = document.createElement('li');
                                 synonymItem.className = 'synonym-item';
                                 synonymItem.textContent = synonym;
@@ -1701,12 +1521,11 @@
                             });
                         }
                         
-                        // Display antonyms if available
-                        if (antonyms && antonyms.length > 0) {
+                        // Process antonyms
+                        if (meaning.antonyms && meaning.antonyms.length > 0) {
                             hasAntonyms = true;
                             
-                            // Create list items for antonyms
-                            antonyms.slice(0, 10).forEach(antonym => {
+                            meaning.antonyms.slice(0, 10).forEach(antonym => {
                                 const antonymItem = document.createElement('li');
                                 antonymItem.className = 'antonym-item';
                                 antonymItem.textContent = antonym;
@@ -1719,61 +1538,17 @@
                                 antonymsList.appendChild(antonymItem);
                             });
                         }
-                    }
+                    });
                 }
                 
                 // Show/hide sections based on available data
                 synonymsSection.style.display = hasSynonyms ? 'block' : 'none';
                 antonymsSection.style.display = hasAntonyms ? 'block' : 'none';
-                relatedWordsSection.style.display = hasRelatedWords ? 'block' : 'none';
+                relatedWordsSection.style.display = 'none'; // Hide related words section
                 
                 // Update save button state
                 updateSaveButtonState();
             }
-
-            // IELTS synonyms and antonyms data (fallback)
-            const IELTS_SYNONYMS_ANTONYMS = {
-                "prosperity": {
-                    synonyms: ["affluence", "wealth", "success", "boom", "fortune", "plenty", "riches", "opulence", "abundance", "luxury", "well-being", "growth"],
-                    antonyms: ["poverty", "failure", "recession", "hardship", "scarcity", "want", "privation", "destitution", "bankruptcy", "indigence", "need", "deprivation"]
-                },
-                "diligent": {
-                    synonyms: ["industrious", "assiduous", "conscientious", "meticulous", "persistent", "painstaking", "sedulous", "thorough", "careful", "attentive", "hardworking", "persevering"],
-                    antonyms: ["lazy", "negligent", "careless", "slack", "inattentive", "idle", "indolent", "slothful", "lackadaisical", "remiss", "shiftless", "sluggish"]
-                },
-                "ubiquitous": {
-                    synonyms: ["omnipresent", "pervasive", "universal", "everywhere", "widespread", "global", "prevalent", "rife", "common", "general", "ubiquitary", "ever-present"],
-                    antonyms: ["rare", "scarce", "uncommon", "limited", "sparse", "infrequent", "sporadic", "occasional", "seldom", "unusual", "exceptional", "scarce"]
-                },
-                "eloquent": {
-                    synonyms: ["articulate", "expressive", "fluent", "persuasive", "silver-tongued", "well-spoken", "vocal", "glib", "facile", "smooth-tongued", "rhetorical", "oratorical"],
-                    antonyms: ["inarticulate", "tongue-tied", "mumbling", "halting", "stammering", "hesitant", "faltering", "stuttering", "mute", "speechless", "voiceless", "uncommunicative"]
-                },
-                "ambiguous": {
-                    synonyms: ["vague", "unclear", "equivocal", "obscure", "cryptic", "enigmatic", "indefinite", "indeterminate", "nebulous", "doubtful", "dubious", "uncertain"],
-                    antonyms: ["clear", "unambiguous", "definite", "explicit", "certain", "specific", "precise", "distinct", "unequivocal", "unmistakable", "obvious", "plain"]
-                },
-                "conspicuous": {
-                    synonyms: ["noticeable", "prominent", "obvious", "striking", "salient", "glaring", "pronounced", "showy", "flashy", "garish", "ostentatious", "flagrant"],
-                    antonyms: ["inconspicuous", "unnoticeable", "hidden", "obscure", "camouflaged", "disguised", "concealed", "unobtrusive", "modest", "plain", "subtle", "unseen"]
-                },
-                "feasible": {
-                    synonyms: ["practicable", "viable", "achievable", "workable", "realizable", "attainable", "possible", "doable", "reasonable", "plausible", "practical", "realistic"],
-                    antonyms: ["impracticable", "unviable", "impossible", "unworkable", "unattainable", "unfeasible", "unrealistic", "impractical", "unreasonable", "absurd", "preposterous", "outlandish"]
-                },
-                "prudent": {
-                    synonyms: ["cautious", "wise", "judicious", "sensible", "circumspect", "discreet", "shrewd", "politic", "sagacious", "advisable", "expedient", "provident"],
-                    antonyms: ["imprudent", "reckless", "foolish", "rash", "careless", "unwise", "injudicious", "indiscreet", "heedless", "thoughtless", "foolhardy", "ill-advised"]
-                },
-                "versatile": {
-                    synonyms: ["adaptable", "flexible", "all-around", "resourceful", "multifaceted", "multitalented", "protean", "adjustable", "variable", "many-sided", "skilled", "gifted"],
-                    antonyms: ["inflexible", "limited", "specialized", "rigid", "inadaptable", "fixed", "set", "unchanging", "invariable", "unchangeable", "steadfast", "resolute"]
-                },
-                "vulnerable": {
-                    synonyms: ["susceptible", "exposed", "defenseless", "sensitive", "unguarded", "unprotected", "accessible", "assailable", "endangered", "thin-skinned", "weak", "powerless"],
-                    antonyms: ["invulnerable", "resilient", "protected", "guarded", "impervious", "immune", "impregnable", "invincible", "secure", "safe", "shielded", "strong"]
-                }
-            };
 
             // Function to update save button state
             function updateSaveButtonState() {
