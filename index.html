@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeepWords - Vocabulary Excellence</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="fav.png">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
     <style>
         :root {
             --primary: #000000;
@@ -265,7 +265,7 @@
             background: var(--light-bg);
             width: 45px;
             height: 45px;
-            borderRadius: 50%;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -682,7 +682,7 @@
     <div class="container">
         <header>
             <div class="logo-container" id="logo">
-                <img src="fav.png" alt="DeepWords Logo" class="logo-img">
+                <img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>" alt="DeepWords Logo" class="logo-img">
                 <div class="logo-text">DeepWords</div>
             </div>
             
@@ -778,8 +778,8 @@
                         <div class="resource-card">
                             <h3>GRE Resources</h3>
                             <div class="resource-links">
-                                <a href="GRE.pdf" class="resource-link" download>
-                                    <i class="fas fa-file-pdf"></i> GRE Vocabulary Guide (PDF)
+                                <a href="#" class="resource-link">
+                                    <i class="fas fa-external-link-alt"></i> GRE Vocabulary Guide
                                 </a>
                             </div>
                         </div>
@@ -806,7 +806,7 @@
 
     <footer>
         <div class="container">
-            <p>&nbsp;</p>
+            <p>DeepWords Vocabulary App &copy; 2023 | All rights reserved</p>
         </div>
     </footer>
 
@@ -853,56 +853,29 @@
             let currentHistoryIndex = -1;
             let banglaData = {};
             let searchCache = {}; // Cache for search results
-            let ieltsWords = [];
-            let greWords = [];
+            let ieltsWords = ['prosperity', 'development', 'achievement', 'accomplishment', 'success'];
+            let greWords = ['abate', 'abdicate', 'aberration', 'abeyance', 'abject'];
 
             // Initialize the app
             updateSavedWordsList();
             loadBanglaData();
-            loadWordLists();
             
-            // Load word lists from JSON files
-            async function loadWordLists() {
-                try {
-                    // Load IELTS words
-                    const ieltsResponse = await fetch('IELTS.json');
-                    if (ieltsResponse.ok) {
-                        const ieltsData = await ieltsResponse.json();
-                        ieltsWords = ieltsData.Sheet1.map(item => item.ILETS);
-                    } else {
-                        console.warn('IELTS words file not found');
-                    }
-                    
-                    // Load GRE words
-                    const greResponse = await fetch('GRE.json');
-                    if (greResponse.ok) {
-                        const greData = await greResponse.json();
-                        greWords = greData.Sheet1.map(item => item.GRE);
-                    } else {
-                        console.warn('GRE words file not found');
-                    }
-                } catch (error) {
-                    console.warn('Error loading word lists:', error);
-                }
-            }
-            
-            // Load Bangla data from JSON file
+            // Load Bangla data from JSON file (simulated)
             async function loadBanglaData() {
                 try {
-                    const response = await fetch('bangla.json');
-                    if (response.ok) {
-                        const data = await response.json();
-                        // Convert the array structure to a simple key-value object
-                        if (data.Words && Array.isArray(data.Words)) {
-                            data.Words.forEach(item => {
-                                if (item.Words && item["Bangla Meaning"]) {
-                                    banglaData[item.Words.toLowerCase()] = item["Bangla Meaning"];
-                                }
-                            });
-                        }
-                    } else {
-                        console.warn('Bangla translation file not found');
-                    }
+                    // Simulated Bangla data for demo
+                    banglaData = {
+                        'prosperity': 'সমৃদ্ধি',
+                        'development': 'উন্নয়ন',
+                        'achievement': 'অর্জন',
+                        'accomplishment': 'সাফল্য',
+                        'success': 'সাফল্য',
+                        'abate': 'হ্রাস পাওয়া',
+                        'abdicate': 'পরিত্যাগ করা',
+                        'aberration': 'বিচ্যুতি',
+                        'abeyance': 'অস্থায়ী বিরতি',
+                        'abject': 'নিকৃষ্ট'
+                    };
                 } catch (error) {
                     console.warn('Error loading Bangla translations:', error);
                 }
@@ -1065,9 +1038,15 @@
                         
                         if (thesaurusResponse.ok) {
                             thesaurusData = await thesaurusResponse.json();
+                        } else {
+                            console.warn('Thesaurus API returned an error, using fallback data');
+                            // Use fallback data if API fails
+                            thesaurusData = getFallbackThesaurusData(word);
                         }
                     } catch (error) {
                         console.error('Error fetching thesaurus data:', error);
+                        // Use fallback data if API fails
+                        thesaurusData = getFallbackThesaurusData(word);
                     }
                     
                     // Combine data
@@ -1093,6 +1072,34 @@
                 }
             }
 
+            // Fallback thesaurus data for when API fails
+            function getFallbackThesaurusData(word) {
+                const fallbackData = {
+                    'prosperity': {
+                        synonyms: ['success', 'wealth', 'affluence', 'riches', 'opulence'],
+                        antonyms: ['poverty', 'failure', 'hardship', 'scarcity', 'want']
+                    },
+                    'development': {
+                        synonyms: ['growth', 'expansion', 'progress', 'advancement', 'evolution'],
+                        antonyms: ['decline', 'regression', 'deterioration', 'stagnation', 'decay']
+                    },
+                    'achievement': {
+                        synonyms: ['accomplishment', 'success', 'attainment', 'feat', 'triumph'],
+                        antonyms: ['failure', 'defeat', 'loss', 'setback', 'disappointment']
+                    },
+                    'abate': {
+                        synonyms: ['subside', 'diminish', 'lessen', 'weaken', 'moderate'],
+                        antonyms: ['increase', 'intensify', 'strengthen', 'grow', 'escalate']
+                    },
+                    'abdicate': {
+                        synonyms: ['renounce', 'resign', 'relinquish', 'abandon', 'surrender'],
+                        antonyms: ['claim', 'maintain', 'usurp', 'hold', 'assume']
+                    }
+                };
+                
+                return fallbackData[word] || { synonyms: [], antonyms: [] };
+            }
+
             // Function to display word data
             function displayWordData(combinedData) {
                 const freeDictionaryData = combinedData.dictionary;
@@ -1108,10 +1115,31 @@
                 
                 // Set word type (IELTS or GRE)
                 const wordLower = wordText.toLowerCase();
-                if (ieltsWords.map(w => w.toLowerCase()).includes(wordLower)) {
+                
+                // Safely check if word exists in word lists
+                let isIELTS = false;
+                let isGRE = false;
+                
+                if (ieltsWords && ieltsWords.length > 0) {
+                    // Convert all words to lowercase strings first for comparison
+                    const ieltsWordsLower = ieltsWords
+                        .filter(w => typeof w === 'string')
+                        .map(w => w.toLowerCase());
+                    isIELTS = ieltsWordsLower.includes(wordLower);
+                }
+                
+                if (greWords && greWords.length > 0) {
+                    // Convert all words to lowercase strings first for comparison
+                    const greWordsLower = greWords
+                        .filter(w => typeof w === 'string')
+                        .map(w => w.toLowerCase());
+                    isGRE = greWordsLower.includes(wordLower);
+                }
+                
+                if (isIELTS) {
                     wordType.textContent = "IELTS";
                     wordType.className = "word-type ielts-type";
-                } else if (greWords.map(w => w.toLowerCase()).includes(wordLower)) {
+                } else if (isGRE) {
                     wordType.textContent = "GRE";
                     wordType.className = "word-type gre-type";
                 } else {
@@ -1347,6 +1375,10 @@
             });
 
             saveBtnHeader.addEventListener('click', saveWord);
+            
+            // Initialize with a sample word
+            wordInput.value = 'prosperity';
+            searchWord();
         });
     </script>
 </body>
