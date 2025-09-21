@@ -22,6 +22,7 @@
             --mw-color: #2c5aa0;
             --fd-color: #6a0dad;
             --gre-color: #d35400;
+            --ielts-color: #1a73e8;
             --synonym-color: #4CAF50;
         }
 
@@ -180,11 +181,24 @@
             margin-right: 15px;
         }
 
-        .bangla-meaning {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-top: 5px;
-            font-style: italic;
+        .word-type {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .ielts-type {
+            background-color: var(--ielts-color);
+            color: white;
+        }
+
+        .gre-type {
+            background-color: var(--gre-color);
+            color: white;
         }
 
         .phonetic {
@@ -564,7 +578,7 @@
             <div class="word-header">
                 <div class="word-title-container">
                     <h2 class="word-title" id="wordTitle">prosperity</h2>
-                    <div class="bangla-meaning" id="banglaMeaning"></div>
+                    <span class="word-type ielts-type" id="wordType">IELTS</span>
                     <div class="phonetic" id="phonetic">/prɒˈsper.ə.ti/</div>
                 </div>
                 <div class="header-right">
@@ -682,7 +696,7 @@
             const wordInput = document.getElementById('wordInput');
             const resultsContainer = document.getElementById('resultsContainer');
             const wordTitle = document.getElementById('wordTitle');
-            const banglaMeaning = document.getElementById('banglaMeaning');
+            const wordType = document.getElementById('wordType');
             const phonetic = document.getElementById('phonetic');
             const mwDefinitionsList = document.getElementById('mwDefinitionsList');
             const fdDefinitionsList = document.getElementById('fdDefinitionsList');
@@ -716,63 +730,242 @@
             const MW_DICTIONARY_API = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/";
             const MW_THESAURUS_API = "https://www.dictionaryapi.com/api/v3/references/thesaurus/json/";
 
+            // Word lists
+            const ieltsWords = [
+                "Active", "Antique", "Agility", "Attire", "Awful", "Assets", "Ample", "Amateur", "Assault", "Abroad",
+                "Always", "Adversity", "Allure", "Admit", "Amiable", "Annoy", "Aggressive", "Acquit", "Ambition", "Anxious",
+                "Achieve", "Aid", "Amount", "Adroit", "Adequate", "Alteration", "Ambiance", "Allow", "Amicable", "Astonishing",
+                "Ambitious", "Accord", "Abode", "Accurate", "Away", "Arrive", "Angry", "Authentic", "Abandon", "Add",
+                "Answer", "Alike", "Abstraction", "Ask", "Adamant", "Appreciation", "Agree", "Approve", "Baffle", "Belligerent",
+                "Benevolent", "Bias", "Brevity", "Bizarre", "Banal", "Barren", "Blatant", "Bemoan", "Beneath", "Belittle",
+                "Bewilder", "Brazen", "Bountiful", "Berate", "Behemoth", "Beneficial", "Blissful", "Burgeon", "Banish", "Bypass",
+                "Blithe", "Brisk", "Brood", "Brawl", "Bungle", "Befuddle", "Bolster", "Beguile", "Bask", "Bewildered",
+                "Bristle", "Cacophony", "Callous", "Candid", "Capitulate", "Catalyst", "Caution", "Cerebral", "Charismatic", "Coalesce",
+                "Coherent", "Colossal", "Complacent", "Concede", "Conducive", "Conundrum", "Cordial", "Corroborate", "Credible", "Cryptic",
+                "Culminate", "Cumbersome", "Cynical", "Concur", "Constrict", "Contentious", "Copious", "Corrode", "Curtail", "Convoluted",
+                "Conspicuous", "Consume", "Commence", "Collaborate", "Chronicle", "Circumvent", "Connoisseur", "Composure", "Consensus", "Congenial",
+                "Contrive", "Constitute", "Dazzling", "Deceive", "Decipher", "Deficient", "Delicate", "Deter", "Deviate", "Diligent",
+                "Diminish", "Discern", "Discreet", "Disperse", "Distinct", "Diverse", "Dominate", "Durable", "Dynamic", "Dwell",
+                "Dwindle", "Eager", "Elaborate", "Embrace", "Empathy", "Endeavor", "Enrich", "Enhance", "Enthusiastic", "Ephemeral",
+                "Eradicate", "Erratic", "Exemplify", "Exuberant", "Elusive", "Eloquent", "Eminent", "Empower", "Encompass", "Endorse",
+                "Entice", "Esteem", "Evolve", "Exceed", "Exquisite", "Exemplary", "Explicit", "Expose", "Extend", "Elude",
+                "Endure", "Exasperate", "Eccentric", "Elicit", "Elongate", "Enlist", "Facilitate", "Formidable", "Flourish", "Fickle",
+                "Frugal", "Fathom", "Foster", "Fluctuate", "Fortify", "Foresee", "Fallacious", "Frivolous", "Facade", "Fervent",
+                "Foremost", "Flabbergasted", "Fiasco", "Flawless", "Futile", "Formulate", "Fundamental", "Fluctuation", "Feasible", "Fervid",
+                "Facet", "Fanatic", "Flimsy", "Frenetic", "Fervor", "Forebode", "Felicity", "Forsake", "Fracture", "Generous",
+                "Grateful", "Gargantuan", "Gauge", "Gaze", "Glance", "Gruesome", "Gregarious", "Genuine", "Grasp", "Grumble",
+                "Garner", "Gleam", "Grapple", "Gallant", "Gallivant", "Glimpse", "Grind", "Gusto", "Guileless", "Gravy",
+                "Glorious", "Gloom", "Gravitate", "Gamble", "Garrison", "Glitter", "Grating", "Glutton", "Garish", "Gist",
+                "Grueling", "Harmony", "Halt", "Hasty", "Hinder", "Hospitable", "Humble", "Humiliate", "Hybrid", "Hesitate",
+                "Hostile", "Hearty", "Hinderance", "Hover", "Heritage", "Heighten", "Homogeneous", "Hardship", "Haphazard", "Homely",
+                "Hail", "Harmonize", "Harass", "Hypothesize", "Homage", "Hardworking", "Hibernate", "Haughty", "Humorous", "Hone",
+                "Hereditary", "Hostility", "Humidity", "Hamper", "Hallmark", "Hue", "Halcyon", "Harbinger", "Havoc", "Illuminate",
+                "Ingenious", "Inquire", "Integrate", "Inherent", "Insight", "Incite", "Inevitable", "Intrepid", "Incessant", "Incognito",
+                "Inclusive", "Incapacitate", "Indifferent", "Infallible", "Inhibit", "Inquisitive", "Inspire", "Invaluable", "Invigorate", "Invariably",
+                "Invoke", "Irresistible", "Impede", "Inclination", "Intuition", "Infuse", "Incarcerate", "Inscribe", "Instigate", "Incisive",
+                "Inconspicuous", "Incredulous", "Jeopardy", "Jovial", "Juxtapose", "Jargon", "Judicious", "Jolt", "Jubilant", "Juxtaposition",
+                "Justify", "Jaded", "Jeer", "Jocular", "Judgemental", "Jiffy", "Jittery", "Jinx", "Juggle", "Joviality",
+                "Jovially", "Jeopardize", "Keen", "Kin", "Keenly", "Kudos", "Keystones", "Kindred", "Kinetic", "Knead",
+                "Kindle", "Knack", "Knotty", "Kernel", "Kith", "Kowtow", "Kneel", "Kept", "Kinfolk", "Knowledge",
+                "Kettle", "Kneecap", "Lament", "Lucid", "Lavish", "Loathe", "Linger", "Laudable", "Legacy", "Lenient",
+                "Livid", "Luminous", "Lethargic", "Loquacious", "Lurk", "Lamentable", "Levitate", "Labyrinth", "Lethal", "Liable",
+                "Ludicrous", "Languish", "Lofty", "Lucrative", "Languid", "Laud", "Legitimate", "Magnify", "Mitigate", "Meticulous",
+                "Mundane", "Modify", "Manifest", "Migrate", "Mandatory", "Malicious", "Meritorious", "Munificent", "Melancholy", "Maverick",
+                "Malleable", "Magnanimous", "Malfunction", "Mirthful", "Morose", "Magnitude", "Meander", "Miserly", "Monotonous", "Navigate",
+                "Negate", "Neglect", "Nourish", "Notorious", "Necessitate", "Notable", "Nominate", "Negligible", "Noteworthy", "Nurturing",
+                "Novelty", "Nostalgia", "Notion", "Nuanced", "Nimble", "Nullify", "Nifty", "Nascent", "Objective", "Obligation",
+                "Observe", "Obtain", "Occasion", "Occur", "Odd", "Omit", "Ongoing", "Option", "Overcome", "Owe",
+                "Obsolete", "Outrage", "Oversee", "Overwhelm", "Overtake", "Overview", "Oppose", "Perceive", "Ponder", "Profound",
+                "Prolific", "Persuade", "Prevail", "Persevere", "Plausible", "Prudent", "Paradox", "Pensive", "Plentiful", "Pragmatic",
+                "Pivotal", "Precarious", "Pinnacle", "Placid", "Perilous", "Pristine", "Penchant", "Pungent", "Prodigy", "Proximity",
+                "Paragon", "Paramount", "Patronize", "Peripheral", "Prevalent", "Prominent", "Quaint", "Quandary", "Quash", "Quell",
+                "Quench", "Query", "Quibble", "Quiescent", "Quirk", "Quiver", "Quota", "Quotidian", "Quizzical", "Quip",
+                "Qualm", "Radiant", "Resilient", "Reluctant", "Robust", "Rationale", "Revere", "Repudiate", "Rendezvous", "Relinquish",
+                "Redundant", "Rigorous", "Resplendent", "Replenish", "Reclusive", "Ramification", "Rapture", "Reckless", "Rectify", "Recapitulate",
+                "Reciprocal", "Replicate", "Resonate", "Rejuvenate", "Sage", "Scrutinize", "Serene", "Sincere", "Skeptical", "Subtle",
+                "Suppress", "Solemn", "Strenuous", "Sanctuary", "Sublime", "Surpass", "Sporadic", "Substantiate", "Serendipity", "Stagnant",
+                "Synchronize", "Savor", "Surrogate", "Supple", "Salient", "Tenacious", "Tremendous", "Thrive", "Tolerate", "Transparent",
+                "Tenure", "Transition", "Tactful", "Tangible", "Tedious", "Ubiquitous", "Unveil", "Utilize", "Unique", "Undermine",
+                "Ubiquity", "Upheaval", "Underestimate", "Vibrant", "Versatile", "Validate", "Vigorous", "Venture", "Vital", "Volatile",
+                "Vogue", "Widespread", "Witty", "Wrath", "Wholesome", "Wane", "Withstand", "Wary", "Wistful", "Xenophobia",
+                "Xerox", "Xenial", "Xanadu", "Xerophyte", "Yearn", "Yield", "Yonder", "Yearning", "Yielding", "Yarn",
+                "Yieldless", "Yowl", "Yawn", "Yoke", "Yore", "Yell", "Yank", "Zeal", "Zest", "Zenith",
+                "Zany", "Zealous", "Zephyr", "Zestful", "Zilch", "Zing", "Zigzag", "Zeppelin", "Zero", "Zircon",
+                "Zesty"
+            ];
+
+            const greWords = [
+                "Nepotism", "Elucidate", "Trenchant", "Vacillate", "Parable", "Machismo", "Recant", "Aversion", "Ascend", "Pugnacious",
+                "Inhibition", "Detriment", "Perfunctory", "Comely", "Spurious", "Vitriolic", "Tantamount", "Blase", "Rustic", "Adroit",
+                "Mercenary", "Impious", "Divulge", "Abate", "Analogous", "Largesse", "Succulent", "Inveigh", "Privation", "Obsess",
+                "Germane", "Feint", "Senile", "Fractious", "Heterogeneous", "Deem", "Conjecture", "Plight", "Eradicate", "Criterion",
+                "Cant", "Repugnant", "Extant", "Incontrovertible", "Obsequious", "Equanimity", "Utopia", "Vitiate", "Perfidious", "Mentor",
+                "Repudiate", "Bizarre", "Aver", "Rebuke", "Diversity", "Plethora", "Congenial", "Succinct", "Zenith", "Tremulous",
+                "Candor", "Sedentary", "Amorous", "Nefarious", "Incongruous", "Elicit", "Admonish", "Artless", "Lush", "Tantalizing",
+                "Landmark", "Prudent", "Pandemonium", "Heresy", "Fracas", "Sporadic", "Genre", "Impetuous", "Deter", "Crave",
+                "Prevaricate", "Expurgate", "Decrepit", "Inherent", "Cognizant", "Ruminate", "Feasible", "Invective", "Nomadic", "Emit",
+                "Ubiquitous", "Venial", "Parsimonious", "Malleable", "Relegate", "Bane", "Aspire", "Quarry", "Insatiable", "Discern",
+                "Perspicacious", "Complicity", "Stereotype", "Voracious", "Terminate", "Brash", "Sanctimonious", "Afflict", "Mollify", "Imprudent",
+                "Dregs", "Abstemious", "Antiquated", "Legion", "Superfluous", "Irrelevant", "Profound", "Omnipotent", "Grimace", "Fiasco",
+                "Sinister", "Fret", "Hostile", "Delve", "Consummate", "Potpourri", "Evaluate", "Cupidity", "Indigent", "Caustic",
+                "Restrictive", "Exult", "Obscure", "Epitome", "Usurp", "Virulent", "Perceive", "Menial", "Reproach", "Bigot",
+                "Avarice", "Realm", "Invalidate", "Distraught", "Plaque", "Confront", "Subterranean", "Zealous", "Transient", "Candid",
+                "Sedate", "Amnesty", "Nebulous", "Incompatibility", "Elapse", "Adherent", "Artifice", "Lurid", "Tangible", "Lampoon",
+                "Proximity", "Panacea", "Heinous", "Fortuitous", "Spontaneous", "Genocide", "Imperturbable", "Desultory", "Covet", "Prevalent",
+                "Expunge", "Decorum", "Ingratiate", "Cogent", "Rue", "Fatuous", "Obloquy", "Epithet", "Urbane", "Virtuosity",
+                "Penury", "Mendacious", "Reprimand", "Bias", "Automaton", "Raze", "Inundate", "Dissent", "Plaintiff", "Conflagration",
+                "Subterfuge", "Yen", "Tranquil", "Canard", "Scurry", "Amicable", "Nascent", "Incoherent", "Egregious", "Adamant",
+                "Artifact", "Lugubrious", "Taint", "Laconic", "Propriety", "Paltry", "Havoc", "Forthright", "Spear", "Gaunt",
+                "Imperceptible", "Desist", "Covert", "Pretext", "Exploit", "Declaim", "Infraction", "Coerce", "Rudimentary", "Fatal",
+                "Obese", "Entreaty", "Unsavory", "Vindicate", "Penitent", "Maudlin", "Reprehensible", "Besiege", "Augment", "Rationalize",
+                "Intrinsic", "Dispersed", "Pique", "Conducive", "Subservient", "Wistful", "Tortuous", "Callow", "Scrutinize", "Ambiguous",
+                "Nadir", "Incisive", "Effigy", "Acrimonious", "Ardent", "Longevity", "Taboo", "Labyrinth", "Propinquity", "Pall",
+                "Harbinger", "Foist", "Sordid", "Garrulous", "Impede", "Derived", "Countenance", "Prerogative", "Expedient", "Decadence",
+                "Infallible", "Cliche", "Rift", "Falter", "Nutrition", "Entourage", "Unmitigated", "Villify", "Penchant", "Materialism",
+                "Repose", "Bereft", "Audacity", "Rash", "Intrepid", "Disparate", "Pinnacle", "Condone", "Subjugate", "Wince",
+                "Tolerate", "Calluous", "Scoff", "Altruistic", "Myriad", "Incipient", "Efficacy", "Acquiesce", "Archaic", "Loathe",
+                "Symptomatic", "Juxtapose", "Propensity", "Harass", "Overt", "Fluctuate", "Sophistry", "Garbled", "Impeccable", "Deride",
+                "Coterie", "Premonition", "Expatriate", "Decade", "Inexorable", "Clandestine", "Rife", "Fallacious", "Nurture", "Ennui",
+                "Unkempt", "Vigilant", "Penance", "Masticate", "Replete", "Benevolent", "Atypical", "Rampant", "Intimidate", "Disparage",
+                "Phobia", "Condolence", "Stymie", "Whimsical", "Tinge", "Cajole", "Scion", "Aloof", "Murky", "Inchoate",
+                "Edifice", "Acme", "Arbitrary", "Loath", "Susceptible", "Jurisdiction", "Propagate", "Oust", "Hapless", "Flout",
+                "Somber", "Gamut", "Imminent", "Deprecate", "Corroborate", "Premise", "Exonerate", "Debris", "Inevitable", "Chimerical",
+                "Rhetoric", "Factitious", "Nullify", "Enigma", "Universal", "Vigil", "Pedagogy", "Martinet", "Replenish", "Belligerent",
+                "Attest", "Raiment", "Interrogate", "Dismantle", "Phlegmatic", "Concur", "Stupor", "Whet", "Timorous", "Cacophony",
+                "Schism", "Allude", "Munificent", "Incapacitated", "Duress", "Acknowledge", "Arbiter", "Livid", "Surreptitious", "Jubilant",
+                "Promulgate", "Ostracize", "Halcyon", "Fledgling", "Solicit", "Galvanize", "Imbibe", "Deploy", "Corpulent", "Prelude",
+                "Exhort", "Debilitate", "Inert", "Chicanery", "Revile", "Facile", "Nuance", "Enhance", "Undermine", "Viable",
+                "Pedagogue", "Manifold", "Repertoire", "Belittle", "Attenuated", "Rail", "Internecine", "Disheveled", "Phenomenon", "Concomitant",
+                "Stunt", "Wheddle", "Thwart", "Cache", "Saturate", "Alleviate", "Mundane", "Inanimate", "Duplicity", "Accost",
+                "Apellation", "Lithe", "Surmise", "Jostle", "Prolific", "Ostentatious", "Habitat", "Flay", "Solace", "Futility",
+                "Ignominious", "Deplorable", "Copious", "Precocious", "Excruciating", "Debacle", "Ineffectual", "Charlatan", "Revert", "Facetious",
+                "Nostalgia", "Engrossed", "Unctuous", "Vexatious", "Pecuniary", "Manifest", "Repent", "Belated", "Atrophy", "Raconteur",
+                "Interminable", "Disgruntled", "Pestilence", "Concoct", "Strife", "Wary", "Throng", "Burgeon", "Satiety", "Alleged",
+                "Motivate", "Inane", "Dupe", "Accomplice", "Appaled", "Libel", "Surge", "Jettison", "Prohibition", "Ostensible",
+                "Gusto", "Flamboyant", "Sojourn", "Furtive", "Idyllic", "Depict", "Cope", "Preclude", "Excoriate", "Dearth",
+                "Inebriated", "Charisma", "Revere", "Facet", "Nonentity", "Encumbrance", "Unconscionable", "Vestige", "Paucity", "Mandate",
+                "Remuneration", "Begrudge", "Astute", "Rabid", "Interloper", "Disdain", "Perverse", "Comprehensive", "Strident", "Wane",
+                "Therapy", "Bulwark", "Sanguine", "Allay", "Mortality", "Inadvertent", "Dulcet", "Accommodate", "Apostate", "Levity",
+                "Surfeit", "Jeopardize", "Prognosticate", "Originate", "Gullible", "Flagrant", "Slovenly", "Fulsome", "Iconoclast", "Denote",
+                "Controversial", "Precipitate", "Exacerbate", "Cynic", "Indolent", "Chagrin", "Retrospect", "Facade", "Nondescripit", "Encomium",
+                "Umbrage", "Vertigo", "Pathetic", "Mammoth", "Remote", "Bedlam", "Assiduous", "Quip", "Interject", "Discreet",
+                "adjective", "Peruse", "Compound", "Stipulate", "Wan", "Terse", "Bristle", "Sanctuary", "Alacrity", "Moribund",
+                "Impunity", "Dubious", "Access", "Apathy", "Lethargic", "Supplication", "Jaunty", "Progeny", "Opulence", "Guise",
+                "Flabbergasted", "Skirmish", "Frustrate", "Hyperbole", "Demur", "Contrite", "Precedent", "Evince", "Curtail", "Indoctrinate",
+                "Cessation", "Retort", "Fabricate", "Nominal", "Emulate", "Ultimate", "Venom", "Passe", "Malnutrition", "Remiss",
+                "Barometer", "Asset", "Quell", "Insidious", "Disciple", "Pertinent", "Component", "Stigma", "Vulnerable", "Terminus",
+                "Brawl", "Sanction", "Affluent", "Monolithic", "Impugn", "Drudgery", "Absurd", "Antithesis", "Lethal", "Supine",
+                "Itinerant", "Profuse", "Opprobrium", "Grotesque", "Fiat", "Site", "Frugal", "Humility", "Demeanor", "Contemptuous",
+                "Pragmatic", "Evanescent", "Cursory", "Indiscriminate", "Celerity", "Reticent", "Exultation", "Obliterate", "Enunciate", "Unwieldy",
+                "Virile", "Pensive", "Megalomania", "Repress", "Besmirch", "Austere", "Raucous", "Introspective", "Disseminate", "Pittance",
+                "Confidant", "Substantiate", "Wrest", "Tradition", "Calumny", "Scurrilous", "Ameliorate", "Naive", "Inclement", "Effrontery",
+                "Acute", "Array", "Lucrative", "Tacit", "Laceration", "Propitious", "Palliate", "Haven", "Foment", "Spate",
+                "Gaudy", "Imperative", "Derogatory", "Coup", "Prestigious", "Expedite", "Decapitate", "Infamous", "Clique", "Roster",
+                "Fastidious", "Noisome", "Emissary", "Turpitude", "Venerable", "Paroxysm", "Malignant", "Refute", "Banal", "Aspirant",
+                "Quandary", "Inordinate", "Diminutive", "Persevere", "Complacent", "Stentorian", "Voluminous", "Tenacious", "Bona fide", "Salvation",
+                "Aegis", "Modify", "Impromptu", "Dormant", "Abrogate", "Antipathy", "Legerdemain", "Superficial", "Irrational", "Profligate",
+                "Ominous", "Gregarious", "Fetter", "Singular", "Frenzy", "Homogeneous", "Deluge", "Construe", "Potential", "Euphemism",
+                "Cumulative", "Indigenous", "Catastrophic", "Respite", "Extrinsic", "Nirvana", "Eminent", "Turbulent", "Veneer", "Pariah",
+                "Malevolent", "Redress", "Balk", "Asperity", "Qualm", "Innocuous", "Dilettante", "Perpetuate", "Compensate", "Steep",
+                "Volition", "Tenable", "Bogus", "Salubrious", "Advocate", "Milieu", "Impressario", "Domicile", "Abound", "Anthropologist",
+                "Lax", "Sumptuous", "Irate", "Proffer", "Octave", "Gratuity", "Fervid", "Sinecure", "Frenetic", "Hoax",
+                "Delude", "Consternation", "Potentate", "Ethics", "Cumbersome", "Indifference", "Castigate", "Resourceful", "Extraneous", "Neutralize",
+                "Embellish", "Truncated", "Vehemently", "Paramount", "Malady", "Redolent", "Badger", "Asinine", "Puny", "Innate",
+                "Diatribe", "Perpetrate", "Compatible", "Staunch", "Vogue", "Temerity", "Blunt", "Salient", "Adverse", "Mien",
+                "Importune", "Doleful", "Abortive", "Anomaly", "Laudable", "Sultry", "Irascible", "Prodigy", "Occult", "Glib",
+                "Ferment", "Shibboleth", "Fray", "Hoard", "Delineation", "Connubial", "Potent", "Eschew", "Culpable", "Indict",
+                "Carnage", "Requisite", "Extortion", "Neurotic", "Emaciated", "Trivial", "Vapid", "Paragon", "Maim", "Recondite",
+                "Awesome", "Ascetic", "Pungent", "Initiate", "Dexterity", "Pernicious", "Compassion", "Stagnant", "Vivacious", "Technology",
+                "Bliss", "Sage", "Adversary", "Meticulous", "Implore", "Doddering", "Abjure", "Annals", "Latent", "Sullen",
+                "Inviolable", "Prodigious", "Obviate", "Glean", "Felon", "Servile", "Fraught", "Histrionic", "Deleterious", "Connoisseur",
+                "Ponder", "Eruption", "Culminate", "Incumbent", "Capricious", "Repute", "Extol", "Nettle", "Elusive", "Trend",
+                "Valor", "Paradox", "Magnanimous", "Recoil", "Avid", "Ascertain", "Puissant", "Iniquity", "Devout", "Permeate",
+                "Commodious", "Squeamish", "Vituperation", "Taut", "Blatant", "Sabbatical", "Advent", "Metamorphosis", "Implacable", "Docile",
+                "Abhor", "Anathema", "Lassitude", "Succumb", "Inveterate", "Procrastinate", "Obsolescence", "Gesticulate", "Felicitous", "Serenity",
+                "Frail", "Hirsute", "Degrade", "Conjugal", "Poignant", "Erudite", "Cryptic", "Incredulous", "Capitulate", "Repulse",
+                "Extinct", "abdicate", "aberrant", "abrasive", "abridge", "abstain", "activism", "adhere", "aesthetic", "affable",
+                "affectation", "aggrandize", "aggregate", "alienate", "ambivalent", "anarchy", "anoint", "antagonize", "antipathy", "apocryphal",
+                "appease", "appreciable", "arbitrary", "arcane", "arduous", "articulate", "assuage", "audacious", "autonomous", "base",
+                "belie", "benign", "bolster", "boor", "buffer", "bureaucracy", "buttress", "bygone", "canonical", "cartography",
+                "catalyst", "censure", "chauvinism", "chronological", "clamor", "clinch", "coalesce", "commensurate", "complementary", "compliant",
+                "concede", "conciliatory", "confer", "console", "consolidate", "constrict", "contentious", "contextualize", "conundrum", "converge",
+                "conversant", "conversely", "convoluted", "cosmopolitan", "countenance", "counterintuitive", "counterpoint", "counterproductive", "crafty", "craven",
+                "credibility", "credulous", "crescendo", "cynical", "daunt", "debase", "debunk", "decorous", "deface", "defamatory",
+                "default", "deference", "deflect", "delineate", "denigrate", "derivative", "desiccate", "detached", "deterrent", "didactic",
+                "digress", "din", "disabuse", "discerning", "discredit", "discrepancy", "discriminating", "disingenuous", "disinterested", "disjointed",
+                "dismiss", "dispassionate", "dispatch", "disperse", "disposition", "disquieting", "dissonance", "distill", "diverge", "Divest",
+                "Divine", "Document", "Dogma", "e.g.", "eccentric", "Mnemonic", "Eclectic", "Eclipse", "Egalitarian", "Elated",
+                "Elevate", "Eloquent", "Empirical", "Enervate", "Entitlement", "Enumerate", "Ephemeral", "Equitable", "Erratic", "Erroneous",
+                "Esoteric", "Estimable", "Eulogy", "Exacting", "Exculpate", "Exhaustive", "Explicit", "Exponent", "Extrapolate", "Facilitate",
+                "Fanatical", "Fanciful", "Fathom", "Fidelity", "Finesse", "Flag", "Fleeting", "Figurative", "Foreshadow", "Forfeit",
+                "Fortify", "Fringe", "Futile", "Gainsay", "Gauche", "Gawky", "Gist", "Goosebumps", "Gradation", "Guile",
+                "Hackneyed", "Hardy", "Hearken", "Hedonist", "Hierarchy", "Hodgepodge", "Idiosyncrasy", "illiberality", "Impair", "Impartial",
+                "Implication", "Implicit", "Implode", "Inasmuch", "Incendiary", "Incentive", "Inconsequential", "Incorporate", "Indeterminate", "Indifferent",
+                "Inform", "Ingenuous", "Ingrained", "Intelligible", "Intractable", "Jargon", "Jocular", "Judicious", "Juncture", "Keen",
+                "Kudos", "Lackluster", "Lament", "Languid", "Lavish", "Layperson", "Levy", "Liberal", "Libertine", "Likewise",
+                "Log", "Loquacious", "Lucid", "Lull", "Makeshift", "Maverick", "Mercurial", "Mitigate", "Modest", "Monotony",
+                "Moreover", "Mores", "Negate", "Net", "Nevertheless", "Nonetheless", "Notoriety", "Novel", "Objective", "Obsolete",
+                "Obstinate", "Offhand", "Officious", "Offset", "Onerous", "Opaque", "Optimal", "Optimum", "Orthodox", "Oscillate",
+                "Outstrip", "Overshadow", "Paradigm", "Partial", "Partisan", "Patent", "Pathological", "Patronizing", "Peccadillo", "Pedestrian",
+                "Peripheral", "Pervasive", "Philanthropy", "Phony", "Pious", "Pith", "Placate", "Placid", "Plastic", "Plausible",
+                "Plummet", "Polarized", "Ponderous", "Posthumous", "Preamble", "Precarious", "Precursor", "Predisposed", "Preempt", "Presumptive",
+                "Presumptuous", "Pretentious", "Principled", "Pristine", "Probity", "Prodigal", "Prohibitive", "Proliferate", "Prologue", "Pronounced",
+                "Prosaic", "Proscribe", "Prospective", "Qualified", "Quibble", "Quotidian", "Ranks", "Reap", "Recluse", "Remedial",
+                "Render", "Requite", "Rescind", "Resolution", "Resolve", "Respectively", "Restive", "Retrospective", "Reverent", "Sacrosanct",
+                "Sagacious", "Sanction", "Sap", "Satiate", "Sate", "Savor", "Scant", "Scathing", "Secular", "Sedulous",
+                "Sentient", "Simultaneous", "Skeptic", "Skirt", "Slack", "Slew", "Slight", "Solicitous", "Soporific", "Sound",
+                "Spartan", "Spearhead", "Specious", "Spectrum", "Speculate", "Sportive", "Standing", "Stark", "Static", "Status Quo",
+                "Stingy", "Stoic", "Stoical", "Stolid", "Stymie", "Stymy", "Subjective", "Subside", "Succeeding", "Supersede",
+                "Supplicate", "Sycophant", "Synchronous", "Table", "Taciturn", "Tangential", "Temperance", "Tenuous", "Timely", "Tirade",
+                "Torpor", "Torrid", "Tractable", "Transitory", "Trifling", "Trite", "Underscore", "Unearth", "Unequivocal", "Unprecedented",
+                "Unseemly", "Venerate", "Veracity", "Verbose", "Vintage", "Virtual", "Vituperate", "Volatile", "Warranted", "Whereas",
+                "Wily", "Zeal", "abase", "abeyance", "abreast", "abscission", "abscond", "abyss", "accede", "accretion",
+                "acerbic", "acidulous", "acumen", "adulterate", "adumbrate", "aerie", "albeit", "amalgamate", "amortize", "anachronism",
+                "analgesia", "annul", "anodyne", "antedate", "antithetical", "apostle", "apposite", "apprise", "approbation", "appropriate",
+                "arrogate", "ascribe", "aseptic", "aspersions", "assail", "attenuate", "attuned", "augury", "august", "axiom",
+                "balloon", "baying", "beneficent", "bent", "bevy", "bifurcate", "bilk", "blight", "blithe", "bombastic",
+                "bonhomie", "brandish", "brook", "bucolic", "burnish", "cardinal", "catholic", "circumscribe", "circumspect", "clamber",
+                "cloying", "coagulate", "coda", "coffer", "collude", "compendium", "complaisant", "confound", "connote", "contraries",
+                "contumacious", "convoke", "cosset", "curmudgeon", "declivity", "delimit", "demagogue", "diaphanous", "dichotomy", "dictum",
+                "diffident", "diffuse", "dilate", "dilatory", "dirge", "discomfiting", "discordant", "discrete", "dissemble", "dissolution",
+                "distaff", "distend", "dither", "diurnal", "doctrinaire", "doff", "dovetail", "droll", "dyspeptic", "ebullient",
+                "echelon", "edify", "egress", "elegy", "emaciate", "endemic", "engender", "epicure", "equivocate", "ersatz",
+                "erstwhile", "ethos", "euphony", "exigent", "extemporaneous", "faction", "fallow", "fawn", "fecund", "fetid",
+                "florid", "fluke", "forage", "ford", "forestall", "fulminate", "gambol", "garner", "gestation", "glacial",
+                "glower", "goad", "gouge", "graft", "grandiloquent", "grandstand", "grating", "grievous", "grouse", "grovel",
+                "hallmark", "hand-wringing", "harangue", "harrow", "hedge", "hegemony", "hermetic", "hew", "hoary", "homage",
+                "hoodwink", "hotly", "husband", "idolatry", "ignoble", "imbue", "immutable", "impasse", "impassive", "impecunious",
+                "imperious", "impermeable", "impervious", "imprecation", "impute", "incarnadine", "inconstancy", "inculcate", "indefatigable", "indigence",
+                "ingrate", "inimical", "inquest", "insensible", "insinuate", "insipid", "insular", "insurrection", "inter", "interplay",
+                "interregnum", "intransigent", "inure", "inveigle", "investiture", "invidious", "irresolute", "itinerary", "jingoism", "kindle",
+                "kinetic", "knell", "lachrymose", "larceny", "largess", "largesse", "leery", "licentious", "limpid", "lionize",
+                "lissome", "listless", "lumber", "luminous", "machination", "maelstrom", "magnate", "malediction", "malinger", "mannered",
+                "mar", "maxim", "mendicant", "meretricious", "metaphysical", "militate", "mired", "mirth", "misanthrope", "misanthropist",
+                "missive", "modicum", "modish", "molt", "monastic", "morose", "multifarious", "myopic", "neologism", "neophyte",
+                "nontrivial", "normative", "obdurate", "oblique", "occlude", "opine", "orotund", "ossify", "overwrought", "palatial",
+                "pallid", "panache", "panegyric", "panoply", "pare", "parley", "parry", "pastiche", "pathogenic", "pedant",
+                "peddle", "pejorative", "pellucid", "penumbra", "per se", "peregrinate", "perennial", "peripatetic", "phalanx", "philistine",
+                "platitude", "plebian", "plucky", "plutocracy", "polemic", "politic", "polyglot", "posit", "prattle", "predilection",
+                "prescient", "preternatural", "primacy", "proclivity", "prolix", "prophetic", "propitiate", "providential", "proxy", "précis",
+                "puerile", "pugilism", "puissance", "pulchritude", "pusillanimous", "querulous", "quiescent", "quixotic", "rarefied", "reactant",
+                "recalcitrant", "recapitulate", "recrudescent", "redound", "refractory", "refulgent", "rejoinder", "rend", "repast", "repertorial",
+                "reprobate", "resurgent", "revamp", "ribald", "ridden", "rococo", "sardonic", "savant", "scintilla", "scurvy",
+                "searchingly", "secrete", "sedition", "semantic", "seraphic", "shard", "skittish", "slake", "sobriquet", "solecism",
+                "solidarity", "somatic", "squalid", "squelch", "stasis", "steeped", "stint", "stratagem", "stratum", "strut",
+                "sublime", "subpoena", "sully", "supplant", "supposition", "surly", "surrogate", "sybarite", "symbiosis", "synoptic",
+                "syntax", "tawdry", "tendentious", "terrestrial", "toady", "token", "tome", "transgression", "travesty", "treacherous",
+                "truculent", "tumultuous", "turgid", "tyro", "unsparing", "untempered", "upbraid", "usury", "vanguard", "variegated",
+                "verdant", "verisimilar", "vernal", "vex", "via", "vicissitude", "vim", "viscid", "viscous", "vitriol",
+                "vociferous", "voluble", "wanton", "welter", "whitewash", "winnow", "winsome", "wizened", "xenophobia", "yoke"
+            ];
+
             // App state
             let currentWord = '';
             let savedWords = JSON.parse(localStorage.getItem('savedWords')) || [];
             let audioUrl = null;
-            let wordDatabase = {};
-            let ieltsWords = [];
-            let greWords = [];
 
             // Initialize the app
-            fetchWordsData().then(() => {
-                updateSavedWordsList();
-            });
-
-            // Fetch words data from JSON file
-            async function fetchWordsData() {
-                try {
-                    const response = await fetch('Words.json');
-                    if (!response.ok) {
-                        throw new Error('Failed to load word database');
-                    }
-                    const data = await response.json();
-                    
-                    // Process the JSON data
-                    if (data.Words && Array.isArray(data.Words)) {
-                        data.Words.forEach(item => {
-                            const word = item.Words.toLowerCase();
-                            wordDatabase[word] = {
-                                bangla: item["Bangla Meaning"],
-                                ielts: item.ILETS && item.ILETS !== "N/A",
-                                gre: item.GRE && item.GRE !== "N/A"
-                            };
-                        });
-                        
-                        // Create IELTS and GRE word lists
-                        ieltsWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].ielts);
-                        greWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].gre);
-                    }
-                } catch (error) {
-                    console.error('Error loading word database:', error);
-                    // Fallback to a minimal dataset if JSON loading fails
-                    initializeFallbackData();
-                }
-            }
-
-            // Fallback data in case JSON loading fails
-            function initializeFallbackData() {
-                wordDatabase = {
-                    "prosperity": { bangla: "সমৃদ্ধি", ielts: true, gre: true },
-                    "diligent": { bangla: "পরিশ্রমী", ielts: true, gre: true },
-                    "ubiquitous": { bangla: "সর্বব্যাপী", ielts: true, gre: true },
-                    "eloquent": { bangla: "বাক্পটু", ielts: true, gre: true },
-                    "ambiguous": { bangla: "অস্পষ্ট", ielts: true, gre: true }
-                };
-                
-                ieltsWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].ielts);
-                greWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].gre);
-            }
+            updateSavedWordsList();
 
             // Tab functionality
             tabs.forEach(tab => {
@@ -928,11 +1121,16 @@
                 if (freeDictionaryData && freeDictionaryData[0]) {
                     wordTitle.textContent = freeDictionaryData[0].word;
                     
-                    // Set Bangla meaning if available
-                    if (wordDatabase[freeDictionaryData[0].word.toLowerCase()]) {
-                        banglaMeaning.textContent = wordDatabase[freeDictionaryData[0].word.toLowerCase()].bangla;
+                    // Set word type (IELTS or GRE)
+                    const wordLower = freeDictionaryData[0].word.toLowerCase();
+                    if (ieltsWords.map(w => w.toLowerCase()).includes(wordLower)) {
+                        wordType.textContent = "IELTS";
+                        wordType.className = "word-type ielts-type";
+                    } else if (greWords.map(w => w.toLowerCase()).includes(wordLower)) {
+                        wordType.textContent = "GRE";
+                        wordType.className = "word-type gre-type";
                     } else {
-                        banglaMeaning.textContent = "";
+                        wordType.textContent = "";
                     }
                     
                     // Get phonetic text from Free Dictionary
@@ -960,11 +1158,16 @@
                 } else if (mwDictionaryData && mwDictionaryData[0]) {
                     wordTitle.textContent = mwDictionaryData[0].meta.id;
                     
-                    // Set Bangla meaning if available
-                    if (wordDatabase[mwDictionaryData[0].meta.id.toLowerCase()]) {
-                        banglaMeaning.textContent = wordDatabase[mwDictionaryData[0].meta.id.toLowerCase()].bangla;
+                    // Set word type (IELTS or GRE)
+                    const wordLower = mwDictionaryData[0].meta.id.toLowerCase();
+                    if (ieltsWords.map(w => w.toLowerCase()).includes(wordLower)) {
+                        wordType.textContent = "IELTS";
+                        wordType.className = "word-type ielts-type";
+                    } else if (greWords.map(w => w.toLowerCase()).includes(wordLower)) {
+                        wordType.textContent = "GRE";
+                        wordType.className = "word-type gre-type";
                     } else {
-                        banglaMeaning.textContent = "";
+                        wordType.textContent = "";
                     }
                     
                     // Get phonetic from Merriam-Webster
