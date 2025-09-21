@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeepWords - Vocabulary Excellence</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzAwMDAwMCIgcng9IjEwIi8+PHRleHQgeD0iNTAiIHk9IjY1IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5EVzwvdGV4dD48L3N2Zz4=">
+    <link rel="icon" type="image/x-icon" href="fav.png">
     <style>
         :root {
             --primary: #000000;
@@ -54,6 +54,7 @@
         .logo-container {
             display: flex;
             align-items: center;
+            cursor: pointer;
         }
 
         .logo-symbol {
@@ -168,21 +169,40 @@
         .word-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 25px;
             padding-bottom: 20px;
             border-bottom: 1px solid var(--border);
         }
 
+        .word-title-container {
+            display: flex;
+            flex-direction: column;
+        }
+
         .word-title {
             font-size: 2.2rem;
             color: var(--primary);
+            margin-right: 15px;
+        }
+
+        .bangla-meaning {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            font-style: italic;
         }
 
         .phonetic {
             color: var(--text-secondary);
             font-size: 1.1rem;
             margin-top: 5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .audio-btn {
@@ -201,6 +221,30 @@
         .audio-btn:hover {
             background: var(--primary);
             color: white;
+        }
+
+        .save-btn-header {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .save-btn-header:hover {
+            background: var(--primary-light);
+        }
+
+        .save-btn-header.saved {
+            background: var(--success);
         }
 
         .tab-container {
@@ -331,13 +375,6 @@
             border-top: 1px solid var(--border);
         }
 
-        .api-status {
-            text-align: center;
-            color: var(--success);
-            margin-top: 10px;
-            font-size: 0.9rem;
-        }
-
         .synonym-tag, .antonym-tag {
             display: inline-block;
             background: var(--synonym-color);
@@ -463,25 +500,25 @@
             margin-bottom: 10px;
         }
 
-        /* GRE section styles */
-        .gre-resources {
+        /* Resources section styles */
+        .resources-section {
             text-align: center;
             padding: 30px;
         }
 
-        .gre-icon {
+        .resources-icon {
             font-size: 3rem;
             color: var(--gre-color);
             margin-bottom: 20px;
         }
 
-        .gre-description {
+        .resources-description {
             margin-bottom: 30px;
             color: var(--text-secondary);
             line-height: 1.6;
         }
 
-        .gre-button {
+        .resources-button {
             background: var(--gre-color);
             color: white;
             border: none;
@@ -494,9 +531,10 @@
             align-items: center;
             gap: 10px;
             transition: all 0.3s ease;
+            margin: 10px;
         }
 
-        .gre-button:hover {
+        .resources-button:hover {
             background: #e67e22;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
@@ -508,6 +546,15 @@
             padding: 2px 8px;
             border-radius: 10px;
             margin-left: 8px;
+        }
+
+        /* Synonyms and antonyms list styles */
+        .synonym-item {
+            border-left-color: var(--synonym-color);
+        }
+
+        .antonym-item {
+            border-left-color: var(--error);
         }
 
         @media (max-width: 768px) {
@@ -532,6 +579,16 @@
                 width: 100%;
             }
             
+            .word-header {
+                flex-direction: column;
+            }
+            
+            .header-right {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
             .actions {
                 flex-direction: column;
             }
@@ -546,7 +603,7 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo-container">
+            <div class="logo-container" id="logo">
                 <div class="logo-symbol">DW</div>
                 <div class="logo-text">DeepWords</div>
             </div>
@@ -574,12 +631,18 @@
 
         <div class="results-container" id="resultsContainer">
             <div class="word-header">
-                <div>
+                <div class="word-title-container">
                     <h2 class="word-title" id="wordTitle">prosperity</h2>
+                    <div class="bangla-meaning" id="banglaMeaning"></div>
                     <div class="phonetic" id="phonetic">/prɒˈsper.ə.ti/</div>
                 </div>
-                <div class="audio-btn" id="audioBtn">
-                    <i class="fas fa-volume-up"></i>
+                <div class="header-right">
+                    <div class="audio-btn" id="audioBtn">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <button class="save-btn-header" id="saveBtnHeader">
+                        <i class="fas fa-bookmark"></i> <span id="saveBtnText">Save Word</span>
+                    </button>
                 </div>
             </div>
 
@@ -588,7 +651,7 @@
                 <div class="tab" data-tab="examples">Examples</div>
                 <div class="tab" data-tab="synonyms">Synonyms & Antonyms</div>
                 <div class="tab" data-tab="saved">Saved Words</div>
-                <div class="tab" data-tab="gre">GRE Resources</div>
+                <div class="tab" data-tab="resources">Resources</div>
             </div>
 
             <div class="tab-content active" id="definitions-tab">
@@ -626,16 +689,16 @@
             <div class="tab-content" id="synonyms-tab">
                 <div class="meaning-section" id="synonymsSection">
                     <h3 class="section-title">Synonyms</h3>
-                    <div id="synonymsTags">
-                        <!-- Synonym tags will be inserted here -->
-                    </div>
+                    <ul class="synonyms-list" id="synonymsList">
+                        <!-- Synonyms will be inserted here -->
+                    </ul>
                 </div>
 
                 <div class="meaning-section" id="antonymsSection">
                     <h3 class="section-title">Antonyms</h3>
-                    <div id="antonymsTags">
-                        <!-- Antonym tags will be inserted here -->
-                    </div>
+                    <ul class="antonyms-list" id="antonymsList">
+                        <!-- Antonyms will be inserted here -->
+                    </ul>
                 </div>
             </div>
 
@@ -650,31 +713,24 @@
                 </div>
             </div>
 
-            <div class="tab-content" id="gre-tab">
-                <div class="gre-resources">
-                    <div class="gre-icon">
+            <div class="tab-content" id="resources-tab">
+                <div class="resources-section">
+                    <div class="resources-icon">
                         <i class="fas fa-graduation-cap"></i>
                     </div>
-                    <h3 class="section-title">GRE Preparation Resources</h3>
-                    <p class="gre-description">
-                        Access our comprehensive GRE vocabulary guide to enhance your preparation for the exam. 
-                        This resource includes high-frequency GRE words, practice exercises, and test-taking strategies.
+                    <h3 class="section-title">Vocabulary Resources</h3>
+                    <p class="resources-description">
+                        Access our comprehensive vocabulary guides to enhance your preparation for exams like GRE and IELTS. 
+                        These resources include high-frequency words, practice exercises, and test-taking strategies.
                     </p>
-                    <button class="gre-button" id="grePdfButton">
-                        <i class="fas fa-download"></i> Download GRE Vocabulary Guide
+                    <button class="resources-button" id="grePdfButton">
+                        <i class="fas fa-download"></i> GRE Vocabulary Guide
+                    </button>
+                    <button class="resources-button" id="ieltsPdfButton">
+                        <i class="fas fa-download"></i> IELTS Vocabulary Guide
                     </button>
                 </div>
             </div>
-
-            <div class="actions">
-                <button class="save-btn" id="saveBtn">
-                    <i class="fas fa-bookmark"></i> Save Word
-                </button>
-            </div>
-        </div>
-
-        <div class="api-status" id="apiStatus">
-            <i class="fas fa-circle-check"></i> Dictionary APIs Connected Successfully
         </div>
     </div>
 
@@ -695,18 +751,19 @@
             const wordInput = document.getElementById('wordInput');
             const resultsContainer = document.getElementById('resultsContainer');
             const wordTitle = document.getElementById('wordTitle');
+            const banglaMeaning = document.getElementById('banglaMeaning');
             const phonetic = document.getElementById('phonetic');
             const mwDefinitionsList = document.getElementById('mwDefinitionsList');
             const fdDefinitionsList = document.getElementById('fdDefinitionsList');
-            const synonymsTags = document.getElementById('synonymsTags');
-            const antonymsTags = document.getElementById('antonymsTags');
+            const synonymsList = document.getElementById('synonymsList');
+            const antonymsList = document.getElementById('antonymsList');
             const examplesList = document.getElementById('examplesList');
             const synonymsSection = document.getElementById('synonymsSection');
             const antonymsSection = document.getElementById('antonymsSection');
             const examplesSection = document.getElementById('examplesSection');
-            const saveBtn = document.getElementById('saveBtn');
+            const saveBtnHeader = document.getElementById('saveBtnHeader');
+            const saveBtnText = document.getElementById('saveBtnText');
             const loading = document.getElementById('loading');
-            const apiStatus = document.getElementById('apiStatus');
             const errorMessage = document.getElementById('errorMessage');
             const errorText = document.getElementById('errorText');
             const scrollToTop = document.getElementById('scrollToTop');
@@ -718,6 +775,8 @@
             const usageSection = document.getElementById('usageSection');
             const usageNotes = document.getElementById('usageNotes');
             const grePdfButton = document.getElementById('grePdfButton');
+            const ieltsPdfButton = document.getElementById('ieltsPdfButton');
+            const logo = document.getElementById('logo');
 
             // API endpoints and keys
             const FREE_DICTIONARY_API = "https://api.dictionaryapi.dev/api/v2/entries/en/";
@@ -725,143 +784,97 @@
             const MW_THESAURUS_API_KEY = "2d6da755-c39a-435e-9f84-9e9040de8449";
             const MW_DICTIONARY_API = "https://www.dictionaryapi.com/api/v3/references/collegiate/json/";
             const MW_THESAURUS_API = "https://www.dictionaryapi.com/api/v3/references/thesaurus/json/";
-            const WORD_FREQUENCY_API = "https://word-frequency.p.rapidapi.com/word-frequency/keywords";
-            const WORD_FREQUENCY_API_KEY = "f0446ddbabmshca883f43d94c93fp19fd0bjsn3df580dbe957";
 
             // App state
             let currentWord = '';
             let savedWords = JSON.parse(localStorage.getItem('savedWords')) || [];
             let audioUrl = null;
 
+            // Word database with Bangla meanings, IELTS and GRE words
+            const wordDatabase = {
+                "prosperity": { bangla: "সমৃদ্ধি", ielts: true, gre: true },
+                "diligent": { bangla: "পরিশ্রমী", ielts: true, gre: true },
+                "ubiquitous": { bangla: "সর্বব্যাপী", ielts: true, gre: true },
+                "eloquent": { bangla: "বাক্পটু", ielts: true, gre: true },
+                "ambiguous": { bangla: "অস্পষ্ট", ielts: true, gre: true },
+                "conspicuous": { bangla: "সুস্পষ্ট", ielts: true, gre: true },
+                "feasible": { bangla: "সম্ভব", ielts: true, gre: true },
+                "prudent": { bangla: "বিচক্ষণ", ielts: true, gre: true },
+                "versatile": { bangla: "বহুমুখী", ielts: true, gre: true },
+                "vulnerable": { bangla: "আক্রান্ত হওয়ার সম্ভাবনা", ielts: true, gre: true },
+                "abate": { bangla: "হ্রাস পাওয়া", ielts: true, gre: true },
+                "advocate": { bangla: "ওকালতি করা", ielts: true, gre: true },
+                "aesthetic": { bangla: "নান্দনিক", ielts: true, gre: true },
+                "affluent": { bangla: "ধনী", ielts: true, gre: true },
+                "aggregate": { bangla: "সমষ্টি", ielts: true, gre: true },
+                "alleviate": { bangla: "উপশম করা", ielts: true, gre: true },
+                "ambiguous": { bangla: "অস্পষ্ট", ielts: true, gre: true },
+                "ambitious": { bangla: "উচ্চাকাঙ্ক্ষী", ielts: true, gre: true },
+                "analogous": { bangla: "সদৃশ", ielts: true, gre: true },
+                "assess": { bangla: "মূল্যায়ন করা", ielts: true, gre: true },
+                "authentic": { bangla: "আসল", ielts: true, gre: true },
+                "autonomous": { bangla: "স্বায়ত্তশাসিত", ielts: true, gre: true },
+                "beneficial": { bangla: "উপকারী", ielts: true, gre: true },
+                "benevolent": { bangla: "পরোপকারী", ielts: true, gre: true },
+                "biased": { bangla: "পক্ষপাতদুষ্ট", ielts: true, gre: true },
+                "brevity": { bangla: "সংক্ষিপ্ততা", ielts: true, gre: true },
+                "capacity": { bangla: "ধারণক্ষমতা", ielts: true, gre: true },
+                "coherent": { bangla: "সঙ্গতিপূর্ণ", ielts: true, gre: true },
+                "comprehensive": { bangla: "বিস্তৃত", ielts: true, gre: true },
+                "conspicuous": { bangla: "সুস্পষ্ট", ielts: true, gre: true },
+                "controversial": { bangla: "বিতর্কিত", ielts: true, gre: true },
+                "conventional": { bangla: "প্রচলিত", ielts: true, gre: true },
+                "crucial": { bangla: "অত্যন্ত গুরুত্বপূর্ণ", ielts: true, gre: true },
+                "cumulative": { bangla: "ক্রমবর্ধমান", ielts: true, gre: true },
+                "dedicate": { bangla: "উত্সর্গ করা", ielts: true, gre: true },
+                "defer": { bangla: "মুলতুবি রাখা", ielts: true, gre: true },
+                "deficient": { bangla: "অপূর্ণ", ielts: true, gre: true },
+                "demonstrate": { bangla: "প্রদর্শন করা", ielts: true, gre: true },
+                "derive": { bangla: "উদ্ভূত হওয়া", ielts: true, gre: true },
+                "discrete": { bangla: "পৃথক", ielts: true, gre: true },
+                "diversity": { bangla: "বিবিধতা", ielts: true, gre: true },
+                "dynamic": { bangla: "গতিশীল", ielts: true, gre: true },
+                "eliminate": { bangla: "বাতিল করা", ielts: true, gre: true },
+                "empirical": { bangla: "প্রায়োগিক", ielts: true, gre: true },
+                "enhance": { bangla: "বৃদ্ধি করা", ielts: true, gre: true },
+                "epitomize": { bangla: "সংক্ষিপ্তসার প্রকাশ করা", ielts: true, gre: true },
+                "equivocal": { bangla: "দ্ব্যর্থক", ielts: true, gre: true },
+                "eradicate": { bangla: "সম্পূর্ণ ধ্বংস করা", ielts: true, gre: true },
+                "facilitate": { bangla: "সহজতর করা", ielts: true, gre: true },
+                "fundamental": { bangla: "মৌলিক", ielts: true, gre: true },
+                "generate": { bangla: "উৎপাদন করা", ielts: true, gre: true },
+                "hypothesis": { bangla: "অনুমান", ielts: true, gre: true },
+                "ideology": { bangla: "আদর্শ", ielts: true, gre: true },
+                "imperative": { bangla: "অপরিহার্য", ielts: true, gre: true },
+                "implement": { bangla: "বাস্তবায়ন করা", ielts: true, gre: true },
+                "incentive": { bangla: "প্রেরণা", ielts: true, gre: true },
+                "inherent": { bangla: "স্বাভাবিক", ielts: true, gre: true },
+                "innovate": { bangla: "নতুনত্ব আনা", ielts: true, gre: true },
+                "integral": { bangla: "অবিচ্ছেদ্য", ielts: true, gre: true },
+                "intermittent": { bangla: "মধ্যবর্তী", ielts: true, gre: true },
+                "methodology": { bangla: "পদ্ধতিবিদ্যা", ielts: true, gre: true },
+                "migrate": { bangla: "স্থানান্তরিত করা", ielts: true, gre: true },
+                "neutral": { bangla: "নিরপেক্ষ", ielts: true, gre: true },
+                "notion": { bangla: "ধারণা", ielts: true, gre: true },
+                "obsolete": { bangla: "অপ্রচলিত", ielts: true, gre: true },
+                "paradigm": { bangla: "উদাহরণ", ielts: true, gre: true },
+                "phenomenon": { bangla: "ঘটনা", ielts: true, gre: true },
+                "pragmatic": { bangla: "ব্যবহারিক", ielts: true, gre: true },
+                "predominant": { bangla: "প্রধান", ielts: true, gre: true },
+                "rational": { bangla: "যৌক্তিক", ielts: true, gre: true },
+                "reluctant": { bangla: "অনিচ্ছুক", ielts: true, gre: true },
+                "subsequent": { bangla: "পরবর্তী", ielts: true, gre: true },
+                "supplement": { bangla: "সম্পূরক", ielts: true, gre: true },
+                "theoretical": { bangla: "তাত্ত্বিক", ielts: true, gre: true },
+                "valid": { bangla: "বৈধ", ielts: true, gre: true },
+                "volatile": { bangla: "পরিবর্তনশীল", ielts: true, gre: true }
+            };
+
             // IELTS words list for random word generation
-            const ieltsWords = [
-                "Active", "Antique", "Agility", "Attire", "Awful", "Assets", "Ample", "Amateur", "Assault", "Abroad", 
-                "Always", "Adversity", "Allure", "Admit", "Amiable", "Annoy", "Aggressive", "Acquit", "Ambition", 
-                "Anxious", "Achieve", "Aid", "Amount", "Adroit", "Adequate", "Alteration", "Ambiance", "Allow", 
-                "Amicable", "Astonishing", "Ambitious", "Accord", "Abode", "Accurate", "Away", "Arrive", "Angry", 
-                "Authentic", "Abandon", "Add", "Answer", "Alike", "Abstraction", "Ask", "Adamant", "Appreciation", 
-                "Agree", "Approve", "Baffle", "Belligerent", "Benevolent", "Bias", "Brevity", "Bizarre", "Banal", 
-                "Barren", "Blatant", "Bemoan", "Beneath", "Belittle", "Bewilder", "Brazen", "Bountiful", "Berate", 
-                "Behemoth", "Beneficial", "Blissful", "Burgeon", "Banish", "Bypass", "Blithe", "Brisk", "Brood", 
-                "Brawl", "Bungle", "Befuddle", "Bolster", "Beguile", "Bask", "Bewildered", "Bristle", "Cacophony", 
-                "Callous", "Candid", "Capitulate", "Catalyst", "Caution", "Cerebral", "Charismatic", "Coalesce", 
-                "Coherent", "Colossal", "Complacent", "Concede", "Conducive", "Conundrum", "Cordial", "Corroborate", 
-                "Credible", "Cryptic", "Culminate", "Cumbersome", "Cynical", "Concur", "Constrict", "Contentious", 
-                "Copious", "Corrode", "Curtail", "Convoluted", "Conspicuous", "Consume", "Commence", "Collaborate", 
-                "Chronicle", "Circumvent", "Connoisseur", "Composure", "Consensus", "Congenial", "Contrive", 
-                "Constitute", "Dazzling", "Deceive", "Decipher", "Deficient", "Delicate", "Deter", "Deviate", 
-                "Diligent", "Diminish", "Discern", "Discreet", "Disperse", "Distinct", "Diverse", "Dominate", 
-                "Durable", "Dynamic", "Dwell", "Dwindle", "Eager", "Elaborate", "Embrace", "Empathy", "Endeavor", 
-                "Enrich", "Enhance", "Enthusiastic", "Ephemeral", "Eradicate", "Erratic", "Exemplify", "Exuberant", 
-                "Elusive", "Eloquent", "Eminent", "Empower", "Encompass", "Endorse", "Entice", "Esteem", "Evolve", 
-                "Exceed", "Exquisite", "Exemplary", "Explicit", "Expose", "Extend", "Elude", "Endure", "Exasperate", 
-                "Eccentric", "Elicit", "Elongate", "Enlist", "Facilitate", "Formidable", "Flourish", "Fickle", 
-                "Frugal", "Fathom", "Foster", "Fluctuate", "Fortify", "Foresee", "Fallacious", "Frivolous", "Facade", 
-                "Fervent", "Foremost", "Flabbergasted", "Fiasco", "Flawless", "Futile", "Formulate", "Fundamental", 
-                "Fluctuation", "Feasible", "Fervid", "Facet", "Fanatic", "Flimsy", "Frenetic", "Fervor", "Forebode", 
-                "Felicity", "Forsake", "Fracture", "Generous", "Grateful", "Gargantuan", "Gauge", "Gaze", "Glance", 
-                "Gruesome", "Gregarious", "Genuine", "Grasp", "Grumble", "Garner", "Gleam", "Grapple", "Gallant", 
-                "Gallivant", "Glimpse", "Grind", "Gusto", "Guileless", "Gravy", "Glorious", "Gloom", "Gravitate", 
-                "Gamble", "Garrison", "Glitter", "Grating", "Glutton", "Garish", "Gist", "Grueling", "Harmony", 
-                "Halt", "Hasty", "Hinder", "Hospitable", "Humble", "Humiliate", "Hybrid", "Hesitate", "Hostile", 
-                "Hearty", "Hinderance", "Hover", "Heritage", "Heighten", "Homogeneous", "Hardship", "Haphazard", 
-                "Homely", "Hail", "Harmonize", "Harass", "Hypothesize", "Homage", "Hardworking", "Hibernate", 
-                "Haughty", "Humorous", "Hone", "Hereditary", "Hostility", "Humidity", "Hamper", "Hallmark", "Hue", 
-                "Halcyon", "Harbinger", "Havoc", "Illuminate", "Ingenious", "Inquire", "Integrate", "Inherent", 
-                "Insight", "Incite", "Inevitable", "Intrepid", "Incessant", "Incognito", "Inclusive", "Incapacitate", 
-                "Indifferent", "Infallible", "Inhibit", "Inquisitive", "Inspire", "Invaluable", "Invigorate", 
-                "Invariably", "Invoke", "Irresistible", "Impede", "Inclination", "Intuition", "Infuse", "Incarcerate", 
-                "Inscribe", "Instigate", "Incisive", "Inconspicuous", "Incredulous", "Jeopardy", "Jovial", "Juxtapose", 
-                "Jargon", "Judicious", "Jolt", "Jubilant", "Juxtaposition", "Justify", "Jaded", "Jeer", "Jocular", 
-                "Judgemental", "Jiffy", "Jittery", "Jinx", "Juggle", "Joviality", "Jovially", "Jeopardize", "Keen", 
-                "Kin", "Keenly", "Kudos", "Keystones", "Kindred", "Kinetic", "Knead", "Kindle", "Knack", "Knotty", 
-                "Kernel", "Kith", "Kowtow", "Kneel", "Kept", "Kinfolk", "Knowledge", "Kettle", "Kneecap", "Lament", 
-                "Lucid", "Lavish", "Loathe", "Linger", "Laudable", "Legacy", "Lenient", "Livid", "Luminous", 
-                "Lethargic", "Loquacious", "Lurk", "Lamentable", "Levitate", "Labyrinth", "Lethal", "Liable", 
-                "Ludicrous", "Languish", "Lofty", "Lucrative", "Languid", "Laud", "Legitimate", "Magnify", "Mitigate", 
-                "Meticulous", "Mundane", "Modify", "Manifest", "Migrate", "Mandatory", "Malicious", "Meritorious", 
-                "Munificent", "Melancholy", "Maverick", "Malleable", "Magnanimous", "Malfunction", "Mirthful", 
-                "Morose", "Magnitude", "Meander", "Miserly", "Monotonous", "Navigate", "Negate", "Neglect", "Nourish", 
-                "Notorious", "Necessitate", "Notable", "Nominate", "Negligible", "Noteworthy", "Nurturing", "Novelty", 
-                "Nostalgia", "Notion", "Nuanced", "Nimble", "Nullify", "Nifty", "Nascent", "Objective", "Obligation", 
-                "Observe", "Obtain", "Occasion", "Occur", "Odd", "Omit", "Ongoing", "Option", "Overcome", "Owe", 
-                "Obsolete", "Outrage", "Oversee", "Overwhelm", "Overtake", "Overview", "Oppose", "Perceive", "Ponder", 
-                "Profound", "Prolific", "Persuade", "Prevail", "Persevere", "Plausible", "Prudent", "Paradox", 
-                "Pensive", "Plentiful", "Pragmatic", "Pivotal", "Precarious", "Pinnacle", "Placid", "Perilous", 
-                "Pristine", "Penchant", "Pungent", "Prodigy", "Proximity", "Paragon", "Paramount", "Patronize", 
-                "Peripheral", "Prevalent", "Prominent", "Quaint", "Quandary", "Quash", "Quell", "Quench", "Query", 
-                "Quibble", "Quiescent", "Quirk", "Quiver", "Quota", "Quotidian", "Quizzical", "Quip", "Qualm", 
-                "Radiant", "Resilient", "Reluctant", "Robust", "Rationale", "Revere", "Repudiate", "Rendezvous", 
-                "Relinquish", "Redundant", "Rigorous", "Resplendent", "Replenish", "Reclusive", "Ramification", 
-                "Rapture", "Reckless", "Rectify", "Recapitulate", "Reciprocal", "Replicate", "Resonate", "Rejuvenate", 
-                "Sage", "Scrutinize", "Serene", "Sincere", "Skeptical", "Subtle", "Suppress", "Solemn", "Strenuous", 
-                "Sanctuary", "Sublime", "Surpass", "Sporadic", "Substantiate", "Serendipity", "Stagnant", "Synchronize", 
-                "Savor", "Surrogate", "Supple", "Salient", "Tenacious", "Tremendous", "Thrive", "Tolerate", 
-                "Transparent", "Tenure", "Transition", "Tactful", "Tangible", "Tedious", "Ubiquitous", "Unveil", 
-                "Utilize", "Unique", "Undermine", "Ubiquity", "Upheaval", "Underestimate", "Vibrant", "Versatile", 
-                "Validate", "Vigorous", "Venture", "Vital", "Volatile", "Vogue", "Widespread", "Witty", "Wrath", 
-                "Wholesome", "Wane", "Withstand", "Wary", "Wistful", "Xenophobia", "Xerox", "Xenial", "Xanadu", 
-                "Xerophyte", "Yearn", "Yield", "Yonder", "Yearning", "Yielding", "Yarn", "Yieldless", "Yowl", "Yawn", 
-                "Yoke", "Yore", "Yell", "Yank", "Zeal", "Zest", "Zenith", "Zany", "Zealous", "Zephyr", "Zestful", 
-                "Zilch", "Zing", "Zigzag", "Zeppelin", "Zero", "Zircon", "Zesty", "administration", "affect", 
-                "analysis", "approach", "appropriate", "area", "aspects", "assistance", "assume", "authority", 
-                "available", "benefit", "category", "community", "complex", "concerning", "conclusion", "conduct", 
-                "consequence", "consistent", "constitutional", "consumer", "context", "create", "culture", "data", 
-                "definition", "destructive", "discovery", "distinction", "economic", "element", "environment", "error", 
-                "equation", "establish", "estimate", "evaluation", "evidence", "factors", "feature", "final", 
-                "financial", "focus", "function", "global", "identify", "impact", "income", "indicate", "individual", 
-                "injury", "investment", "involve", "issue", "item", "legal", "maintenance", "major", "media", "method", 
-                "modern", "normal", "restrict", "participation", "percent", "period", "policy", "positive", "potential", 
-                "previous", "primary", "process", "purchase", "range", "recent", "region", "regulations", "relevant", 
-                "require", "research", "resident", "resources", "response", "sector", "security", "significant", 
-                "similar", "solution", "source", "specific", "strategy", "structure", "theory", "threat", "traditional", 
-                "transport", "access", "activity", "alter", "alternative", "amendment", "annual", "apparent", 
-                "application", "approximate", "artificial", "attitude", "aware", "capacity", "challenge", "circumstance", 
-                "comment", "communication", "concentration", "conflict", "considerable", "constant", "contact", 
-                "contribution", "core", "correspond", "criteria", "cycle", "debate", "decline", "deduction", 
-                "demonstrate", "despite", "dimension", "domestic", "dominant", "emerge", "emphasis", "enable", "energy", 
-                "enforcement", "ensure", "equivalent", "evolution", "exclude", "exposure", "external", "funds", 
-                "generation", "hence", "hypothesis", "illustrate", "image", "immigration", "implement", "initial", 
-                "integration", "layer", "legislation", "location", "logic", "marginal", "maximum", "mechanism", 
-                "medical", "mental", "modification", "negative", "network", "occupation", "orientation", "outcome", 
-                "overall", "parallel", "perspective", "philosophy", "precise", "predict", "project", "promote", 
-                "proportion", "psychology", "reaction", "remove", "resolution", "specify", "stability", "subsequent", 
-                "sufficient", "summary", "supply", "task", "technique", "technology", "trend", "version", "volume", 
-                "abstract", "acknowledge", "adaptation", "adjust", "adult", "advocate", "attribute", "author", "brief", 
-                "capable", "civil", "classical", "comprehensive", "contrary", "coordination", "couple", "decades", 
-                "definite", "deny", "discrimination", "disposal", "diversity", "domain", "eliminate", "equipment", 
-                "estate", "expansion", "expert", "fees", "flexibility", "foundation", "gender", "grade", "guarantee", 
-                "identical", "ignorance", "imply", "incentive", "incorporated", "index", "infrastructure", "inhibition", 
-                "innovation", "instance", "instruction", "intelligence", "interact", "interval", "investigation", 
-                "isolated", "justification", "lecture", "liberal", "migration", "minimum", "monitoring", "motivation", 
-                "neutral", "obvious", "overseas", "parameter", "phenomenon", "prohibit", "publish", "pursue", 
-                "rational", "recovery", "reject", "release", "reveal", "role", "satisfy", "scope", "sequence", 
-                "simulation", "solely", "somewhat", "status", "stress", "style", "substitution", "successive", "survey", 
-                "survive", "sustainable", "symbolic", "topic", "trace", "transformation", "ultimate", "underline", 
-                "utility", "visible", "accommodation", "accompany", "advance", "analogous", "anticipate", "appendix", 
-                "appreciate", "arbitrary", "assure", "automatically", "behalf", "cease", "chart", "clarity", "coherence", 
-                "coincide", "commodity", "confirm", "contemporary", "contradict", "controversy", "conversely", 
-                "cooperate", "crucial", "currency", "denote", "detect", "deviation", "device", "devote", 
-                "differentiation", "displacement", "display", "distorted", "dramatic", "duration", "ethical", 
-                "eventually", "exhibit", "exploitation", "extract", "federal", "fluctuations", "format", "founded", 
-                "guidelines", "highlighted", "implicit", "incompatible", "induce", "inevitably", "intensity", 
-                "intermediate", "internal", "manual", "mature", "medium", "military", "mutual", "norms", "nuclear", 
-                "paragraph", "passive", "portion", "precede", "predominantly", "priority", "prospect", "qualitative", 
-                "radical", "random", "reinforce", "relax", "revision", "revolution", "scenario", "schedule", "sphere", 
-                "suspended", "target", "team", "temporary", "tension", "theme", "thereby", "uniform", "validity", 
-                "vehicle", "via", "violation", "virtual", "vision", "abandon", "abate", "abrupt", "accumulation", 
-                "acquisition", "adjacent", "aggregate", "albeit", "ambiguous", "ancestor", "assembly", "assessment", 
-                "assign", "attain", "avert", "coal", "collapse", "colleagues", "combat", "commit", "compile", 
-                "complement", "comprise", "conceive", "concurrent", "confined", "conform", "confuse", "consciousness", 
-                "convinced", "creditable", "depression", "derive", "distribution", "divergent", "doubt", "drastic", 
-                "election", "empirical", "encounter", "enormous", "entirely", "entrepreneur", "erosion", "forbearance", 
-                "forthcoming", "frustration", "goal", "homogenous", "indulge", "infer", "initiative", "inspection", 
-                "integral", "intervention", "intrinsic", "likewise", "link", "manage", "manipulation", "merge", 
-                "nonetheless", "notwithstanding", "overlap", "persistent", "pose", "possess", "preliminary", 
-                "presumption", "ratio", "refine", "relate", "restore", "restraint", "rigid", "route", "sacrifice", 
-                "scale", "so-called", "straightforward", "subordinate", "supplementary", "sympathy", "termination", 
-                "transmission", "undergo", "unify", "voluntary", "whereby"
-            ];
+            const ieltsWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].ielts);
+            
+            // GRE words list for random word generation
+            const greWords = Object.keys(wordDatabase).filter(word => wordDatabase[word].gre);
 
             // Initialize the app
             updateSavedWordsList();
@@ -904,20 +917,34 @@
                 window.open('GRE.pdf', '_blank');
             });
 
-            // Random word button functionality - uses IELTS words from provided list
+            // IELTS PDF button functionality
+            ieltsPdfButton.addEventListener('click', () => {
+                window.open('IELTS.pdf', '_blank');
+            });
+
+            // Logo click to refresh page
+            logo.addEventListener('click', () => {
+                location.reload();
+            });
+
+            // Random word button functionality
             randomWordBtn.addEventListener('click', () => {
                 fetchRandomWord();
             });
 
-            // Function to fetch a random word from IELTS words list
+            // Function to fetch a random word from IELTS or GRE words list
             function fetchRandomWord() {
-                if (ieltsWords.length === 0) {
-                    showError('No IELTS words available');
+                // 50% chance for IELTS word, 50% chance for GRE word
+                const isIELTS = Math.random() > 0.5;
+                const wordList = isIELTS ? ieltsWords : greWords;
+                
+                if (wordList.length === 0) {
+                    showError('No words available');
                     return;
                 }
                 
-                const randomIndex = Math.floor(Math.random() * ieltsWords.length);
-                const randomWord = ieltsWords[randomIndex];
+                const randomIndex = Math.floor(Math.random() * wordList.length);
+                const randomWord = wordList[randomIndex];
                 
                 wordInput.value = randomWord;
                 currentWord = randomWord;
@@ -1000,36 +1027,18 @@
                 }
             }
 
-            // Function to fetch word frequency
-            async function fetchWordFrequency(word) {
-                try {
-                    const response = await fetch(WORD_FREQUENCY_API, {
-                        method: 'POST',
-                        headers: {
-                            'X-RapidAPI-Key': WORD_FREQUENCY_API_KEY,
-                            'X-RapidAPI-Host': 'word-frequency.p.rapidapi.com',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ text: word })
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch word frequency');
-                    }
-                    
-                    const data = await response.json();
-                    return data;
-                } catch (error) {
-                    console.error('Error fetching word frequency:', error);
-                    return null;
-                }
-            }
-
             // Function to display word data from multiple sources
             async function displayWordData(freeDictionaryData, mwDictionaryData, mwThesaurusData) {
                 // Set word title
                 if (freeDictionaryData && freeDictionaryData[0]) {
                     wordTitle.textContent = freeDictionaryData[0].word;
+                    
+                    // Set Bangla meaning if available
+                    if (wordDatabase[freeDictionaryData[0].word.toLowerCase()]) {
+                        banglaMeaning.textContent = wordDatabase[freeDictionaryData[0].word.toLowerCase()].bangla;
+                    } else {
+                        banglaMeaning.textContent = "";
+                    }
                     
                     // Get phonetic text from Free Dictionary
                     if (freeDictionaryData[0].phonetics && freeDictionaryData[0].phonetics.length > 0) {
@@ -1056,6 +1065,13 @@
                 } else if (mwDictionaryData && mwDictionaryData[0]) {
                     wordTitle.textContent = mwDictionaryData[0].meta.id;
                     
+                    // Set Bangla meaning if available
+                    if (wordDatabase[mwDictionaryData[0].meta.id.toLowerCase()]) {
+                        banglaMeaning.textContent = wordDatabase[mwDictionaryData[0].meta.id.toLowerCase()].bangla;
+                    } else {
+                        banglaMeaning.textContent = "";
+                    }
+                    
                     // Get phonetic from Merriam-Webster
                     if (mwDictionaryData[0].hwi && mwDictionaryData[0].hwi.prs && mwDictionaryData[0].hwi.prs[0]) {
                         phonetic.textContent = `/${mwDictionaryData[0].hwi.prs[0].mw}/`;
@@ -1079,8 +1095,8 @@
                 mwDefinitionsList.innerHTML = '';
                 fdDefinitionsList.innerHTML = '';
                 examplesList.innerHTML = '';
-                synonymsTags.innerHTML = '';
-                antonymsTags.innerHTML = '';
+                synonymsList.innerHTML = '';
+                antonymsList.innerHTML = '';
                 usageNotes.innerHTML = '';
                 
                 // Process Merriam-Webster definitions
@@ -1135,12 +1151,6 @@
                                         example.className = 'example';
                                         example.textContent = def.example;
                                         definitionItem.appendChild(example);
-                                        
-                                        // Add to examples list
-                                        const exampleItem = document.createElement('li');
-                                        exampleItem.className = 'example-item';
-                                        exampleItem.textContent = def.example;
-                                        examplesList.appendChild(exampleItem);
                                     }
                                     
                                     fdDefinitionsList.appendChild(definitionItem);
@@ -1154,25 +1164,44 @@
                     fdDefinitionsList.innerHTML = '<li class="definition-item">No Free Dictionary definitions available</li>';
                 }
                 
-                // Process examples
-                let hasExamples = examplesList.children.length > 0;
+                // Process examples (limit to 5)
+                let exampleCount = 0;
                 
-                // Add examples from Merriam-Webster if available
-                if (mwDictionaryData && mwDictionaryData[0] && mwDictionaryData[0].def) {
+                // Add examples from Free Dictionary
+                if (freeDictionaryData && freeDictionaryData[0] && freeDictionaryData[0].meanings) {
+                    for (const meaning of freeDictionaryData[0].meanings) {
+                        if (meaning.definitions) {
+                            for (const def of meaning.definitions) {
+                                if (def.example && exampleCount < 5) {
+                                    const exampleItem = document.createElement('li');
+                                    exampleItem.className = 'example-item';
+                                    exampleItem.textContent = def.example;
+                                    examplesList.appendChild(exampleItem);
+                                    exampleCount++;
+                                }
+                                if (exampleCount >= 5) break;
+                            }
+                        }
+                        if (exampleCount >= 5) break;
+                    }
+                }
+                
+                // Add examples from Merriam-Webster if we still need more
+                if (exampleCount < 5 && mwDictionaryData && mwDictionaryData[0] && mwDictionaryData[0].def) {
                     mwDictionaryData[0].def.forEach(def => {
                         if (def.sseq) {
                             def.sseq.forEach(sseqArray => {
                                 sseqArray.forEach(sseqItem => {
                                     if (sseqItem[0] === 'sense' && sseqItem[1].dt) {
                                         sseqItem[1].dt.forEach(dtItem => {
-                                            if (dtItem[0] === 'vis' && dtItem[1]) {
+                                            if (dtItem[0] === 'vis' && dtItem[1] && exampleCount < 5) {
                                                 dtItem[1].forEach(visExample => {
-                                                    if (visExample.t) {
+                                                    if (visExample.t && exampleCount < 5) {
                                                         const exampleItem = document.createElement('li');
                                                         exampleItem.className = 'example-item';
                                                         exampleItem.textContent = visExample.t;
                                                         examplesList.appendChild(exampleItem);
-                                                        hasExamples = true;
+                                                        exampleCount++;
                                                     }
                                                 });
                                             }
@@ -1184,15 +1213,15 @@
                     });
                 }
                 
-                if (!hasExamples) {
+                if (exampleCount === 0) {
                     examplesSection.style.display = 'none';
                 } else {
                     examplesSection.style.display = 'block';
                 }
                 
                 // Process synonyms and antonyms
-                synonymsTags.innerHTML = '';
-                antonymsTags.innerHTML = '';
+                synonymsList.innerHTML = '';
+                antonymsList.innerHTML = '';
                 
                 let hasSynonyms = false;
                 let hasAntonyms = false;
@@ -1205,41 +1234,22 @@
                     if (entry.meta && entry.meta.syns && entry.meta.syns.length > 0) {
                         const allSynonyms = entry.meta.syns.flat();
                         
-                        // Display all synonyms as tags
+                        // Display all synonyms
                         if (allSynonyms.length > 0) {
                             hasSynonyms = true;
                             
-                            // Process each synonym with frequency data
-                            const synonymPromises = allSynonyms.slice(0, 12).map(async (synonym) => {
-                                const frequencyData = await fetchWordFrequency(synonym);
-                                let frequency = 0;
-                                if (frequencyData && frequencyData.keywords && frequencyData.keywords[synonym]) {
-                                    frequency = frequencyData.keywords[synonym];
-                                }
-                                return { word: synonym, frequency };
-                            });
-                            
-                            const synonymsWithFrequency = await Promise.all(synonymPromises);
-                            
-                            // Sort by frequency (descending)
-                            synonymsWithFrequency.sort((a, b) => b.frequency - a.frequency);
-                            
-                            // Create tags for sorted synonyms
-                            synonymsWithFrequency.forEach(item => {
-                                const synonymTag = document.createElement('button');
-                                synonymTag.className = 'synonym-tag';
-                                synonymTag.textContent = item.word;
+                            // Create list items for synonyms
+                            allSynonyms.slice(0, 10).forEach(synonym => {
+                                const synonymItem = document.createElement('li');
+                                synonymItem.className = 'synonym-item';
+                                synonymItem.textContent = synonym;
                                 
-                                const frequencySpan = document.createElement('span');
-                                frequencySpan.className = 'frequency-indicator';
-                                frequencySpan.textContent = `${item.frequency.toFixed(2)}`;
-                                synonymTag.appendChild(frequencySpan);
-                                
-                                synonymTag.onclick = () => {
-                                    wordInput.value = item.word;
+                                synonymItem.onclick = () => {
+                                    wordInput.value = synonym;
                                     searchWord();
                                 };
-                                synonymsTags.appendChild(synonymTag);
+                                
+                                synonymsList.appendChild(synonymItem);
                             });
                         }
                     }
@@ -1248,41 +1258,22 @@
                     if (entry.meta && entry.meta.ants && entry.meta.ants.length > 0) {
                         const allAntonyms = entry.meta.ants.flat();
                         
-                        // Display all antonyms as tags
+                        // Display all antonyms
                         if (allAntonyms.length > 0) {
                             hasAntonyms = true;
                             
-                            // Process each antonym with frequency data
-                            const antonymPromises = allAntonyms.slice(0, 12).map(async (antonym) => {
-                                const frequencyData = await fetchWordFrequency(antonym);
-                                let frequency = 0;
-                                if (frequencyData && frequencyData.keywords && frequencyData.keywords[antonym]) {
-                                    frequency = frequencyData.keywords[antonym];
-                                }
-                                return { word: antonym, frequency };
-                            });
-                            
-                            const antonymsWithFrequency = await Promise.all(antonymPromises);
-                            
-                            // Sort by frequency (descending)
-                            antonymsWithFrequency.sort((a, b) => b.frequency - a.frequency);
-                            
-                            // Create tags for sorted antonyms
-                            antonymsWithFrequency.forEach(item => {
-                                const antonymTag = document.createElement('button');
-                                antonymTag.className = 'antonym-tag';
-                                antonymTag.textContent = item.word;
+                            // Create list items for antonyms
+                            allAntonyms.slice(0, 10).forEach(antonym => {
+                                const antonymItem = document.createElement('li');
+                                antonymItem.className = 'antonym-item';
+                                antonymItem.textContent = antonym;
                                 
-                                const frequencySpan = document.createElement('span');
-                                frequencySpan.className = 'frequency-indicator';
-                                frequencySpan.textContent = `${item.frequency.toFixed(2)}`;
-                                antonymTag.appendChild(frequencySpan);
-                                
-                                antonymTag.onclick = () => {
-                                    wordInput.value = item.word;
+                                antonymItem.onclick = () => {
+                                    wordInput.value = antonym;
                                     searchWord();
                                 };
-                                antonymsTags.appendChild(antonymTag);
+                                
+                                antonymsList.appendChild(antonymItem);
                             });
                         }
                     }
@@ -1299,37 +1290,18 @@
                         if (!hasSynonyms && synonyms && synonyms.length > 0) {
                             hasSynonyms = true;
                             
-                            // Process each synonym with frequency data
-                            const synonymPromises = synonyms.slice(0, 12).map(async (synonym) => {
-                                const frequencyData = await fetchWordFrequency(synonym);
-                                let frequency = 0;
-                                if (frequencyData && frequencyData.keywords && frequencyData.keywords[synonym]) {
-                                    frequency = frequencyData.keywords[synonym];
-                                }
-                                return { word: synonym, frequency };
-                            });
-                            
-                            const synonymsWithFrequency = await Promise.all(synonymPromises);
-                            
-                            // Sort by frequency (descending)
-                            synonymsWithFrequency.sort((a, b) => b.frequency - a.frequency);
-                            
-                            // Create tags for sorted synonyms
-                            synonymsWithFrequency.forEach(item => {
-                                const synonymTag = document.createElement('button');
-                                synonymTag.className = 'synonym-tag';
-                                synonymTag.textContent = item.word;
+                            // Create list items for synonyms
+                            synonyms.slice(0, 10).forEach(synonym => {
+                                const synonymItem = document.createElement('li');
+                                synonymItem.className = 'synonym-item';
+                                synonymItem.textContent = synonym;
                                 
-                                const frequencySpan = document.createElement('span');
-                                frequencySpan.className = 'frequency-indicator';
-                                frequencySpan.textContent = `${item.frequency.toFixed(2)}`;
-                                synonymTag.appendChild(frequencySpan);
-                                
-                                synonymTag.onclick = () => {
-                                    wordInput.value = item.word;
+                                synonymItem.onclick = () => {
+                                    wordInput.value = synonym;
                                     searchWord();
                                 };
-                                synonymsTags.appendChild(synonymTag);
+                                
+                                synonymsList.appendChild(synonymItem);
                             });
                         }
                         
@@ -1337,37 +1309,18 @@
                         if (!hasAntonyms && antonyms && antonyms.length > 0) {
                             hasAntonyms = true;
                             
-                            // Process each antonym with frequency data
-                            const antonymPromises = antonyms.slice(0, 12).map(async (antonym) => {
-                                const frequencyData = await fetchWordFrequency(antonym);
-                                let frequency = 0;
-                                if (frequencyData && frequencyData.keywords && frequencyData.keywords[antonym]) {
-                                    frequency = frequencyData.keywords[antonym];
-                                }
-                                return { word: antonym, frequency };
-                            });
-                            
-                            const antonymsWithFrequency = await Promise.all(antonymPromises);
-                            
-                            // Sort by frequency (descending)
-                            antonymsWithFrequency.sort((a, b) => b.frequency - a.frequency);
-                            
-                            // Create tags for sorted antonyms
-                            antonymsWithFrequency.forEach(item => {
-                                const antonymTag = document.createElement('button');
-                                antonymTag.className = 'antonym-tag';
-                                antonymTag.textContent = item.word;
+                            // Create list items for antonyms
+                            antonyms.slice(0, 10).forEach(antonym => {
+                                const antonymItem = document.createElement('li');
+                                antonymItem.className = 'antonym-item';
+                                antonymItem.textContent = antonym;
                                 
-                                const frequencySpan = document.createElement('span');
-                                frequencySpan.className = 'frequency-indicator';
-                                frequencySpan.textContent = `${item.frequency.toFixed(2)}`;
-                                antonymTag.appendChild(frequencySpan);
-                                
-                                antonymTag.onclick = () => {
-                                    wordInput.value = item.word;
+                                antonymItem.onclick = () => {
+                                    wordInput.value = antonym;
                                     searchWord();
                                 };
-                                antonymsTags.appendChild(antonymTag);
+                                
+                                antonymsList.appendChild(antonymItem);
                             });
                         }
                     }
@@ -1450,11 +1403,11 @@
             // Function to update save button state
             function updateSaveButtonState() {
                 if (savedWords.includes(currentWord)) {
-                    saveBtn.innerHTML = '<i class="fas fa-bookmark"></i> Word Saved';
-                    saveBtn.style.background = '#4CAF50';
+                    saveBtnHeader.classList.add('saved');
+                    saveBtnText.textContent = 'Word Saved';
                 } else {
-                    saveBtn.innerHTML = '<i class="fas fa-bookmark"></i> Save Word';
-                    saveBtn.style.background = '';
+                    saveBtnHeader.classList.remove('saved');
+                    saveBtnText.textContent = 'Save Word';
                 }
             }
 
@@ -1536,7 +1489,7 @@
                 }
             });
 
-            saveBtn.addEventListener('click', saveWord);
+            saveBtnHeader.addEventListener('click', saveWord);
         });
     </script>
 </body>
