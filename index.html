@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeepWords - Vocabulary Excellence</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+    <link rel="icon" type="image/x-icon" href="fav.png">
     <style>
         :root {
             --primary: #000000;
@@ -396,6 +396,10 @@
             box-shadow: var(--shadow);
         }
 
+        .synonym-item b, .antonym-item b {
+            font-weight: 700;
+        }
+
         .definition-text {
             font-weight: 700;
             color: var(--primary);
@@ -682,7 +686,7 @@
     <div class="container">
         <header>
             <div class="logo-container" id="logo">
-                <img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>" alt="DeepWords Logo" class="logo-img">
+                <img src="fav.png" alt="DeepWords Logo" class="logo-img">
                 <div class="logo-text">DeepWords</div>
             </div>
             
@@ -715,9 +719,9 @@
         <div class="results-container" id="resultsContainer">
             <div class="word-header">
                 <div class="word-title-container">
-                    <h2 class="word-title" id="wordTitle">prosperity</h2>
-                    <span class="word-type ielts-type" id="wordType">IELTS</span>
-                    <div class="phonetic" id="phonetic">/prɒˈsper.ə.ti/</div>
+                    <h2 class="word-title" id="wordTitle"></h2>
+                    <span class="word-type ielts-type" id="wordType"></span>
+                    <div class="phonetic" id="phonetic"></div>
                     <div class="bangla-translation" id="banglaTranslation"></div>
                 </div>
                 <div class="header-right">
@@ -778,7 +782,7 @@
                         <div class="resource-card">
                             <h3>GRE Resources</h3>
                             <div class="resource-links">
-                                <a href="#" class="resource-link">
+                                <a href="GRE.pdf" class="resource-link" target="_blank">
                                     <i class="fas fa-external-link-alt"></i> GRE Vocabulary Guide
                                 </a>
                             </div>
@@ -806,7 +810,7 @@
 
     <footer>
         <div class="container">
-            <p>DeepWords Vocabulary App &copy; 2023 | All rights reserved</p>
+            <!-- Footer text removed as requested -->
         </div>
     </footer>
 
@@ -860,10 +864,17 @@
             updateSavedWordsList();
             loadBanglaData();
             
-            // Load Bangla data from JSON file (simulated)
+            // Load Bangla data from JSON file
             async function loadBanglaData() {
                 try {
-                    // Simulated Bangla data for demo
+                    const response = await fetch('bangla.json');
+                    if (!response.ok) {
+                        throw new Error('Failed to load Bangla translations');
+                    }
+                    banglaData = await response.json();
+                } catch (error) {
+                    console.warn('Error loading Bangla translations:', error);
+                    // Fallback data in case the JSON file fails to load
                     banglaData = {
                         'prosperity': 'সমৃদ্ধি',
                         'development': 'উন্নয়ন',
@@ -874,10 +885,13 @@
                         'abdicate': 'পরিত্যাগ করা',
                         'aberration': 'বিচ্যুতি',
                         'abeyance': 'অস্থায়ী বিরতি',
-                        'abject': 'নিকৃষ্ট'
+                        'abject': 'নিকৃষ্ট',
+                        'example': 'উদাহরণ',
+                        'vocabulary': 'শব্দভান্ডার',
+                        'language': 'ভাষা',
+                        'learning': 'শেখা',
+                        'education': 'শিক্ষা'
                     };
-                } catch (error) {
-                    console.warn('Error loading Bangla translations:', error);
                 }
             }
 
@@ -1094,6 +1108,26 @@
                     'abdicate': {
                         synonyms: ['renounce', 'resign', 'relinquish', 'abandon', 'surrender'],
                         antonyms: ['claim', 'maintain', 'usurp', 'hold', 'assume']
+                    },
+                    'example': {
+                        synonyms: ['sample', 'instance', 'illustration', 'specimen', 'case'],
+                        antonyms: ['exception', 'anomaly', 'deviation', 'irregularity', 'difference']
+                    },
+                    'vocabulary': {
+                        synonyms: ['lexicon', 'terminology', 'dictionary', 'glossary', 'wordlist'],
+                        antonyms: ['silence', 'inarticulateness', 'muteness', 'speechlessness', 'quiet']
+                    },
+                    'language': {
+                        synonyms: ['tongue', 'speech', 'dialect', 'vernacular', 'jargon'],
+                        antonyms: ['silence', 'quiet', 'muteness', 'hush', 'stillness']
+                    },
+                    'learning': {
+                        synonyms: ['education', 'knowledge', 'erudition', 'scholarship', 'wisdom'],
+                        antonyms: ['ignorance', 'illiteracy', 'unawareness', 'nescience', 'unfamiliarity']
+                    },
+                    'education': {
+                        synonyms: ['schooling', 'training', 'instruction', 'teaching', 'tuition'],
+                        antonyms: ['ignorance', 'illiteracy', 'uneducation', 'unschooling', 'unlearning']
                     }
                 };
                 
@@ -1139,11 +1173,13 @@
                 if (isIELTS) {
                     wordType.textContent = "IELTS";
                     wordType.className = "word-type ielts-type";
+                    wordType.style.display = 'inline-block';
                 } else if (isGRE) {
                     wordType.textContent = "GRE";
                     wordType.className = "word-type gre-type";
+                    wordType.style.display = 'inline-block';
                 } else {
-                    wordType.textContent = "";
+                    wordType.style.display = 'none';
                 }
                 
                 // Display Bangla translation if available
@@ -1151,7 +1187,27 @@
                     banglaTranslation.textContent = `Bangla: ${banglaData[wordLower]}`;
                     banglaTranslation.style.display = 'block';
                 } else {
-                    banglaTranslation.style.display = 'none';
+                    // Try to find the word with different casing
+                    const foundKey = Object.keys(banglaData).find(key => 
+                        key.toLowerCase() === wordLower
+                    );
+                    
+                    if (foundKey) {
+                        banglaTranslation.textContent = `Bangla: ${banglaData[foundKey]}`;
+                        banglaTranslation.style.display = 'block';
+                    } else {
+                        // If no translation found, try to find a similar word
+                        const similarKey = Object.keys(banglaData).find(key => 
+                            key.toLowerCase().includes(wordLower) || wordLower.includes(key.toLowerCase())
+                        );
+                        
+                        if (similarKey) {
+                            banglaTranslation.textContent = `Bangla: ${banglaData[similarKey]}`;
+                            banglaTranslation.style.display = 'block';
+                        } else {
+                            banglaTranslation.style.display = 'none';
+                        }
+                    }
                 }
                 
                 // Get phonetic text
@@ -1247,7 +1303,8 @@
                         thesaurusData.synonyms.slice(0, 16).forEach(synonym => {
                             const synonymItem = document.createElement('li');
                             synonymItem.className = 'synonym-item';
-                            synonymItem.textContent = synonym;
+                            // Make the synonym bold
+                            synonymItem.innerHTML = `<b>${synonym}</b>`;
                             
                             synonymItem.onclick = () => {
                                 wordInput.value = synonym;
@@ -1265,7 +1322,8 @@
                         thesaurusData.antonyms.slice(0, 16).forEach(antonym => {
                             const antonymItem = document.createElement('li');
                             antonymItem.className = 'antonym-item';
-                            antonymItem.textContent = antonym;
+                            // Make the antonym bold
+                            antonymItem.innerHTML = `<b>${antonym}</b>`;
                             
                             antonymItem.onclick = () => {
                                 wordInput.value = antonym;
@@ -1376,9 +1434,8 @@
 
             saveBtnHeader.addEventListener('click', saveWord);
             
-            // Initialize with a sample word
-            wordInput.value = 'prosperity';
-            searchWord();
+            // Initialize with empty input (removed default word search)
+            wordInput.value = '';
         });
     </script>
 </body>
