@@ -96,7 +96,7 @@
 
         .search-input {
             width: 100%;
-            padding: 16px 20px;
+            padding: 16px 50px 16px 20px; /* Added right padding for search icon */
             font-size: 1.1rem;
             border: 1px solid var(--border);
             border-radius: 30px;
@@ -104,7 +104,6 @@
             color: var(--text);
             outline: none;
             transition: all 0.3s ease;
-            padding-right: 45px;
         }
 
         .search-input:focus {
@@ -131,7 +130,24 @@
             flex-shrink: 0;
         }
 
-        .search-btn:hover, .random-btn:hover, .history-btn:hover {
+        .search-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50px;
+            height: 100%;
+            margin: 0;
+            background: transparent;
+            color: var(--primary);
+            border-radius: 0 30px 30px 0;
+        }
+
+        .search-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--primary-light);
+        }
+
+        .random-btn:hover, .history-btn:hover {
             background: var(--primary-light);
         }
 
@@ -628,10 +644,10 @@
             .search-btn, .random-btn, .history-btn {
                 margin-top: 10px;
                 padding: 12px;
-                border-radius: 30px;
-                height: auto;
-                width: auto;
-                flex: 1;
+                border-radius: 50%;
+                height: 50px;
+                width: 50px;
+                flex: 0 0 auto;
             }
             
             .search-container {
@@ -660,14 +676,15 @@
         
         @media (max-width: 480px) {
             .header-search {
-                flex-direction: column;
+                flex-direction: row;
+                flex-wrap: nowrap;
             }
             
             .search-btn, .random-btn, .history-btn {
-                width: 100%;
-                margin-left: 0;
-                margin-top: 10px;
-                border-radius: 30px;
+                width: 50px;
+                margin-left: 10px;
+                margin-top: 0;
+                border-radius: 50%;
             }
             
             .synonyms-grid, .antonyms-grid {
@@ -687,10 +704,10 @@
             <div class="header-search">
                 <div class="search-input-wrapper">
                     <input type="text" class="search-input" placeholder="Enter a word to explore..." id="wordInput">
+                    <button class="search-btn" id="searchBtn" title="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
-                <button class="search-btn" id="searchBtn" title="Search">
-                    <i class="fas fa-search"></i>
-                </button>
                 <button class="random-btn" id="randomWordBtn" title="Random Word">
                     <i class="fas fa-random"></i>
                 </button>
@@ -1005,7 +1022,7 @@
                 "Skirmish", "Frustrate", "Hyperbole", "Demur", "Contrite", "Precedent", "Evince", "Curtail", "Indoctrinate", "Cessation",
                 "Retort", "Fabricate", "Nominal", "Emulate", "Ultimate", "Venom", "Passe", "Malnutrition", "Remiss", "Barometer",
                 "Asset", "Quell", "Insidious", "Disciple", "Pertinent", "Component", "Stigma", "Vulnerable", "Terminus", "Brawl",
-                "Sanction", "Affluent", "Monolithic", "Impugn", "Drudgery", "Absurd", "Antithesis", "Lethal", "Supine", "Itinerant",
+                "Sanction", "Affluent", "Monolithic", "Impugn", "Drudery", "Absurd", "Antithesis", "Lethal", "Supine", "Itinerant",
                 "Profuse", "Opprobrium", "Grotesque", "Fiat", "Site", "Frugal", "Humility", "Demeanor", "Contemptuous", "Pragmatic",
                 "Evanescent", "Cursory", "Indiscriminate", "Celerity", "Reticent", "Exultation", "Obliterate", "Enunciate", "Unwieldy", "Virile",
                 "Pensive", "Megalomania", "Repress", "Besmirch", "Austere", "Raucous", "Introspective", "Disseminate", "Pittance", "Confidant",
@@ -1073,7 +1090,7 @@
                 "abscond", "abyss", "accede", "accretion", "acerbic", "acidulous", "acumen", "adulterate", "adumbrate", "aerie",
                 "albeit", "am amalgamate", "amortize", "anachronism", "analgesia", "annul", "anodyne", "antedate", "antithetical", "apostle",
                 "apposite", "apprise", "approbation", "appropriate", "arrogate", "ascribe", "aseptic", "aspersions", "assail", "attenuate",
-                "attuned", "augury", "august", "axiom", "balloon", "baying", "beneficent", "bent", "bevy", "bifurcate",
+                "attuned", "augury", "august", "axiom", "balloon", "baying", "beneficent", "bent", "bevy", " bifurcate",
                 "bilk", "blight", "blithe", "bombastic", "bonhomie", "brandish", "brook", "bucolic", "burnish", "cardinal",
                 "catholic", "circumscribe", "circumspect", "clamber", "cloying", "coagulate", "coda", "coffer", "collude", "compendium",
                 "complaisant", "confound", "connote", "contraries", "contumacious", "convoke", "cosset", "curmudgeon", "declivity", "delimit",
@@ -1194,7 +1211,7 @@
                 "Vestigial", "Vignette", "Vilification", "Virtuoso", "Vital", "Vivacity", "Vivify", "Volubility", "Vulpine", "Waffle",
                 "Waft", "Wag", "Waive", "Wax", "Waylay", "Weighty", "Whelp", "Whittle", "Willful", "Wispy",
                 "Wry", "Xenophobe", "Zany", "Zealot", "wanting", "chastise", "impertinent", "maintain", "qualify", "artful",
-                "venality", "amenable", "anomalous", "intimate", "amalgam", "betray", "involved", "acrimony", "eponym", "enamor",
+                "venality", "amenable", "anomalous", "intimate", "am amalgam", "betray", "involved", "acrimony", "eponym", "enamor",
                 "bastardization", "splenetic", "ad adjudicate", "pillory", "misattribute", "cataclysm", "palaver", "exorbitant", "dissipate", "despot",
                 "simulacrum", "demonstrative", "exiguity", "ineluctable", "countermand", "raillery", "verisimilitude", "obtain", "infelicitous", "afford",
                 "stultify", "bridle", "coterminous", "enormity", "bromide", "gumption", "conflate", "desideratum", "autocratic", "self-effacing",
@@ -1205,7 +1222,7 @@
                 "improvident", "cosseted", "immure", "crestfallen", "hubris", "machinate", "encumber", "inimitable", "denouement", "crystallize",
                 "unpropitious", "irrefutable", "tempestuous", "hobble", "magisterial", "unflappable", "dispensation", "firebrand", "inviolate", "nonchalant",
                 "untenable", "intimation", "corollary", "recrimination", "unviable", "anemic", "epiphany", "provident", "recapitulation", "hail",
-                "prognostication", "flummox", "illustrious", "cede", "importuned", "enthrall", "semblance", "maunder", "litany", "insouciance",
+                "prognostication", "flummox", "illustrious", "cede", "importuned", "enthrall", "semblance", "mauder", "litany", "insouciance",
                 "bowdlerize", "derelict", "enjoin", "artlessness", "hagiographic", "quail", "portentous", "mordant", "approbatory", "unforthcoming",
                 "redoubtable", "apotheosis", "remonstrate", "parvenu", "sangfroid", "bilious", "jejune", "juggernaut", "phantasmagorical", "arch",
                 "imbroglio", "gerrymander", "jaundice", "benighted", "Pollyannaish", "palimpsest", "arriviste", " blinkered", "mulct", "schadenfreude",
@@ -1309,9 +1326,9 @@
                 }
             });
 
-            // GRE PDF button functionality
+            // GRE PDF button functionality - UPDATED
             grePdfButton.addEventListener('click', () => {
-                alert('GRE Vocabulary Guide would download here');
+                window.open('GRE.pdf', '_blank');
             });
 
             // IELTS Mentor button functionality
