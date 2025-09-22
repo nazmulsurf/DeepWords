@@ -26,6 +26,7 @@
             --synonym-color: #4CAF50;
             --antonym-color: #ff5252;
             --related-color: #ffc107;
+            --langeek-color: #ff6b35;
         }
 
         * {
@@ -56,11 +57,17 @@
             flex-wrap: wrap;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
         .logo-container {
             display: flex;
             align-items: center;
             cursor: pointer;
-            margin-right: 20px;
         }
 
         .logo-img {
@@ -77,6 +84,35 @@
             color: var(--primary);
             letter-spacing: 0.5px;
             white-space: nowrap;
+        }
+
+        .langeek-container {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+
+        .langeek-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--langeek-color);
+            font-weight: 600;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .langeek-link:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .langeek-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 8px;
+            border-radius: 5px;
+            object-fit: contain;
         }
 
         .header-search {
@@ -96,7 +132,7 @@
 
         .search-input {
             width: 100%;
-            padding: 16px 50px 16px 20px; /* Added right padding for search icon */
+            padding: 16px 50px 16px 20px;
             font-size: 1.1rem;
             border: 1px solid var(--border);
             border-radius: 30px;
@@ -111,7 +147,29 @@
             box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
         }
 
-        .search-btn, .random-btn, .history-btn {
+        .search-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50px;
+            height: 100%;
+            background: transparent;
+            color: var(--primary);
+            border: none;
+            border-radius: 0 30px 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--primary-light);
+        }
+
+        .random-btn, .history-btn {
             width: 50px;
             height: 50px;
             background: var(--primary);
@@ -128,23 +186,6 @@
             margin-left: 10px;
             box-shadow: var(--shadow);
             flex-shrink: 0;
-        }
-
-        .search-btn {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 50px;
-            height: 100%;
-            margin: 0;
-            background: transparent;
-            color: var(--primary);
-            border-radius: 0 30px 30px 0;
-        }
-
-        .search-btn:hover {
-            background: rgba(0, 0, 0, 0.1);
-            color: var(--primary-light);
         }
 
         .random-btn:hover, .history-btn:hover {
@@ -495,6 +536,7 @@
             cursor: pointer;
             z-index: 100;
             transition: all 0.3s ease;
+            display: none;
         }
 
         .floating-button:hover {
@@ -617,9 +659,9 @@
                 align-items: stretch;
             }
             
-            .logo-container {
+            .header-left {
                 margin-bottom: 15px;
-                margin-right: 0;
+                justify-content: center;
             }
             
             .header-search {
@@ -632,6 +674,10 @@
                 font-size: 1.8rem;
             }
             
+            .langeek-link {
+                font-size: 1rem;
+            }
+            
             .header-search {
                 flex-wrap: wrap;
             }
@@ -641,7 +687,7 @@
                 margin-bottom: 10px;
             }
             
-            .search-btn, .random-btn, .history-btn {
+            .random-btn, .history-btn {
                 margin-top: 10px;
                 padding: 12px;
                 border-radius: 50%;
@@ -675,12 +721,29 @@
         }
         
         @media (max-width: 480px) {
+            .header-left {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .langeek-container {
+                margin-left: 0;
+            }
+            
             .header-search {
                 flex-direction: row;
                 flex-wrap: nowrap;
             }
             
-            .search-btn, .random-btn, .history-btn {
+            .search-btn {
+                width: 50px;
+                margin-left: 0;
+                margin-top: 0;
+                border-radius: 0 30px 30px 0;
+            }
+            
+            .random-btn, .history-btn {
                 width: 50px;
                 margin-left: 10px;
                 margin-top: 0;
@@ -696,9 +759,18 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo-container" id="logo">
-                <img src="fav.png" alt="DeepWords Logo" class="logo-img">
-                <div class="logo-text">DeepWords</div>
+            <div class="header-left">
+                <div class="logo-container" id="logo">
+                    <img src="fav.png" alt="DeepWords Logo" class="logo-img">
+                    <div class="logo-text">DeepWords</div>
+                </div>
+                
+                <div class="langeek-container">
+                    <a href="https://dictionary.langeek.co/" target="_blank" class="langeek-link">
+                        <i class="fas fa-globe-americas langeek-icon"></i>
+                        <span>LanGeek</span>
+                    </a>
+                </div>
             </div>
             
             <div class="header-search">
