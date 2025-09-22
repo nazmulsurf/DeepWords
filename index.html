@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeepWords - Vocabulary Excellence</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+    <link rel="icon" type="image/x-icon" href="fav.png">
     <style>
         :root {
             --primary: #000000;
@@ -85,19 +85,16 @@
             flex: 1;
             max-width: 600px;
             position: relative;
-            gap: 10px;
         }
 
         .search-input-wrapper {
             position: relative;
             flex: 1;
-            display: flex;
-            align-items: center;
         }
 
         .search-input {
             width: 100%;
-            padding: 16px 50px 16px 20px;
+            padding: 16px 20px;
             font-size: 1.1rem;
             border: 1px solid var(--border);
             border-radius: 30px;
@@ -105,6 +102,7 @@
             color: var(--text);
             outline: none;
             transition: all 0.3s ease;
+            padding-right: 45px;
         }
 
         .search-input:focus {
@@ -112,18 +110,7 @@
             box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
         }
 
-        .search-btn-inside {
-            position: absolute;
-            right: 10px;
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 1.2rem;
-            padding: 5px;
-        }
-
-        .random-btn, .history-btn {
+        .search-btn, .random-btn, .history-btn {
             width: 50px;
             height: 50px;
             background: var(--primary);
@@ -137,11 +124,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-left: 10px;
             box-shadow: var(--shadow);
-            flex-shrink: 0;
         }
 
-        .random-btn:hover, .history-btn:hover {
+        .search-btn:hover, .random-btn:hover, .history-btn:hover {
             background: var(--primary-light);
         }
 
@@ -156,24 +143,6 @@
         .history-btn:disabled {
             background: #cccccc;
             cursor: not-allowed;
-        }
-
-        .search-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .search-container {
-            padding: 25px;
-            border-radius: 16px;
-        }
-
-        .input-group {
-            display: flex;
-            width: 100%;
-            gap: 10px;
         }
 
         .loading {
@@ -306,6 +275,7 @@
         .tab-container {
             display: flex;
             margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
             overflow-x: auto;
         }
 
@@ -313,14 +283,15 @@
             padding: 10px 20px;
             cursor: pointer;
             transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
             white-space: nowrap;
             color: var(--text-secondary);
             font-weight: 500;
         }
 
         .tab.active {
+            border-bottom: 3px solid var(--primary);
             color: var(--primary);
-            border-bottom: 2px solid var(--primary);
         }
 
         .tab-content {
@@ -339,14 +310,16 @@
             font-size: 1.3rem;
             color: var(--primary);
             margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
             display: inline-block;
         }
 
-        .definitions-list, .examples-list, .saved-words-list {
+        .definitions-list, .synonyms-list, .antonyms-list, .examples-list, .saved-words-list, .related-words-list {
             list-style-type: none;
         }
 
-        .definition-item, .example-item, .saved-word-item {
+        .definition-item, .synonym-item, .antonym-item, .example-item, .saved-word-item, .related-word-item {
             background: var(--light-bg);
             margin-bottom: 12px;
             padding: 16px;
@@ -359,26 +332,9 @@
             box-shadow: var(--shadow);
         }
 
-        .synonyms-list, .antonyms-list {
-            list-style-type: none;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .synonym-item, .antonym-item {
-            background: var(--light-bg);
-            padding: 10px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            text-align: center;
-            cursor: pointer;
-        }
-
         .synonym-item {
-            border: 1px solid var(--synonym-color);
-            color: var(--synonym-color);
+            border-left-color: var(--synonym-color);
+            cursor: pointer;
         }
 
         .synonym-item:hover {
@@ -387,12 +343,22 @@
         }
 
         .antonym-item {
-            border: 1px solid var(--antonym-color);
-            color: var(--antonym-color);
+            border-left-color: var(--antonym-color);
+            cursor: pointer;
         }
 
         .antonym-item:hover {
             background-color: rgba(255, 82, 82, 0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .related-word-item {
+            border-left-color: var(--related-color);
+            cursor: pointer;
+        }
+
+        .related-word-item:hover {
+            background-color: rgba(255, 193, 7, 0.1);
             box-shadow: var(--shadow);
         }
 
@@ -541,51 +507,29 @@
 
         /* Resources section styles */
         .resources-section {
+            text-align: center;
             padding: 30px;
         }
 
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .resource-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-        }
-
-        .resource-card h3 {
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        .resource-links {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .resource-link {
-            display: flex;
-            align-items: center;
-            padding: 12px 15px;
-            background: var(--light-card);
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--text);
-            transition: all 0.3s ease;
-        }
-
-        .resource-link:hover {
-            background: var(--primary);
+        .resources-button {
+            background: var(--gre-color);
             color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            margin: 10px;
         }
 
-        .resource-link i {
-            margin-right: 10px;
+        .resources-button:hover {
+            background: #e67e22;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         @media (max-width: 992px) {
@@ -602,10 +546,6 @@
             .header-search {
                 max-width: 100%;
             }
-            
-            .synonyms-list, .antonyms-list {
-                grid-template-columns: repeat(3, 1fr);
-            }
         }
 
         @media (max-width: 768px) {
@@ -614,7 +554,7 @@
             }
             
             .header-search {
-                flex-wrap: wrap;
+                flex-direction: column;
             }
             
             .search-input-wrapper {
@@ -622,10 +562,14 @@
                 margin-bottom: 10px;
             }
             
-            .random-btn, .history-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 0.9rem;
+            .search-btn, .random-btn, .history-btn {
+                width: 100%;
+                margin-left: 0;
+                margin-top: 10px;
+                padding: 12px;
+                border-radius: 30px;
+                height: auto;
+                width: auto;
             }
             
             .search-container {
@@ -646,35 +590,6 @@
                 overflow-x: auto;
                 white-space: nowrap;
             }
-            
-            .resources-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .synonyms-list, .antonyms-list {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header-search {
-                flex-direction: row;
-                flex-wrap: nowrap;
-            }
-            
-            .search-input-wrapper {
-                margin-bottom: 0;
-            }
-            
-            .random-btn, .history-btn {
-                width: 40px;
-                height: 40px;
-                flex-shrink: 0;
-            }
-            
-            .synonyms-list, .antonyms-list {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -682,17 +597,17 @@
     <div class="container">
         <header>
             <div class="logo-container" id="logo">
-                <img src="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>" alt="DeepWords Logo" class="logo-img">
+                <img src="fav.png" alt="DeepWords Logo" class="logo-img">
                 <div class="logo-text">DeepWords</div>
             </div>
             
             <div class="header-search">
                 <div class="search-input-wrapper">
                     <input type="text" class="search-input" placeholder="Enter a word to explore..." id="wordInput">
-                    <button class="search-btn-inside" id="searchBtnInside" title="Search">
-                        <i class="fas fa-search"></i>
-                    </button>
                 </div>
+                <button class="search-btn" id="searchBtn" title="Search">
+                    <i class="fas fa-search"></i>
+                </button>
                 <button class="random-btn" id="randomWordBtn" title="Random Word">
                     <i class="fas fa-random"></i>
                 </button>
@@ -740,6 +655,7 @@
             <div class="tab-content active" id="definitions-tab">
                 <!-- Free Dictionary Definitions -->
                 <div class="meaning-section">
+                    <h3 class="section-title">Definitions</h3>
                     <ul class="definitions-list" id="fdDefinitionsList">
                         <!-- FD Definitions will be inserted here -->
                     </ul>
@@ -760,10 +676,18 @@
                         <!-- Antonyms will be inserted here -->
                     </ul>
                 </div>
+
+                <div class="meaning-section" id="relatedWordsSection">
+                    <h3 class="section-title">Related Words</h3>
+                    <ul class="related-words-list" id="relatedWordsList">
+                        <!-- Related words will be inserted here -->
+                    </ul>
+                </div>
             </div>
 
             <div class="tab-content" id="saved-tab">
                 <div class="meaning-section">
+                    <h3 class="section-title">Saved Words</h3>
                     <div class="saved-words-container">
                         <ul class="saved-words-list" id="savedWordsList">
                             <!-- Saved words will be inserted here -->
@@ -774,27 +698,12 @@
 
             <div class="tab-content" id="resources-tab">
                 <div class="resources-section">
-                    <div class="resources-grid">
-                        <div class="resource-card">
-                            <h3>GRE Resources</h3>
-                            <div class="resource-links">
-                                <a href="#" class="resource-link">
-                                    <i class="fas fa-external-link-alt"></i> GRE Vocabulary Guide
-                                </a>
-                            </div>
-                        </div>
-                        <div class="resource-card">
-                            <h3>IELTS Resources</h3>
-                            <div class="resource-links">
-                                <a href="https://www.ielts-mentor.com/" class="resource-link" target="_blank">
-                                    <i class="fas fa-external-link-alt"></i> IELTS Mentor
-                                </a>
-                                <a href="https://ieltsonlinetests.com/ielts-exam-library?skill=listening" class="resource-link" target="_blank">
-                                    <i class="fas fa-external-link-alt"></i> IELTS Online Tests
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="resources-button" id="grePdfButton">
+                        <i class="fas fa-download"></i> GRE Vocabulary Guide
+                    </button>
+                    <button class="resources-button" id="ieltsPdfButton">
+                        <i class="fas fa-download"></i> IELTS Vocabulary Guide
+                    </button>
                 </div>
             </div>
         </div>
@@ -806,14 +715,14 @@
 
     <footer>
         <div class="container">
-            <p>DeepWords Vocabulary App &copy; 2023 | All rights reserved</p>
+            <p>&nbsp;</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
-            const searchBtnInside = document.getElementById('searchBtnInside');
+            const searchBtn = document.getElementById('searchBtn');
             const wordInput = document.getElementById('wordInput');
             const resultsContainer = document.getElementById('resultsContainer');
             const wordTitle = document.getElementById('wordTitle');
@@ -823,6 +732,7 @@
             const fdDefinitionsList = document.getElementById('fdDefinitionsList');
             const synonymsList = document.getElementById('synonymsList');
             const antonymsList = document.getElementById('antonymsList');
+            const relatedWordsList = document.getElementById('relatedWordsList');
             const saveBtnHeader = document.getElementById('saveBtnHeader');
             const saveBtnText = document.getElementById('saveBtnText');
             const loading = document.getElementById('loading');
@@ -834,9 +744,12 @@
             const randomWordBtn = document.getElementById('randomWordBtn');
             const savedWordsList = document.getElementById('savedWordsList');
             const audioBtn = document.getElementById('audioBtn');
+            const grePdfButton = document.getElementById('grePdfButton');
+            const ieltsPdfButton = document.getElementById('ieltsPdfButton');
             const logo = document.getElementById('logo');
             const synonymsSection = document.getElementById('synonymsSection');
             const antonymsSection = document.getElementById('antonymsSection');
+            const relatedWordsSection = document.getElementById('relatedWordsSection');
             const backBtn = document.getElementById('backBtn');
             const forwardBtn = document.getElementById('forwardBtn');
 
@@ -866,25 +779,45 @@
                 try {
                     // Load Bangla data
                     const banglaResponse = await fetch('bangla.json');
-                    const banglaJson = await banglaResponse.json();
-                    if (banglaJson && banglaJson.Words) {
-                        banglaJson.Words.forEach(item => {
-                            banglaData[item.Words.toLowerCase()] = item["Bangla Meaning"];
-                        });
+                    if (banglaResponse.ok) {
+                        const banglaJson = await banglaResponse.json();
+                        if (banglaJson && banglaJson.Words) {
+                            banglaJson.Words.forEach(item => {
+                                if (item.Words && item["Bangla Meaning"]) {
+                                    banglaData[item.Words.toLowerCase()] = item["Bangla Meaning"];
+                                }
+                            });
+                        }
+                    } else {
+                        console.warn('Bangla translation file not found');
                     }
                     
                     // Load IELTS words
                     const ieltsResponse = await fetch('IELTS.json');
-                    const ieltsJson = await ieltsResponse.json();
-                    if (ieltsJson && ieltsJson.Sheet1) {
-                        ieltsWords = ieltsJson.Sheet1.map(item => item.ILETS).filter(word => word);
+                    if (ieltsResponse.ok) {
+                        const ieltsJson = await ieltsResponse.json();
+                        if (ieltsJson && ieltsJson.Sheet1) {
+                            ieltsWords = ieltsJson.Sheet1
+                                .map(item => item.ILETS)
+                                .filter(word => word && typeof word === 'string')
+                                .map(word => word.toLowerCase());
+                        }
+                    } else {
+                        console.warn('IELTS words file not found');
                     }
                     
                     // Load GRE words
                     const greResponse = await fetch('GRE.json');
-                    const greJson = await greResponse.json();
-                    if (greJson && greJson.Sheet1) {
-                        greWords = greJson.Sheet1.map(item => item.ILETS).filter(word => word);
+                    if (greResponse.ok) {
+                        const greJson = await greResponse.json();
+                        if (greJson && greJson.Sheet1) {
+                            greWords = greJson.Sheet1
+                                .map(item => item.ILETS)
+                                .filter(word => word && typeof word === 'string')
+                                .map(word => word.toLowerCase());
+                        }
+                    } else {
+                        console.warn('GRE words file not found');
                     }
                     
                     loading.style.display = 'none';
@@ -931,6 +864,16 @@
                 } else {
                     scrollToTop.style.display = 'none';
                 }
+            });
+
+            // GRE PDF button functionality
+            grePdfButton.addEventListener('click', () => {
+                alert('GRE Vocabulary Guide would download here');
+            });
+
+            // IELTS PDF button functionality
+            ieltsPdfButton.addEventListener('click', () => {
+                alert('IELTS Vocabulary Guide would download here');
             });
 
             // Logo click to refresh page
@@ -1136,8 +1079,8 @@
                 const wordLower = wordText.toLowerCase();
                 
                 // Check if word exists in word lists
-                const isIELTS = ieltsWords.map(w => w.toLowerCase()).includes(wordLower);
-                const isGRE = greWords.map(w => w.toLowerCase()).includes(wordLower);
+                const isIELTS = ieltsWords.includes(wordLower);
+                const isGRE = greWords.includes(wordLower);
                 
                 if (isIELTS) {
                     wordType.textContent = "IELTS";
@@ -1202,6 +1145,7 @@
                 fdDefinitionsList.innerHTML = '';
                 synonymsList.innerHTML = '';
                 antonymsList.innerHTML = '';
+                relatedWordsList.innerHTML = '';
                 
                 // Process Free Dictionary definitions
                 if (freeDictionaryData && freeDictionaryData[0]) {
@@ -1285,6 +1229,7 @@
                 // Show/hide sections based on available data
                 synonymsSection.style.display = hasSynonyms ? 'block' : 'none';
                 antonymsSection.style.display = hasAntonyms ? 'block' : 'none';
+                relatedWordsSection.style.display = 'none'; // Hide related words section
                 
                 // Update save button state
                 updateSaveButtonState();
@@ -1371,7 +1316,7 @@
             }
 
             // Event listeners
-            searchBtnInside.addEventListener('click', searchWord);
+            searchBtn.addEventListener('click', searchWord);
             
             wordInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
