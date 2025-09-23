@@ -27,6 +27,7 @@
             --antonym-color: #ff5252;
             --related-color: #ffc107;
             --langeek-color: #ff6b35;
+            --typlingtest-color: #17a2b8;
         }
 
         * {
@@ -86,7 +87,7 @@
             white-space: nowrap;
         }
 
-        .langeek-container {
+        .langeek-container, .typlingtest-container {
             display: flex;
             align-items: center;
             margin-left: 15px;
@@ -101,8 +102,22 @@
             font-size: 2rem;
             transition: all 0.3s ease;
         }
+        
+        .typlingtest-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--typlingtest-color);
+            font-weight: 800;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+        }
 
         .langeek-link:hover {
+            color: var(--primary);
+        }
+        
+        .typlingtest-link:hover {
             color: var(--primary);
         }
 
@@ -339,6 +354,26 @@
 
         .save-btn-header.saved {
             background: var(--success);
+        }
+        
+        .translate-btn-header {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .translate-btn-header:hover {
+            background: #3367d6;
         }
 
         .tab-container {
@@ -665,7 +700,7 @@
                 font-size: 1.8rem;
             }
             
-            .langeek-link {
+            .langeek-link, .typlingtest-link {
                 font-size: 1rem;
             }
             
@@ -699,6 +734,8 @@
                 margin-top: 15px;
                 width: 100%;
                 justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
             }
             
             .tab-container {
@@ -709,6 +746,14 @@
             .synonyms-grid, .antonyms-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .translate-btn-header span {
+                display: none;
+            }
+            
+            .translate-btn-header {
+                padding: 12px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -718,7 +763,7 @@
                 gap: 10px;
             }
             
-            .langeek-container {
+            .langeek-container, .typlingtest-container {
                 margin-left: 0;
             }
             
@@ -759,6 +804,12 @@
                 <div class="langeek-container">
                     <a href="https://dictionary.langeek.co/" target="_blank" class="langeek-link">
                         <span>LanGeek</span>
+                    </a>
+                </div>
+                
+                <div class="typlingtest-container">
+                    <a href="https://www.typingtest.com/" target="_blank" class="typlingtest-link">
+                        <span>TyplingTest</span>
                     </a>
                 </div>
             </div>
@@ -803,6 +854,9 @@
                     </div>
                     <button class="save-btn-header" id="saveBtnHeader">
                         <i class="fas fa-bookmark"></i> <span id="saveBtnText">Save Word</span>
+                    </button>
+                    <button class="translate-btn-header" id="translateBtnHeader" title="Translate this word">
+                        <i class="fas fa-language"></i> <span>Translate</span>
                     </button>
                 </div>
             </div>
@@ -907,6 +961,7 @@
             const antonymsSection = document.getElementById('antonymsSection');
             const backBtn = document.getElementById('backBtn');
             const forwardBtn = document.getElementById('forwardBtn');
+            const translateBtnHeader = document.getElementById('translateBtnHeader');
 
             // API endpoints and keys
             const FREE_DICTIONARY_API = "https://api.dictionaryapi.dev/api/v2/entries/en/";
@@ -915,7 +970,7 @@
 
             // Full IELTS word list (from provided Excel file)
             const ieltsWords = [
-                "Active", "Antique", "Agility", "Attire", "Awful", "Assets", "Ample", "Amateur", "Assault", "Abroad",
+               "Active", "Antique", "Agility", "Attire", "Awful", "Assets", "Ample", "Amateur", "Assault", "Abroad",
                 "Always", "Adversity", "Allure", "Admit", "Amiable", "Annoy", "Aggressive", "Acquit", "Ambition", "Anxious",
                 "Achieve", "Aid", "Amount", "Adroit", "Adequate", "Alteration", "Ambiance", "Allow", "Amicable", "Astonishing",
                 "Ambitious", "Accord", "Abode", "Accurate", "Away", "Arrive", "Angry", "Authentic", "Abandon", "Add",
@@ -1348,6 +1403,18 @@
                 } catch (error) {
                     console.warn('Error loading Bangla translations:', error);
                 }
+            }
+
+            // Function to translate word
+            function translateWord() {
+                if (!currentWord) return;
+                
+                // Encode the word for URL safety 
+                const encodedWord = encodeURIComponent(currentWord);
+                const translateUrl = `https://translate.google.com/?sl=en&tl=bn&text=${encodedWord}&op=translate`;
+                
+                // Open Google Translate in a new tab
+                window.open(translateUrl, '_blank');
             }
 
             // Tab functionality
@@ -1889,6 +1956,8 @@
             });
 
             saveBtnHeader.addEventListener('click', saveWord);
+            
+            translateBtnHeader.addEventListener('click', translateWord);
         });
     </script>
 </body>
