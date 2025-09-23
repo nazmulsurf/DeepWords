@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepWords - Vocabulary Excellence</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="fav.png">
+    <style>
+        :root {
+            --primary: #000000;
+            --primary-light: #333333;
+            --secondary: #666666;
+            --light-bg: #ffffff;
+            --light-card: #f8f8f8;
+            --text: #000000;
+            --text-secondary: #444444;
+            --success: #4CAF50;
+            --error: #cc0000;
+            --border: #dddddd;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --mw-color: #2c5aa0;
+            --fd-color: #6a0dad;
+            --gre-color: #d35400;
+            --ielts-color: #1a73e8;
+            --synonym-color: #4CAF50;
+            --antonym-color: #ff5252;
+            --related-color: #ffc107;
+            --langeek-color: #ff6b35;
+            --typlingtest-color: #17a2b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            margin-right: 10px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .langeek-container, .typlingtest-container {
+            display: flex;
+            align-items: center;
+            margin-left: 15px;
+        }
+
+        .langeek-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--langeek-color);
+            font-weight: 800;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .typlingtest-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--typlingtest-color);
+            font-weight: 800;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .langeek-link:hover {
+            color: var(--primary);
+        }
+        
+        .typlingtest-link:hover {
+            color: var(--primary);
+        }
+
+        .header-search {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            max-width: 600px;
+            position: relative;
+            flex-wrap: nowrap;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 50px 16px 20px;
+            font-size: 1.1rem;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            background: var(--light-bg);
+            color: var(--text);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50px;
+            height: 100%;
+            background: transparent;
+            color: var(--primary);
+            border: none;
+            border-radius: 0 30px 30px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--primary-light);
+        }
+
+        .random-btn, .history-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
+        }
+
+        .random-btn:hover, .history-btn:hover {
+            background: var(--primary-light);
+        }
+
+        .random-btn {
+            background: var(--secondary);
+        }
+
+        .history-btn {
+            background: #5a6268;
+        }
+
+        .history-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .search-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            padding: 25px;
+            border-radius: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-container {
+            background: var(--light-card);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: none;
+            border: 1px solid var(--border);
+        }
+
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .word-title-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .word-title {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-right: 15px;
+        }
+
+        .word-type {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .ielts-type {
+            background-color: var(--ielts-color);
+            color: white;
+        }
+
+        .gre-type {
+            background-color: var(--gre-color);
+            color: white;
+        }
+
+        .phonetic {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 5px;
+        }
+
+        .bangla-translation {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .audio-btn {
+            background: var(--light-bg);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .audio-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .save-btn-header {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .save-btn-header:hover {
+            background: var(--primary-light);
+        }
+
+        .save-btn-header.saved {
+            background: var(--success);
+        }
+        
+        .translate-btn-header {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .translate-btn-header:hover {
+            background: #3367d6;
+        }
+
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .meaning-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+
+        .definitions-list, .synonyms-list, .antonyms-list, .examples-list, .saved-words-list, .related-words-list {
+            list-style-type: none;
+        }
+
+        .definition-item, .synonym-item, .antonym-item, .example-item, .saved-word-item, .related-word-item {
+            background: var(--light-bg);
+            margin-bottom: 12px;
+            padding: 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--primary);
+        }
+
+        .definition-item:hover, .example-item:hover, .saved-word-item:hover {
+            box-shadow: var(--shadow);
+        }
+
+        .synonym-item {
+            border-left-color: var(--synonym-color);
+            cursor: pointer;
+        }
+
+        .synonym-item:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .antonym-item {
+            border-left-color: var(--antonym-color);
+            cursor: pointer;
+        }
+
+        .antonym-item:hover {
+            background-color: rgba(255, 82, 82, 0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .related-word-item {
+            border-left-color: var(--related-color);
+            cursor: pointer;
+        }
+
+        .related-word-item:hover {
+            background-color: rgba(255, 193, 7, 0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .definition-text {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .example {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: 8px;
+            padding-left: 15px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .part-of-speech {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin: 18px 0 10px;
+            font-weight: 600;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: var(--error);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+            border-left: 4px solid var(--error);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .saved-words-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .saved-word-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .saved-word-text {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .saved-word-bangla {
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-left: 10px;
+            font-size: 0.9rem;
+        }
+
+        .remove-saved-word {
+            background: none;
+            border: none;
+            color: var(--error);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .remove-saved-word:hover {
+            color: #ff0000;
+            transform: scale(1.2);
+        }
+
+        .floating-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .floating-button:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .api-source {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .fd-highlight {
+            border-left-color: var(--fd-color);
+        }
+
+        .data-source-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .fd-tag {
+            background-color: var(--fd-color);
+            color: white;
+        }
+
+        .usage-section {
+            background-color: #f0f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4a90e2;
+        }
+
+        .usage-section h4 {
+            color: #4a90e2;
+            margin-bottom: 10px;
+        }
+
+        /* Resources section styles */
+        .resources-section {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .resources-button {
+            background: var(--gre-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .resources-button:hover {
+            background: #e67e22;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .ielts-resource-button {
+            background: var(--ielts-color);
+        }
+        
+        .ielts-resource-button:hover {
+            background: #0d5ccc;
+        }
+
+        /* Synonyms & Antonyms grid layout */
+        .synonyms-grid, .antonyms-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .synonym-grid-item, .antonym-grid-item {
+            background: var(--light-bg);
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .synonym-grid-item {
+            border: 1px solid var(--synonym-color);
+            color: var(--synonym-color);
+        }
+        
+        .antonym-grid-item {
+            border: 1px solid var(--antonym-color);
+            color: var(--antonym-color);
+        }
+        
+        .synonym-grid-item:hover {
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+        
+        .antonym-grid-item:hover {
+            background-color: rgba(255, 82, 82, 0.1);
+        }
+
+        @media (max-width: 992px) {
+            header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .header-left {
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+            
+            .header-search {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo-text {
+                font-size: 1.8rem;
+            }
+            
+            .langeek-link, .typlingtest-link {
+                font-size: 1rem;
+            }
+            
+            .header-search {
+                flex-wrap: wrap;
+            }
+            
+            .search-input-wrapper {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .random-btn, .history-btn {
+                margin-top: 10px;
+                padding: 12px;
+                border-radius: 50%;
+                height: 50px;
+                width: 50px;
+                flex: 0 0 auto;
+            }
+            
+            .search-container {
+                padding: 20px;
+            }
+            
+            .word-header {
+                flex-direction: column;
+            }
+            
+            .header-right {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .tab-container {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .synonyms-grid, .antonyms-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .translate-btn-header span {
+                display: none;
+            }
+            
+            .translate-btn-header {
+                padding: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-left {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .langeek-container, .typlingtest-container {
+                margin-left: 0;
+            }
+            
+            .header-search {
+                flex-direction: row;
+                flex-wrap: nowrap;
+            }
+            
+            .search-btn {
+                width: 50px;
+                margin-left: 0;
+                margin-top: 0;
+                border-radius: 0 30px 30px 0;
+            }
+            
+            .random-btn, .history-btn {
+                width: 50px;
+                margin-left: 10px;
+                margin-top: 0;
+                border-radius: 50%;
+            }
+            
+            .synonyms-grid, .antonyms-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-left">
+                <div class="logo-container" id="logo">
+                    <img src="fav.png" alt="DeepWords Logo" class="logo-img">
+                    <div class="logo-text">DeepWords</div>
+                </div>
+                
+                <div class="langeek-container">
+                    <a href="https://dictionary.langeek.co/" target="_blank" class="langeek-link">
+                        <span>LanGeek</span>
+                    </a>
+                </div>
+                
+                <div class="typlingtest-container">
+                    <a href="https://www.typingtest.com/" target="_blank" class="typlingtest-link">
+                        <span>TyplingTest</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="header-search">
+                <div class="search-input-wrapper">
+                    <input type="text" class="search-input" placeholder="Enter a word to explore..." id="wordInput">
+                    <button class="search-btn" id="searchBtn" title="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <button class="random-btn" id="randomWordBtn" title="Random Word">
+                    <i class="fas fa-random"></i>
+                </button>
+                <button class="history-btn" id="backBtn" title="Previous Word" disabled>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <button class="history-btn" id="forwardBtn" title="Next Word" disabled>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner"></i> Fetching word data...
+        </div>
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-circle"></i> <span id="errorText">Word not found. Please try another word.</span>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+            <div class="word-header">
+                <div class="word-title-container">
+                    <h2 class="word-title" id="wordTitle">prosperity</h2>
+                    <span class="word-type ielts-type" id="wordType">IELTS</span>
+                    <div class="phonetic" id="phonetic">/prɒˈsper.ə.ti/</div>
+                    <div class="bangla-translation" id="banglaTranslation"></div>
+                </div>
+                <div class="header-right">
+                    <div class="audio-btn" id="audioBtn">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <button class="save-btn-header" id="saveBtnHeader">
+                        <i class="fas fa-bookmark"></i> <span id="saveBtnText">Save Word</span>
+                    </button>
+                    <button class="translate-btn-header" id="translateBtnHeader" title="Translate this word">
+                        <i class="fas fa-language"></i> <span>Translate</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="tab-container">
+                <div class="tab active" data-tab="definitions">Definitions</div>
+                <div class="tab" data-tab="synonyms">Synonyms & Antonyms</div>
+                <div class="tab" data-tab="saved">Saved Words</div>
+                <div class="tab" data-tab="resources">Resources</div>
+            </div>
+
+            <div class="tab-content active" id="definitions-tab">
+                <!-- Free Dictionary Definitions -->
+                <div class="meaning-section">
+                    <ul class="definitions-list" id="fdDefinitionsList">
+                        <!-- FD Definitions will be inserted here -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tab-content" id="synonyms-tab">
+                <div class="meaning-section" id="synonymsSection">
+                    <h3 class="section-title">Synonyms</h3>
+                    <div class="synonyms-grid" id="synonymsGrid">
+                        <!-- Synonyms grid will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="meaning-section" id="antonymsSection">
+                    <h3 class="section-title">Antonyms</h3>
+                    <div class="antonyms-grid" id="antonymsGrid">
+                        <!-- Antonyms grid will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="saved-tab">
+                <div class="meaning-section">
+                    <div class="saved-words-container">
+                        <ul class="saved-words-list" id="savedWordsList">
+                            <!-- Saved words will be inserted here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="resources-tab">
+                <div class="resources-section">
+                    <button class="resources-button" id="grePdfButton">
+                        <i class="fas fa-download"></i> GRE Vocabulary
+                    </button>
+                    <button class="resources-button ielts-resource-button" id="ieltsMentorButton">
+                        <i class="fas fa-external-link-alt"></i> IELTS Mentor
+                    </button>
+                    <button class="resources-button ielts-resource-button" id="ieltsTestsButton">
+                        <i class="fas fa-external-link-alt"></i> IELTS Online Tests
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-button" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&nbsp;</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const searchBtn = document.getElementById('searchBtn');
+            const wordInput = document.getElementById('wordInput');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const wordTitle = document.getElementById('wordTitle');
+            const wordType = document.getElementById('wordType');
+            const phonetic = document.getElementById('phonetic');
+            const banglaTranslation = document.getElementById('banglaTranslation');
+            const fdDefinitionsList = document.getElementById('fdDefinitionsList');
+            const synonymsGrid = document.getElementById('synonymsGrid');
+            const antonymsGrid = document.getElementById('antonymsGrid');
+            const saveBtnHeader = document.getElementById('saveBtnHeader');
+            const saveBtnText = document.getElementById('saveBtnText');
+            const loading = document.getElementById('loading');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const scrollToTop = document.getElementById('scrollToTop');
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const randomWordBtn = document.getElementById('randomWordBtn');
+            const savedWordsList = document.getElementById('savedWordsList');
+            const audioBtn = document.getElementById('audioBtn');
+            const grePdfButton = document.getElementById('grePdfButton');
+            const ieltsMentorButton = document.getElementById('ieltsMentorButton');
+            const ieltsTestsButton = document.getElementById('ieltsTestsButton');
+            const logo = document.getElementById('logo');
+            const synonymsSection = document.getElementById('synonymsSection');
+            const antonymsSection = document.getElementById('antonymsSection');
+            const backBtn = document.getElementById('backBtn');
+            const forwardBtn = document.getElementById('forwardBtn');
+            const translateBtnHeader = document.getElementById('translateBtnHeader');
+
+            // API endpoints and keys
+            const FREE_DICTIONARY_API = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+            const THESAURUS_API = "https://api.api-ninjas.com/v1/thesaurus?word=";
+            const THESAURUS_API_KEY = "Ed0CEOlPjDf+DryhOec6IQ==iT5SAXKFjMvGIUsD";
+
+            // Full IELTS word list (from provided Excel file)
+            const ieltsWords = [
+               "Active", "Antique", "Agility", "Attire", "Awful", "Assets", "Ample", "Amateur", "Assault", "Abroad",
+                "Always", "Adversity", "Allure", "Admit", "Amiable", "Annoy", "Aggressive", "Acquit", "Ambition", "Anxious",
+                "Achieve", "Aid", "Amount", "Adroit", "Adequate", "Alteration", "Ambiance", "Allow", "Amicable", "Astonishing",
+                "Ambitious", "Accord", "Abode", "Accurate", "Away", "Arrive", "Angry", "Authentic", "Abandon", "Add",
+                "Answer", "Alike", "Abstraction", "Ask", "Adamant", "Appreciation", "Agree", "Approve", "Baffle", "Belligerent",
+                "Benevolent", "Bias", "Brevity", "Bizarre", "Banal", "Barren", "Blatant", "Bemoan", "Beneath", "Belittle",
+                "Bewilder", "Brazen", "Bountiful", "Berate", "Behemoth", "Beneficial", "Blissful", "Burgeon", "Banish", "Bypass",
+                "Blithe", "Brisk", "Brood", "Brawl", "Bungle", "Befuddle", "Bolster", "Beguile", "Bask", "Bewildered", "Bristle",
+                "Cacophony", "Callous", "Candid", "Capitulate", "Catalyst", "Caution", "Cerebral", "Charismatic", "Coalesce", "Coherent",
+                "Colossal", "Complacent", "Concede", "Conducive", "Conundrum", "Cordial", "Corroborate", "Credible", "Cryptic", "Culminate",
+                "Cumbersome", "Cynical", "Concur", "Constrict", "Contentious", "Copious", "Corrode", "Curtail", "Convoluted", "Conspicuous",
+                "Consume", "Commence", "Collaborate", "Chronicle", "Circumvent", "Connoisseur", "Composure", "Consensus", "Congenial", "Contrive",
+                "Constitute", "Dazzling", "Deceive", "Decipher", "Deficient", "Delicate", "Deter", "Deviate", "Diligent", "Diminish",
+                "Discern", "Discreet", "Disperse", "Distinct", "Diverse", "Dominate", "Durable", "Dynamic", "Dwell", "Dwindle",
+                "Eager", "Elaborate", "Embrace", "Empathy", "Endeavor", "Enrich", "Enhance", "Enthusiastic", "Ephemeral", "Eradicate",
+                "Erratic", "Exemplify", "Exuberant", "Elusive", "Eloquent", "Eminent", "Empower", "Encompass", "Endorse", "Entice",
+                "Esteem", "Evolve", "Exceed", "Exquisite", "Exemplary", "Explicit", "Expose", "Extend", "Elude", "Endure",
+                "Exasperate", "Eccentric", "Elicit", "Elongate", "Enlist", "Facilitate", "Formidable", "Flourish", "Fickle", "Frugal",
+                "Fathom", "Foster", "Fluctuate", "Fortify", "Foresee", "Fallacious", "Frivolous", "Facade", "Fervent", "Foremost",
+                "Flabbergasted", "Fiasco", "Flawless", "Futile", "Formulate", "Fundamental", "Fluctuation", "Feasible", "Fervid", "Facet",
+                "Fanatic", "Flimsy", "Frenetic", "Fervor", "Forebode", "Felicity", "Forsake", "Fracture", "Generous", "Grateful",
+                "Gargantuan", "Gauge", "Gaze", "Glance", "Gruesome", "Gregarious", "Genuine", "Grasp", "Grumble", "Garner",
+                "Gleam", "Grapple", "Gallant", "Gallivant", "Glimpse", "Grind", "Gusto", "Guileless", "Gravy", "Glorious",
+                "Gloom", "Gravitate", "Gamble", "Garrison", "Glitter", "Grating", "Glutton", "Garish", "Gist", "Grueling",
+                "Harmony", "Halt", "Hasty", "Hinder", "Hospitable", "Humble", "Humiliate", "Hybrid", "Hesitate", "Hostile",
+                "Hearty", "Hinderance", "Hover", "Heritage", "Heighten", "Homogeneous", "Hardship", "Haphazard", "Homely", "Hail",
+                "Harmonize", "Harass", "Hypothesize", "Homage", "Hardworking", "Hibernate", "Haughty", "Humorous", "Hone", "Hereditary",
+                "Hostility", "Humidity", "Hamper", "Hallmark", "Hue", "Halcyon", "Harbinger", "Havoc", "Illuminate", "Ingenious",
+                "Inquire", "Integrate", "Inherent", "Insight", "Incite", "Inevitable", "Intrepid", "Incessant", "Incognito", "Inclusive",
+                "Incapacitate", "Indifferent", "Infallible", "Inhibit", "Inquisitive", "Inspire", "Invaluable", "Invigorate", "Invariably", "Invoke",
+                "Irresistible", "Impede", "Inclination", "Intuition", "Infuse", "Incarcerate", "Inscribe", "Instigate", "Incisive", "Inconspicuous",
+                "Incredulous", "Jeopardy", "Jovial", "Juxtapose", "Jargon", "Judicious", "Jolt", "Jubilant", "Juxtaposition", "Justify",
+                "Jaded", "Jeer", "Jocular", "Judgemental", "Jiffy", "Jittery", "Jinx", "Juggle", "Joviality", "Jovially",
+                "Jeopardize", "Keen", "Kin", "Keenly", "Kudos", "Keystones", "Kindred", "Kinetic", "Knead", "Kindle",
+                "Knack", "Knotty", "Kernel", "Kith", "Kowtow", "Kneel", "Kept", "Kinfolk", "Knowledge", "Kettle",
+                "Kneecap", "Lament", "Lucid", "Lavish", "Loathe", "Linger", "Laudable", "Legacy", "Lenient", "Livid",
+                "Luminous", "Lethargic", "Loquacious", "Lurk", "Lamentable", "Levitate", "Labyrinth", "Lethal", "Liable", "Ludicrous",
+                "Languish", "Lofty", "Lucrative", "Languid", "Laud", "Legitimate", "Magnify", "Mitigate", "Meticulous", "Mundane",
+                "Modify", "Manifest", "Migrate", "Mandatory", "Malicious", "Meritorious", "Munificent", "Melancholy", "Maverick", "Malleable",
+                "Magnanimous", "Malfunction", "Mirthful", "Morose", "Magnitude", "Meander", "Miserly", "Monotonous", "Navigate", "Negate",
+                "Neglect", "Nourish", "Notorious", "Necessitate", "Notable", "Nominate", "Negligible", "Noteworthy", "Nurturing", "Novelty",
+                "Nostalgia", "Notion", "Nuanced", "Nimble", "Nullify", "Nifty", "Nascent", "Objective", "Obligation", "Observe",
+                "Obtain", "Occasion", "Occur", "Odd", "Omit", "Ongoing", "Option", "Overcome", "Owe",
+                "Obsolete", "Outrage", "Oversee", "Overwhelm", "Overtake", "Overview", "Oppose", "Perceive", "Ponder", "Profound",
+                "Prolific", "Persuade", "Prevail", "Persevere", "Plausible", "Prudent", "Paradox", "Pensive", "Plentiful", "Pragmatic",
+                "Pivotal", "Precarious", "Pinnacle", "Placid", "Perilous", "Pristine", "Penchant", "Pungent", "Prodigy", "Proximity",
+                "Paragon", "Paramount", "Patronize", "Peripheral", "Prevalent", "Prominent", "Quaint", "Quandary", "Quash", "Quell",
+                "Quench", "Query", "Quibble", "Quiescent", "Quirk", "Quiver", "Quota", "Quotidian", "Quizzical", "Quip",
+                "Qualm", "Radiant", "Resilient", "Reluctant", "Robust", "Rationale", "Revere", "Repudiate", "Rendezvous", "Relinquish",
+                "Redundant", "Rigorous", "Resplendent", "Replenish", "Reclusive", "Ramification", "Rapture", "Reckless", "Rectify", "Recapitulate",
+                "Reciprocal", "Replicate", "Resonate", "Rejuvenate", "Sage", "Scrutinize", "Serene", "Sincere", "Skeptical", "Subtle",
+                "Suppress", "Solemn", "Strenuous", "Sanctuary", "Sublime", "Surpass", "Sporadic", "Substantiate", "Serendipity", "Stagnant",
+                "Synchronize", "Savor", "Surrogate", "Supple", "Salient", "Tenacious", "Tremendous", "Thrive", "Tolerate", "Transparent",
+                "Tenure", "Transition", "Tactful", "Tangible", "Tedious", "Ubiquitous", "Unveil", "Utilize", "Unique", "Undermine",
+                "Ubiquity", "Upheaval", "Underestimate", "Vibrant", "Versatile", "Validate", "Vigorous", "Venture", "Vital", "Volatile",
+                "Vogue", "Widespread", "Witty", "Wrath", "Wholesome", "Wane", "Withstand", "Wary", "Wistful", "Xenophobia",
+                "Xerox", "Xenial", "Xanadu", "Xerophyte", "Yearn", "Yield", "Yonder", "Yearning", "Yielding", "Yarn",
+                "Yieldless", "Yowl", "Yawn", "Yoke", "Yore", "Yell", "Yank", "Zeal", "Zest", "Zenith",
+                "Zany", "Zealous", "Zephyr", "Zestful", "Zilch", "Zing", "Zigzag", "Zeppelin", "Zero", "Zircon",
+                "Zesty", "administration", "affect", "analysis", "approach", "appropriate", "area", "aspects", "assistance", "assume",
+                "authority", "available", "benefit", "category", "community", "complex", "concerning", "conclusion", "conduct", "consequence",
+                "consistent", "constitutional", "consumer", "context", "create", "culture", "data", "definition", "destructive", "discovery",
+                "distinction", "economic", "element", "environment", "error", "equation", "establish", "estimate", "valuation", "evidence",
+                "factors", "feature", "final", "financial", "focus", "function", "global", "identify", "impact", "income",
+                "indicate", "individual", "injury", "investment", "involve", "issue", "item", "legal", "maintenance", "major",
+                "media", "method", "modern", "normal", "restrict", "participation", "percent", "period", "policy", "positive",
+                "potential", "previous", "primary", "process", "purchase", "range", "recent", "region", "regulations", "relevant",
+                "require", "research", "resident", "resources", "response", "sector", "security", "significant", "similar", "solution",
+                "source", "specific", "strategy", "structure", "theory", "threat", "traditional", "transport", "access", "activity",
+                "alter", "alternative", "amendment", "annual", "apparent", "application", "approximate", "artificial", "attitude", "aware",
+                "capacity", "challenge", "circumstance", "comment", "communication", "concentration", "conflict", "considerable", "constant", "contact",
+                "contribution", "core", "correspond", "criteria", "cycle", "debate", "decline", "deduction", "demonstrate", "despite",
+                "dimension", "domestic", "dominant", "emerge", "emphasis", "enable", "energy", "enforcement", "ensure", "equivalent",
+                "evolution", "exclude", "exposure", "external", "funds", "generation", "hence", "hypothesis", "illustrate", "image",
+                "immigration", "implement", "initial", "integration", "layer", "legislation", "location", "logic", "marginal", "maximum",
+                "mechanism", "medical", "mental", "modification", "negative", "network", "occupation", "orientation", "outcome", "overall",
+                "parallel", "perspective", "philosophy", "precise", "predict", "project", "promote", "proportion", "psychology", "reaction",
+                "remove", "resolution", "specify", "stability", "subsequent", "sufficient", "summary", "supply", "task", "technique",
+                "technology", "trend", "version", "volume", "abstract", "acknowledge", "adaptation", "adjust", "adult", "advocate",
+                "attribute", "author", "brief", "capable", "civil", "classical", "comprehensive", "contrary", "coordination", "couple",
+                "decades", "definite", "deny", "discrimination", "disposal", "diversity", "domain", "eliminate", "equipment", "estate",
+                "expansion", "expert", "fees", "flexibility", "foundation", "gender", "grade", "guarantee", "identical", "ignorance",
+                "imply", "incentive", "incorporated", "index", "infrastructure", "inhibition", "innovation", "instance", "instruction", "intelligence",
+                "interact", "interval", "investigation", "isolated", "justification", "lecture", "liberal", "migration", "minimum", "monitoring",
+                "motivation", "neutral", "obvious", "overseas", "parameter", "phenomenon", "prohibit", "publish", "purse", "rational",
+                "recovery", "reject", "release", "reveal", "role", "satisfy", "scope", "sequence", "simulation", "solely",
+                "somewhat", "status", "stress", "style", "substitution", "successive", "survey", "survive", "sustainable", "symbolic",
+                "topic", "trace", "transformation", "ultimate", "underline", "utility", "visible", "accommodation", "accompany", "advance",
+                "analogous", "anticipate", "appendix", "appreciate", "arbitrary", "assure", "automatically", "behalf", "cease", "chart",
+                "clarity", "coherence", "coincide", "commodity", "confirm", "contemporary", "contradict", "controversy", "conversely", "cooperate",
+                "crucial", "currency", "denote", "detect", "deviation", "device", "devote", "differentiation", "displacement", "display",
+                "distorted", "dramatic", "duration", "ethical", "eventually", "exhibit", "exploitation", "extract", "federal", "fluctuations",
+                "format", "founded", "guidelines", "highlighted", "implicit", "incompatible", "induce", "inevitably", "intensity", "intermediate",
+                "internal", "manual", "mature", "medium", "military", "mutual", "norms", "nuclear", "paragraph", "passive",
+                "portion", "precede", "predominantly", "priority", "prospect", "qualitative", "radical", "random", "reinforce", "relax",
+                "revision", "revolution", "scenario", "schedule", "sphere", "suspended", "target", "team", "temporary", "tension",
+                "theme", "thereby", "uniform", "validity", "vehicle", "via", "violation", "virtual", "vision", "abandon",
+                "abate", "abrupt", "accumulation", "acquisition", "adjacent", "aggregate", "albeit", "ambiguous", "ancestor", "assembly",
+                "assessment", "assign", "attain", "avert", "coal", "collapse", "colleagues", "combat", "commit", "compile",
+                "complement", "comprise", "conceive", "concurrent", "confined", "conform", "confuse", "consciousness", "convinced", "creditable",
+                "depression", "derive", "distribution", "divergent", "doubt", "drastic", "election", "empirical", "encounter", "enormous",
+                "entirely", "entrepreneur", "erosion", "forbearance", "forthcoming", "friction", "goal", "homogenous", "indulge", "infer",
+                "initiative", "inspection", "integral", "intervention", "intrinsic", "likewise", "link", "manage", "manipulation", "merge",
+                "nonetheless", "notwithstanding", "overlap", "persistent", "pose", "possess", "preliminary", "presumption", "ratio", "refine",
+                "relate", "restore", "restraint", "rigid", "route", "sacrifice", "scale", "so-called", "straightforward", "subordinate",
+                "supplementary", "sympathy", "termination", "transmission", "undergo", "unify", "voluntary", "whereby"
+            ];
+
+            // Full GRE word list (from provided Excel file)
+            const greWords = [
+                "Nepotism", "Elucidate", "Trenchant", "Vacillate", "Parable", "Machismo", "Recant", "Aversion", "Ascend", "Pugnacious",
+                "Inhibition", "Detriment", "Perfunctory", "Comely", "Spurious", "Vitriolic", "Tantamount", "Blase", "Rustic", "Adroit",
+                "Mercenary", "Impious", "Divulge", "Abate", "Analogous", "Largesse", "Succulent", "Inveigh", "Privation", "Obsess",
+                "Germane", "Feint", "Senile", "Fractious", "Heterogeneous", "Deem", "Conjecture", "Plight", "Eradicate", "Criterion",
+                "Cant", "Repugnant", "Extant", "Incontrovertible", "Obsequious", "Equanimity", "Utopia", "Vitiate", "Perfidious", "Mentor",
+                "Repudiate", "Bizarre", "Aver", "Rebuke", "Diversity", "Plethora", "Congenial", "Succinct", "Zenith", "Tremulous",
+                "Candor", "Sedentary", "Amorous", "Nefarious", "Incongruous", "Elicit", "Admonish", "Artless", "Lush", "Tantalizing",
+                "Landmark", "Prudent", "Pandemonium", "Heresy", "Fracas", "Sporadic", "Genre", "Impetuous", "Deter", "Crave",
+                "Prevaricate", "Expurgate", "Decrepit", "Inherent", "Cognizant", "Ruminate", "Feasible", "Invective", "Nomadic", "Emit",
+                "Ubiquitous", "Venial", "Parsimonious", "Malleable", "Relegate", "Bane", "Aspire", "Quarry", "Insatiable", "Discern",
+                "Perspicacious", "Complicity", "Stereotype", "Voracious", "Terminate", "Brash", "Sanctimonious", "Afflict", "Mollify", "Imprudent",
+                "Dregs", "Abstemious", "Antiquated", "Legion", "Superfluous", "Irrelevant", "Profound", "Omnipotent", "Grimace", "Fiasco",
+                "Sinister", "Fret", "Hostile", "Delve", "Consummate", "Potpourri", "Evaluate", "Cupidity", "Indigent", "Caustic",
+                "Restrictive", "Exult", "Obscure", "Epitome", "Usurp", "Virulent", "Perceive", "Menial", "Reproach", "Bigot",
+                "Avarice", "Realm", "Invalidate", "Distraught", "Plaque", "Confront", "Subterranean", "Zealous", "Transient", "Candid",
+                "Sedate", "Amnesty", "Nebulous", "Incompatibility", "Elapse", "Adherent", "Artifice", "Lurid", "Tangible", "Lampoon",
+                "Proximity", "Panacea", "Heinous", "Fortuitous", "Spontaneous", "Genocide", "Imperturbable", "Desultory", "Covet", "Prevalent",
+                "Expunge", "Decorum", "Ingratiate", "Cogent", "Rue", "Fatuous", "Obloquy", "Epithet", "Urbane", "Virtuosity",
+                "Penury", "Mendacious", "Reprimand", "Bias", "Automaton", "Raze", "Inundate", "Dissent", "Plaintiff", "Conflagration",
+                "Subterfuge", "Yen", "Tranquil", "Canard", "Scurry", "Amicable", "Nascent", "Incoherent", "Egregious", "Adamant",
+                "Artifact", "Lugubrious", "Taint", "Laconic", "Propriety", "Paltry", "Havoc", "Forthright", "Spear", "Gaunt",
+                "Imperceptible", "Desist", "Covert", "Pretext", "Exploit", "Declaim", "Infraction", "Coerce", "Rudimentary", "Fatal",
+                "Obese", "Entreaty", "Unsavory", "Vindicate", "Penitent", "Maudlin", "Reprehensible", "Besiege", "Augment", "Rationalize",
+                "Intrinsic", "Dispersed", "Pique", "Conducive", "Subservient", "Wistful", "Tortuous", "Callow", "Scrutinize", "Ambiguous",
+                "Nadir", "Incisive", "Effigy", "Acrimonious", "Ardent", "Longevity", "Taboo", "Labyrinth", "Propinquity", "Pall",
+                "Harbinger", "Foist", "Sordid", "Garrulous", "Impede", "Derived", "Countenance", "Prerogative", "Expedient", "Decadence",
+                "Infallible", "Cliche", "Rift", "Falter", "Nutrition", "Entourage", "Unmitigated", "Villify", "Penchant", "Materialism",
+                "Repose", "Bereft", "Audacity", "Rash", "Intrepid", "Disparate", "Pinnacle", "Condone", "Subjugate", "Wince",
+                "Tolerate", "Callous", "Scoff", "Altruistic", "Myriad", "Incipient", "Efficacy", "Acquiesce", "Archaic", "Loathe",
+                "Symptomatic", "Juxtapose", "Propensity", "Harass", "Overt", "Fluctuate", "Sophistry", "Garbled", "Impeccable", "Deride",
+                "Coterie", "Premonition", "Expatriate", "Decade", "Inexorable", "Clandestine", "Rife", "Fallacious", "Nurture", "Ennui",
+                "Unkempt", "Vigilant", "Penance", "Masticate", "Replete", "Benevolent", "Atypical", "Rampant", "Intimidate", "Disparage",
+                "Phobia", "Condolence", "Stymie", "Whimsical", "Tinge", "Cajole", "Scion", "Aloof", "Murky", "Inchoate",
+                "Edifice", "Acme", "Arbitrary", "Loath", "Susceptible", "Jurisdiction", "Propagate", "Oust", "Hapless", "Flout",
+                "Somber", "Gamut", "Imminent", "Deprecate", "Corroborate", "Premise", "Exonerate", "Debris", "Inevitable", "Chimerical",
+                "Rhetoric", "Factitious", "Nullify", "Enigma", "Universal", "Vigil", "Pedagogy", "Martinet", "Replenish", "Belligerent",
+                "Attest", "Raiment", "Interrogate", "Dismantle", "Phlegmatic", "Concur", "Stupor", "Whet", "Timorous", "Cacophony",
+                "Schism", "Allude", "Munificent", "Incapacitated", "Duress", "Acknowledge", "Arbiter", "Livid", "Surreptitious", "Jubilant",
+                "Promulgate", "Ostracize", "Halcyon", "Fledgling", "Solicit", "Galvanize", "Imbibe", "Deploy", "Corpulent", "Prelude",
+                "Exhort", "Debilitate", "Inert", "Chicanery", "Revile", "Facile", "Nuance", "Enhance", "Undermine", "Viable",
+                "Pedagogue", "Manifold", "Repertoire", "Belittle", "Attenuated", "Rail", "Internecine", "Disheveled", "Phenomenon", "Concomitant",
+                "Stunt", "Wheddle", "Thwart", "Cache", "Saturate", "Alleviate", "Mundane", "Inanimate", "Duplicity", "Accost",
+                "Apellation", "Lithe", "Surmise", "Jostle", "Prolific", "Ostentatious", "Habitat", "Flay", "Solace", "Futility",
+                "Ignominious", "Deplorable", "Copious", "Precocious", "Excruciating", "Debacle", "Ineffectual", "Charlatan", "Revert", "Facetious",
+                "Nostalgia", "Engrossed", "Unctuous", "Vexatious", "Pecuniary", "Manifest", "Repent", "Belated", "Atrophy", "Raconteur",
+                "Interminable", "Disgruntled", "Pestilence", "Concoct", "Strife", "Wary", "Throng", "Burgeon", "Satiety", "Alleged",
+                "Motivate", "Inane", "Dupe", "Accomplice", "Appaled", "Libel", "Surge", "Jettison", "Prohibition", "Ostensible",
+                "Gusto", "Flamboyant", "Sojourn", "Furtive", "Idyllic", "Depict", "Cope", "Preclude", "Excoriate", "Dearth",
+                "Inebriated", "Charisma", "Revere", "Facet", "Nonentity", "Encumbrance", "Unconscionable", "Vestige", "Paucity", "Mandate",
+                "Remuneration", "Begrudge", "Astute", "Rabid", "Interloper", "Disdain", "Perverse", "Comprehensive", "Strident", "Wane",
+                "Therapy", "Bulwark", "Sanguine", "Allay", "Mortality", "Inadvertent", "Dulcet", "Accommodate", "Apostate", "Levity",
+                "Surfeit", "Jeopardize", "Prognosticate", "Originate", "Gullible", "Flagrant", "Slovenly", "Fulsome", "Iconoclast", "Denote",
+                "Controversial", "Precipitate", "Exacerbate", "Cynic", "Indolent", "Chagrin", "Retrospect", "Facade", "Nondescripit", "Encomium",
+                "Umbrage", "Vertigo", "Pathetic", "Mammoth", "Remote", "Bedlam", "Assiduous", "Quip", "Interject", "Discreet",
+                "Peruse", "Compound", "Stipulate", "Wan", "Terse", "Bristle", "Sanctuary", "Alacrity", "Moribund", "Impunity",
+                "Dubious", "Access", "Apathy", "Lethargic", "Supplication", "Jaunty", "Progeny", "Opulence", "Guise", "Flabbergasted",
+                "Skirmish", "Frustrate", "Hyperbole", "Demur", "Contrite", "Precedent", "Evince", "Curtail", "Indoctrinate", "Cessation",
+                "Retort", "Fabricate", "Nominal", "Emulate", "Ultimate", "Venom", "Passe", "Malnutrition", "Remiss", "Barometer",
+                "Asset", "Quell", "Insidious", "Disciple", "Pertinent", "Component", "Stigma", "Vulnerable", "Terminus", "Brawl",
+                "Sanction", "Affluent", "Monolithic", "Impugn", "Drudery", "Absurd", "Antithesis", "Lethal", "Supine", "Itinerant",
+                "Profuse", "Opprobrium", "Grotesque", "Fiat", "Site", "Frugal", "Humility", "Demeanor", "Contemptuous", "Pragmatic",
+                "Evanescent", "Cursory", "Indiscriminate", "Celerity", "Reticent", "Exultation", "Obliterate", "Enunciate", "Unwieldy", "Virile",
+                "Pensive", "Megalomania", "Repress", "Besmirch", "Austere", "Raucous", "Introspective", "Disseminate", "Pittance", "Confidant",
+                "Substantiate", "Wrest", "Traditional", "Calumny", "Scurrilous", "Ameliorate", "Naive", "Inclement", "Effrontery", "Acute",
+                "Array", "Lucrative", "Tacit", "Laceration", "Propitious", "Palliate", "Haven", "Foment", "Spate", "Gaudy",
+                "Imperative", "Derogatory", "Coup", "Prestigious", "Expedite", "Decapitate", "Infamous", "Clique", "Roster", "Fastidious",
+                "Noisome", "Emissary", "Turpitude", "Venerable", "Paroxysm", "Malignant", "Refute", "Banal", "Aspirant", "Quandary",
+                "Inordinate", "Diminutive", "Persevere", "Complacent", "Stentorian", "Voluminous", "Tenacious", "Bona fide", "Salvation", "Aegis",
+                "Modify", "Impromptu", "Dormant", "Abrogate", "Antipathy", "Legerdemain", "Superficial", "Irational", "Profligate", "Ominous",
+                "Gregarious", "Fetter", "Singular", "Frenzy", "Homogeneous", "Deluge", "Construe", "Potential", "Euphemism", "Cumulative",
+                "Indigenous", "Catastrophic", "Respite", "Extrinsic", "Nirvana", "Eminent", "Turbulent", "Veneer", "Pariah", "Malevolent",
+                "Redress", "Balk", "Asperity", "Qualm", "Innocuous", "Dilettante", "Perpetuate", "Compensate", "Steep", "Volition",
+                "Tenable", "Bogus", "Salubrious", "Advocate", "Milieu", "Impressario", "Domicile", "Abound", "Anthropologist", "Lax",
+                "Sumptuous", "Irate", "Proffer", "Octave", "Gratuity", "Fervid", "Sinecure", "Frenetic", "Hoax", "Delude",
+                "Consternation", "Potentate", "Ethics", "Cumbersome", "Indifference", "Castigate", "Resourceful", "Extraneous", "Neutralize", "Embellish",
+                "Truncated", "Vehemently", "Paramount", "Malady", "Redolent", "Badger", "Asinine", "Puny", "Innate", "Diatribe",
+                "Perpetrate", "Compatibl", "Staunch", "Vogue", "Temerity", "Blunt", "Salient", "Adverse", "Mien", "Importune",
+                "Doleful", "Abortive", "Anomaly", "Laudable", "Sultry", "Irascible", "Prodigy", "Occult", "Gib", "Ferment",
+                "Shibboleth", "Fray", "Hoard", "Delineation", "Connubial", "Potent", "Eschew", "Culpable", "Indict", "Carnage",
+                "Requisite", "Extortion", "Neurotic", "Emaciated", "Trivial", "Vapid", "Paragon", "Maim", "Recondite", "Awesome",
+                "Ascetic", "Pungent", "Initiate", "Dexterity", "Pernicious", "Compassion", "Stagnant", "Vivacious", "Technology", "Bliss",
+                "Sage", "Adversary", "Meticulous", "Implore", "Doddering", "Abjure", "Annals", "Latent", "Sullen", "Inviolable",
+                "Prodigious", "Obviate", "Glean", "Felon", "Servile", "Fraught", "Histrionic", "Deleterious", "Connoisseur", "Ponder",
+                "Eruption", "Culminate", "Incumbent", "Capricious", "Repute", "Extol", "Nettle", "Elusive", "Trend", "Valor",
+                "Paradox", "Magnanimous", "Recoil", "Avid", "Ascertain", "Puissant", "Iniquity", "Devout", "Permeate", "Commodious",
+                "Squeamish", "Vituperation", "Taut", "Blatant", "Sabbatical", "Advent", "Metamorphosis", "Implacable", "Docile", "Abhor",
+                "Anathema", "Lassitude", "Succumb", "Inveterate", "Procrastinate", "Obsolescence", "Gesticulate", "Felicitous", "Serenity", "Frail",
+                "Hirsute", "Degrade", "Conjugal", "Poignant", "Erudite", "Cryptic", "Incredulous", "Capitulate", "Repulse", "Extinct",
+                "abdicate", "aberrant", "abrasive", "abridge", "abstain", "activism", "adhere", "aesthetic", "affable", "affectation",
+                "aggrandize", "aggregate", "alienate", "ambivalent", "anarchy", "anoint", "antagonize", "antipathy", "apocryphal", "appease",
+                "appreciable", "arbitrary", "arcane", "arduous", "articulate", "assuage", "audacious", "autonomous", "base", "belie",
+                "benign", "bolster", "boor", "buffer", "bureaucracy", "buttress", "bygone", "canonical", "cartography", "catalyst",
+                "censure", "chauvinism", "chronological", "clamor", "clinch", "coalesce", "commensurate", "complementary", "compliant", "concede",
+                "conciliatory", "confer", "console", "consolidate", "constrict", "contentious", "contextualize", "conundrum", "converge", "conversant",
+                "conversely", "convoluted", "cosmopolitan", "countenance", "counterintuitive", "counterpoint", "counterproductive", "crafty", "craven", "credibility",
+                "credulous", "crescendo", "cynical", "daunt", "debase", "debunk", "decorous", "deface", "defamatory", "default",
+                "deference", "deflect", "delineate", "denigrate", "derivative", "desiccate", "detached", "deterrent", "didactic", "digress",
+                "din", "disabuse", "discerning", "discredit", "discrepancy", "discriminating", "disingenuous", "disinterested", "disjointed", "dismiss",
+                "dispassionate", "dispatch", "disperse", "disposition", "disquieting", "dissonance", "distill", "diverge", "Divest", "Divine",
+                "Document", "Dogma", "e.g.", "eccentric", "Mnemonic", "Eclectic", "Eclipse", "Egalitarian", "Elated", "Elevate",
+                "Eloquent", "Empirical", "Enervate", "Entitlement", "Enumerate", "Ephemeral", "Equitable", "Erratic", "Erroneous", "Esoteric",
+                "Estimable", "Eulogy", "Exacting", "Exculpate", "Exhaustive", "Explicit", "Exponent", "Extrapolate", "Facilitate", "Fanatical",
+                "Fanciful", "Fathom", "Fidelity", "Finesse", "Flag", "Fleeting", "Figurative", "Foreshadow", "Forfeit", "Fortify",
+                "Fringe", "Futile", "Gainsay", "Gauche", "Gawky", "Gist", "Goosebumps", "Gradation", "Guile", "Hackneyed",
+                "Hardy", "Hearken", "Hedonist", "Hierarchy", "Hodgepodge", "Idiosyncrasy", "illiberality", "Impair", "Impartial", "Implication",
+                "Implicit", "Implode", "Inasmuch", "Incendiary", "Incentive", "Inconsequential", "Incorporated", "Indeterminate", "Indifferent", "Inform",
+                "Ingenuous", "Ingrained", "Intelligible", "Intractable", "Jargon", "Jocular", "Judicious", "Juncture", "Keen", "Kudos",
+                "Lackluster", "Lament", "Languid", "Lavish", "Layperson", "Levy", "Liberal", "Libertine", "Likewise", "Log",
+                "Loquacious", "Lucid", "Lull", "Makeshift", "Maverick", "Mercurial", "Mitigate", "Modest", "Monotony", "Moreover",
+                "Mores", "Negate", "Net", "Nevertheless", "Notoriety", "Novel", "Objective", "Obsolete", "Obstinate", "Offhand",
+                "Officious", "Offset", "Onerous", "Opaque", "Optimal", "Orthodox", "Oscillate", "Outstrip", "Overshadow", "Paradigm",
+                "Partial", "Partisan", "Patent", "Pathological", "Patronizing", "Peccadillo", "Pedestrian", "Peripheral", "Pervasive", "Philanthropy",
+                "Phony", "Pious", "Pith", "Placate", "Placid", "Plastic", "Plausible", "Plummet", "Polarized", "Ponderous",
+                "Posthumous", "Preamble", "Precarious", "Precursor", "Predisposed", "Preempt", "Presumptive", "Presumptuous", "Pretentious", "Principled",
+                "Pristine", "Probity", "Prodigal", "Prohibitive", "Proliferate", "Prologue", "Pronounced", "Prosaic", "Proscribe", "Prospective",
+                "Qualified", "Quibble", "Quotidian", "Ranks", "Reap", "Recluse", "Remedial", "Render", "Requite", "Rescind",
+                "Resolution", "Resolve", "Respectively", "Restive", "Retrospective", "Reverent", "Sacrosanct", "Sagacious", "Sanction", "Sap",
+                "Satiate", "Savor", "Scant", "Scathing", "Secular", "Sedulous", "Sentient", "Simultaneous", "Skeptic", "Skirt",
+                "Slack", "Slew", "Slight", "Solicitous", "Soporific", "Sound", "Spartan", "Spearhead", "Specious", "Spectrum",
+                "Speculate", "Sportive", "Standing", "Stark", "Static", "Status Quo", "Stingy", "Stoic", "Stolid", "Stymie",
+                "Subjective", "Subside", "Succeeding", "Supersede", "Supplicate", "Sycophant", "Synchronous", "Table", "Taciturn", "Tangential",
+                "Temperance", "Tenuous", "Timely", "Tirade", "Torpor", "Torrid", "Tractable", "Transitory", "Trifling", "Trite",
+                "Underscore", "Unearth", "Unequivocal", "Unprecedented", "Unseemly", "Venerate", "Veracity", "Verbose", "Vintage", "Virtual",
+                "Vituperate", "Volatile", "Warranted", "Whereas", "Wily", "Zeal", "abase", "abeyance", "abreast", "abscission",
+                "abscond", "abyss", "accede", "accretion", "acerbic", "acidulous", "acumen", "adulterate", "adumbrate", "aerie",
+                "albeit", "am amalgamate", "amortize", "anachronism", "analgesia", "annul", "anodyne", "antedate", "antithetical", "apostle",
+                "apposite", "apprise", "approbation", "appropriate", "arrogate", "ascribe", "aseptic", "aspersions", "assail", "attenuate",
+                "attuned", "augury", "august", "axiom", "balloon", "baying", "beneficent", "bent", "bevy", " bifurcate",
+                "bilk", "blight", "blithe", "bombastic", "bonhomie", "brandish", "brook", "bucolic", "burnish", "cardinal",
+                "catholic", "circumscribe", "circumspect", "clamber", "cloying", "coagulate", "coda", "coffer", "collude", "compendium",
+                "complaisant", "confound", "connote", "contraries", "contumacious", "convoke", "cosset", "curmudgeon", "declivity", "delimit",
+                "demagogue", "diaphanous", "dichotomy", "dictum", "diffident", "diffuse", "dilate", "dilatory", "dirge", "discomfiting",
+                "discordant", "discrete", "dissemble", "dissolution", "distaff", "distend", "dither", "diurnal", "doctrinaire", "doff",
+                "dovetail", "droll", "dyspeptic", "ebullient", "echelon", "edify", "egress", "elegy", "emaciate", "endemic",
+                "engender", "epicure", "equivocate", "ersatz", "erstwhile", "ethos", "euphony", "exigent", "extemporaneous", "faction",
+                "fallow", "fawn", "fecund", "fetid", "florid", "fluke", "forage", "ford", "forestall", "fulminate",
+                "gambol", "garner", "gestation", "glacial", "glower", "goad", "gouge", "graft", "grandiloquent", "grandstand",
+                "grating", "grieous", "grouse", "grovel", "hallmark", "hand-wringing", "harangue", "harrow", "hedge", "hegemony",
+                "hermetic", "hew", "hoary", "homage", "hoodwink", "hotly", "husband", "idolatry", "ignoble", "imbue",
+                "immutable", "impasse", "impassive", "impecunious", "imperious", "impermeable", "impervious", "imprecation", "impute", "incarnadine",
+                "inconstancy", "inculcate", "indefatigable", "indigence", "ingrate", "inimical", "inquest", "insensible", "insinuate", "insipid",
+                "insular", "insurrection", "inter", "interplay", "interregnum", "intransigent", "inure", "inveigle", "investiture", "invidious",
+                "irresolute", "itinerary", "jingoism", "kindle", "kinetic", "knell", "lachrymose", "larceny", "largess", "leery",
+                "licentious", "limpid", "lionize", "lissome", "listless", " lumber", "luminous", "machination", "maelstrom", "magnate",
+                "malediction", "malinger", "mannered", "mar", "maxim", "mendicant", "meretricious", "metaphysical", "militate", "mired",
+                "mirth", "misanthrope", "missive", "modicum", "modish", "molt", "monastic", "morose", "multifarious", "myopic",
+                "neologism", "neophyte", "nontrivial", "normative", "obdurate", "oblique", "occlude", "opine", "orotund", "ossify",
+                "overwrought", "palatial", "pallid", "panache", "panegyric", "panoply", "pare", "parley", "parry", "pastiche",
+                "pathogenic", "pedant", "peddle", "pejorative", "pellucid", "penumbra", "per se", "peregrinate", "perennial", "peripatetic",
+                "phalanx", "philistine", "platitude", "plebian", "plucky", "plutocracy", "polemic", "politic", "polyglot", "posit",
+                "prattle", "predilection", "prescient", "preternatural", "primacy", "proclivity", "prolix", "prophetic", "propitiate", "providential",
+                "proxy", "précis", "puerile", "pugilism", "puissance", "pulchritude", "pusillanimous", "querulous", "quiescent", "quixotic",
+                "rarefied", "reactant", "recalcitrant", "recapitulate", "recrudescent", "redound", "refractory", "refulgent", "rejoinder", "rend",
+                "repast", "repertorial", "reprobate", "resurgent", "revamp", "ribald", "ridden", "rococo", "sardonic", "savant",
+                "scintilla", "scurvy", "searchingly", "secrete", "sedition", "semantic", "seraphic", "shard", "skittish", "slake",
+                "sobriquet", "solecism", "solidarity", "somatic", "squalid", "squelch", "stasis", "steeped", "stint", "stratagem",
+                "stratum", "strut", "sublime", "subpoena", "sully", "supplant", "supposition", "surly", "surrogate", "sybarite",
+                "symbiosis", "synoptic", " syntax", "tawdry", "tendentious", "terrestrial", "toady", "token", "tome", "transgression",
+                "travesty", "treacherous", "truculent", "tumultuous", "turgid", "tyro", "unsparing", "untempered", "upbraid", "usury",
+                "vanguard", "variegated", "verdant", "verisimilar", "vernal", "vex", "via", "vicissitude", "vim", "viscid",
+                "vitriol", "vociferous", "voluble", "wanton", "welter", "whitewash", "winnow", "winsome", "wizened", "xenophobia",
+                "yoke", "Abasement", "Aberration", "Abraded", "Abrasion", "Absolution", "Abstruse", "abut", "Abysmal", "Accolade",
+                "Acolyte", "Acrid", "Acrophobia", "Acuity", "Admonitory", "Adulation", "Adversity", "Agog", "Aisle", "Alchemy",
+                "Alibi", "Alleviated", "Allure", "Altruism", "Amass", "Ambidextrous", "Ambiguity", "Ambivalence", "Ambulatory", "Amelioration",
+                "Amiable", "Amity", "Amorphous", "Anachronistic", "Analgesic", "Analogue", "Anecdote", "Animosity", "Annex", "Anodized",
+                "Antagonism", "Antagonistic", "Antediluvian", "Anthology", "Anthropocentrism", "Apathetic", "Aphoristic", "Apostrophe", "Appease", "Apprehension",
+                "Apprehensive", "Arable", "Arbitrator", "Arboreal", "Archetype", "Archives", "Armada", "Arresting", "Arson", "Artisan",
+                "Assay", "Asylum", "Atavism", "Atheist", "Atonement", "Auspicious", "Avaricious", "Baleful", "Balm", "Banality",
+                "Bard", "Barrage", "Bastion", "Befuddle", "Beguile", "Belabor", "Beleaguer", "Bellicose", "Bemoan", "Benignity",
+                "Bent", "Bequeath", "Berate", "Beret", "Bestial", "Billowing", "Blandishment", "Blasphemy", "Blighted", "Blowhard",
+                "Blunderbuss", "Bombast", "Boorish", "Bourgeois", "Boycott", "Braggart", "Brawny", "Brevity", "Broach", "Brusque",
+                "Burlesque", "Byline", "Cadge", "Caldron", "Calibrate", "Cantankerous", "Capacious", "Caprices", "Caret", "Caricature",
+                "Carping", "Carrion", "Cartographer", "Cataclysmic", "Catharsis", "Caucus", "Caulk", "Cavalcade", "Censorious", "Centrifuge",
+                "Centurion", "Cerebral", "Certitude", "Chantey", "Chary", "Chastises", "Chauvinist", "Choleric", "Chorales", "Chronic",
+                "Chronicler", "Churlishness", "Circuitous", "Circumlocution", "Circumvent", "Clairvoyant", "Clemency", "Cliché", "Clientele", "Cloistered",
+                "Cloture", "Coddle", "Coercion", "Cogitate", "Cognitive", "Colander", "Collage", "Collate", "Colloquial", "Collusion",
+                "Comeliness", "Commandeer", "Commingle", "Complaisance", "Compromised", "Concatenate", "Concatenation", "Conciliate", "Concise", "Condescend",
+                "Condescension", "Condoning", "Congeal", "Congenital", "Congruent", "Conniving", "Conscript", "Consecrate", "Consensus", "Conspicuous",
+                "Contemporary", "Contiguous", "Contrition", "Contusion", "Conventional", "Cornucopia", "Corrugated", "Counterfeit", "Cower", "Credible",
+                "Creditable", "Crepuscular", "Cringe", "Culpability", "Daguerreotype", "Dally", "Damp", "Dawdler", "Debilitating", "Debility",
+                "Debunking", "Decathlon", "Decimate", "Decoy", "Deferential", "Defoliate", "Defunct", "Degradation", "Deign", "Deliberate",
+                "Denounce", "Deplete", "Deplore", "Depravity", "Derision", "Descry", "Desecrate", "Desecration", "Despondent", "Destitution",
+                "Deteriorate", "Detrimental", "Devoured", "Dexterous", "Dike", "Dilemma", "Dilettantism", "Diligent", "Diorama", "Disapprobation",
+                "Disarm", "Discernment", "Discord", "Discordance", "Discountenance", "Discriminate", "Discursive", "Disinter", "Disparity", "Disseminating",
+                "Dissident", "Divert", "Dogmatic", "Dolt", "Don", "Dormancy", "Dotard", "Dote", "Drabness", "Drawl",
+                "Drivel", "Drone", "Dross", "Dynamic", "Eddy", "Efface", "Effusive", "Egalitarianism", "Elaborate", "Ellipsis",
+                "Emancipate", "Embezzle", "Emboss", "Embroil", "Emerge", "Emollient", "Endorse", "Endow", "Endurance", "Enduring",
+                "Enfranchise", "Engendering", "Enigmatic", "Enlist", "Ensconce", "Enshroud", "Enunciation", "Envenom", "Epaulet", "Epigram",
+                "Epistemology", "Epistle", "Epistolary", "Epitomized", "Equivocal", "Equivocation", "Err", "Errant", "Erudition", "Esoterica",
+                "Espouse", "Etymology", "Evacuate", "Exacerbated", "Exact", "Exasperated", "Exceptionable", "Execrable", "Exegesis", "Exemplar",
+                "Exemplary", "Exemplify", "Exigency", "Exonerates", "Exorcism", "Expatiate", "Expiate", "Exposition", "Expostulate", "Extemporize",
+                "Extirpate", "Extirpation", "Extradite", "Fabricated", "Faddish", "Fallacy", "Fallible", "Falters", "Fanaticism", "Feckless",
+                "Ferrous", "Fervent", "Fervor", "Fickle", "Figurehead", "Filibuster", "Fitful", "Flail", "Flaunt", "Fledge",
+                "Flippant", "Flustered", "Fly-by-night", "Foible", "Foolhardy", "Foppish", "Forbearing", "Forensic", "Foreshadowed", "Fortitude",
+                "Fraudulent", "Frieze", "Frivolous", "Froward", "Furrow", "Fusillade", "Gaffe", "Gall", "Galleon", "Gambit",
+                "Garble", "Garish", "Gaucherie", "Gavel", "Germinal", "Gerontocracy", "Gibbering", "Gossamer", "Grate", "Gratis",
+                "Gratuitous", "Gravity", "Gregariousness", "Gritty", "Guffaw", "Guileless", "Gullibility", "Gustatory", "Hack", "Hallow",
+                "Hallowed", "Hamper", "Hangar", "Harbingers", "Hasten", "Haughtiness", "Hawser", "Headstrong", "Hedonism", "Heed",
+                "Heterodox", "Hiatus", "Hidebound", "Hieroglyphics", "Hinder", "Homiletics", "Homogeneity", "Hone", "Hortatory", "Hypochondriac",
+                "Hypocritical", "Idyll", "Ignominy", "Illuminate", "Illusory", "Immoderate", "Impeding", "Imperturbability", "Impoverished", "Improbity",
+                "Impropriety", "Impugned", "Incantation", "Incarceration", "Incessant", "Incise", "inclination", "Inconspicuous", "Incubus", "Incumbents",
+                "Indecorous", "Indelible", "Indicted", "Indolence", "Inductee", "Indulgent", "Inebriation", "Ineffable", "Inefficacious", "Inept",
+                "Inerrancy", "Inertia", "Inexpedient", "Infer", "Ingénue", "Iniquitous", "Innovate", "Inscrutability", "Inscrutable", "Insentient",
+                "Instigate", "Instigator", "Insurgent", "Intangible", "Intemperate", "Intermittent", "Intractability", "Intransigence", "Inured", "Ire",
+                "Irksome", "Ironclad", "Ironic", "Irreproachable", "Irrevocable", "Jaded", "Jamb", "Jaundiced", "Jaunt", "Jibe",
+                "Jingoistic", "Jockeying", "Jollity", "Jurisprudence", "Knotty", "Labile", "Labyrinthine", "Lacuna", "Lambaste", "Lamentation",
+                "Lance", "Languish", "Largess", "Laud", "Leaven", "Legend", "Levee", "Libertarian", "Lien", "Limerick",
+                "Liniment", "Lint", "List", "Liturgy", "Lobbyist", "Lofty", "Loll", "Lope", "Ludicrous", "Lukewarm",
+                "Luminary", "Lummox", "Luscious", " Lynch", "Macerate", "Machinations", "Maculated", "Maladroit", "Malapropism", "Malefactor",
+                "Malign", "Malingerer", "Mallet", "Manipulatable", "Manipulative", "Marred", "Marshal", "Marsupial", "Masochist", "Matriarchy",
+                "Meager", "Meander", "Mellow", "Menagerie", "Merge", "Metaphorically", "Mettle", "Mettlesome", "Milk", "Millinery",
+                "Minatory", "Mince", "Minion", "Minutiae", "Mire", "Misanthrope", "Misconstrue", "Misnomer", "Misogynist", "Misrepresentation",
+                "Mitigation", "Momentous", "Monotonous", "Moralistic", "Moratorium", "Muse", "Mutinous", "Natty", "Navigable", "Negligence",
+                "Nexus", "Niggardly", "Nonchalance", "Nondescript", "Nonplussed", "Nostrum", "Novice", "Noxious", "Nugatory", "Nuzzle",
+                "Obfuscate", "Obligate", "Oblivious", "Obscured", "Obsession", "Obstreperous", "Obtuse", "Occluded", "Odious", "Odometer",
+                "Ogle", "Olfactory", "Omniscient", "Onus", "Opprobrious", "Opulent", "Orate", "Ordain", "Ornate", "Ossified",
+                "Ostracism", "Paean", "Palatable", "Palisade", "Palliative", "Palpable", "Palpate", "Papyrus", "Paranoia", "Parasite",
+                "Parched", "Parenthesis", "Parity", "Parochial", "Parody", "Parsimony", "Partiality", "Pathos", "Patron", "Patronize",
+                "Pedantic", "Peer", "Peerless", "Perceptive", "Percipient", "Perdition", "Peremptory", "Perfidy", "Perjury", "Perpetuated",
+                "Perpetuity", "Persnickety", "Personable", "Personification", "Perspicacity", "Pertain", "Petrify", "Petulant", "Phenomenology", "Picayune",
+                "Pied", "Pillage", "Pine", "Pivotal", "Placebo", "Plagiarism", "Plaintive", "Plaudit", "Plausibility", "Pliable",
+                "Plodding", "Pluck", "Plumage", "Plumb", "Podium", "Poised", "Polemical", "Pontificate", "Portend", "Portent",
+                "Poseur", "Posterity", "Postulate", "Posture", "Potable", "Pragmatist", "Precept", "Precept", "Precipice", "Precipitous",
+                "Predecessor", "Predicament", "Preeminent", "Presage", "Prescience", "Presentiment", "Pretension", "Primordial", "Profane", "Profanity",
+                "Profundity", "Proletarian", "Prolixity", "Prominent", "Prone", "Proponents", "Prosody", "Prostration", "Protagonist", "Protean",
+                "Protocol", "Protégé", "Provincial", "Proximate", "Prudence", "Prudish", "Prune", "Psychosis", "Punctilious", "Pundit",
+                "Purchase", "Purist", "Purloin", "Pyre", "Pyromania", "Quack", "Quaff", "Quagmire", "Quaint", "Quarantine",
+                "Quintessential", "Quirk", "Quisling", "Ramble", "Ramifications", "Rancor", "Rant", "Rarefy", "Ratify", "Ready",
+                "Rebus", "Rebuttal", "Receptacle", "Reconnaissance", "Recumbent", "Recuperate", "Red tape", "Redundant", "Referendum", "Regale",
+                "Rekindle", "Remorse", "Renege", "Renown", "Rent", "Repine", "Reprieve", "Reproof", "Resignation", "Resilience",
+                "Resonant", "Resplendent", "Restorative", "Resuscitation", "Retention", "Retraction", "Riddled", "Rigor", "Riveting", "Robust",
+                "Rotund", "Runic", "Ruse", "Saccharin", "Salacious", "Sallow", "Salutary", "Sanguinary", "Sate", "Satiate",
+                "Saw", "Scabbard", "Scale", "Scapegoat", "Score", "Scotch", "Scrupulous", "Scuttle", "Secure", "Sedulity",
+                "Seemly", "Seine", "Seminal", "Seminary", "Sensuous", "Sentinel", "Sequester", "Sere", "Serendipity", "Serene",
+                "Serrated", "Serration", "Shirk", "Sibyl", "Sidereal", "Sinewy", "Sinistral", "Skeptical", "Skiff", "Sluggard",
+                "Smelt", "Smorgasbord", "Soliloquy", "Somnambulist", "Soothsayer", "Sophomoric", "Sparse", "Speckled", "Staid", "Stanch",
+                "Stanza", "Stature", "Stevedore", "Stickler", "Stifle", "Stinting", "Stipple", "Stoic", "Stoke", "Stomach",
+                "Stringent", "Stupefying", "Stygian", "Subliminal", "Suborn", "Subtle", "Subversive", "Suffragist", "Sullied", "Supercilious",
+                "Superlative", "Supplicant", "Surreptitiously", "Suspect", "Syllogism", "Symphony", "Synapse", "Syncopation", "Tactile", "Talisman",
+                "Talon", "Tamp", "Tangent", "Tardy", "Tare", "Tarnished", "Taunt", "Tedium", "Teetotalism", "Temper",
+                "Temperate", "Tempers", "Tender", "Tentative", "Testiness", "Therapeutic", "Throwback", "Titter", "Torpid", "Totter",
+                "Touting", "Toy", "Transcendental", "Transcribe", "Transgress", "Traverse", "Trepidation", "Trilogy", "Trinket", "Truant",
+                "Truncate", "Tumult", "Tutelary", "Unalloyed", "Undercutting", "Undergird", "Undermined", "Underwrite", "Unfettered", "Unfrock",
+                "Unprepossessing", "Unscathed", "Untoward", "Unwitting", "Uproarious", "Upshot", "Utilitarian", "Utopian", "Vacuous", "Vagary",
+                "Vagrant", "Vehemence", "Vehement", "Venal", "Veneration", "Venturing", "Veracious", "Verbiage", "Verbosity", "Veritable",
+                "Vestigial", "Vignette", "Vilification", "Virtuoso", "Vital", "Vivacity", "Vivify", "Volubility", "Vulpine", "Waffle",
+                "Waft", "Wag", "Waive", "Wax", "Waylay", "Weighty", "Whelp", "Whittle", "Willful", "Wispy",
+                "Wry", "Xenophobe", "Zany", "Zealot", "wanting", "chastise", "impertinent", "maintain", "qualify", "artful",
+                "venality", "amenable", "anomalous", "intimate", "am amalgam", "betray", "involved", "acrimony", "eponym", "enamor",
+                "bastardization", "splenetic", "ad adjudicate", "pillory", "misattribute", "cataclysm", "palaver", "exorbitant", "dissipate", "despot",
+                "simulacrum", "demonstrative", "exiguity", "ineluctable", "countermand", "raillery", "verisimilitude", "obtain", "infelicitous", "afford",
+                "stultify", "bridle", "coterminous", "enormity", "bromide", "gumption", "conflate", "desideratum", "autocratic", "self-effacing",
+                "dolorous", "elegiac", "hauteur", "ethereal", "inequity", "unassailable", "transmute", "doughty", "unimpeachable", "aplomb",
+                "assiduously", "vaunted", "desiccated", "complicit", "proselytize", "meteoric", "solicitude", "reprisal", "appurtenant", "nettlesome",
+                "broadside", "antic", "unstinting", "rapprochement", "apothegm", "empiricism", " browbeat", "recrudesce", "untrammeled", "objurgate",
+                "inanity", "embryonic", "truculence", "effervescent", "chimera", "besotted", "debonair", "lacerate", "decry", "stalwart",
+                "improvident", "cosseted", "immure", "crestfallen", "hubris", "machinate", "encumber", "inimitable", "denouement", "crystallize",
+                "unpropitious", "irrefutable", "tempestuous", "hobble", "magisterial", "unflappable", "dispensation", "firebrand", "inviolate", "nonchalant",
+                "untenable", "intimation", "corollary", "recrimination", "unviable", "anemic", "epiphany", "provident", "recapitulation", "hail",
+                "prognostication", "flummox", "illustrious", "cede", "importuned", "enthrall", "semblance", "mauder", "litany", "insouciance",
+                "bowdlerize", "derelict", "enjoin", "artlessness", "hagiographic", "quail", "portentous", "mordant", "approbatory", "unforthcoming",
+                "redoubtable", "apotheosis", "remonstrate", "parvenu", "sangfroid", "bilious", "jejune", "juggernaut", "phantasmagorical", "arch",
+                "imbroglio", "gerrymander", "jaundice", "benighted", "Pollyannaish", "palimpsest", "arriviste", " blinkered", "mulct", "schadenfreude",
+                "execrate", "fell", "pyrrhic", "sartorial", "sententious", "mellifluous", "defray", "overweening", "expressive", "factious",
+                "beg", "churlish", "lascivious", "hector", "penurious", "insufferable", "malfeasance", "kowtow", "arrant", "byzantine",
+                "apogee", "jingoist", "zeitgeist", "cow", "saturnine", "champion", "inkling", "obliging", "decimation", "dilapidated",
+                "vanquish", "aphorism", "inarticulate", "perquisite", "evasive", "miscreant", "constraint", "snub", "convivial", "chivalrous",
+                "vie", "colossal", "differentiate", "malodorous", "behooves", "incense", "finagle", "delegate", "cohesive", "prevail",
+                "profusion", "rakish", "uncanny", "rile", "piquant", "industrious", "cavalier", "t tribulation", "evenhanded", "implicate",
+                "humdrum", "avert", "tact", "pastoral", "enmity", "impending", "elude", "devolve", "taxing", "steadfast",
+                "peevish", "derogative", "squander", "perturb", "destitute", "impregnable", "travail", "ploy", "retract", "credulity",
+                "smug", "tout", "candidness", "reservation", "savvy", "eke", "presumption", "exasperate", "brusquely", "irk",
+                "tarnish", "smattering", "sentimental", "derisive", "empathetic", "spurn", "genteel", "buck", "banish", "illicit",
+                "egotist", "genial", "martial", "unruly", "euphoria", "rankle", "uncompromising", "hamstrung", "commendable", "credence",
+                "flounder", "muted", "entice", "disenfranchise", "ascendancy", "raffish", "ingenuity", "fete", "appreciable", "snide",
+                "pithy", "m moot", "boon", "proponent", "amuck", "beatific", "aboveboard", "check", "melee", "apex", "vicarious",
+                "start", "fleece", "cadaverous", "raft", "checkered", "preemptive", "scintillating", "ferret", "imponderable", "flush",
+                "becoming", "virago", "heyday", "moment", "stem", "powwow", "junta", "extenuating", "slapdash", "hound",
+                "unnerve", "screed", "inflammable", "indignant", "embroiled", "thoroughgoing", "demure", "insolvent", "censor", "mesmerize",
+                "diabolical", "bleak", "retiring", "vindictive", "miser", "dog", "macabre", "telling", "telltale", "spendthrift",
+                "thrifty", "demean", "variance", "summit", "brazen", "constituent", "dilletante", "insolent", "tempered", "haphazard",
+                "ravenous", "exalt", "implausible", "unscrupulous", "forthcoming", "contingent", "reconcile", "bumbling", "iconoclastic", "expound",
+                "incorrigible", "dictatorial", "chortle", "mawkish", "entrenched", "lambast", "presient", "impudent", "aesthetic", "glut",
+                "derive", "haughty", "disaffected", "contrive", "heretic", "vilify", "negligible", "forlorn", "subsume", "efficacious",
+                "flux", "mendacity", "askance", "edifying", "jovial", "economical", "harried", "provisional", "yearn", "compulsion",
+                "vain", "firm", "shallow", "trait", "Waver", "indecisive", "capable", "retracted", "revoked", "peculiar",
+                "arouse", "incite", "soak"
+            ];
+
+            // App state
+            let currentWord = '';
+            let savedWords = JSON.parse(localStorage.getItem('savedWords')) || [];
+            let audioUrl = null;
+            let searchHistory = [];
+            let currentHistoryIndex = -1;
+            let banglaData = {};
+            let searchCache = {}; // Cache for search results
+            let thesaurusCache = {}; // Cache for thesaurus results
+
+            // Initialize the app
+            updateSavedWordsList();
+            loadBanglaData();
+            
+            // Load Bangla data from JSON file
+            async function loadBanglaData() {
+                try {
+                    const response = await fetch('bangla.json');
+                    if (response.ok) {
+                        const data = await response.json();
+                        // Convert the array structure to a simple key-value object
+                        if (data.Words && Array.isArray(data.Words)) {
+                            data.Words.forEach(item => {
+                                if (item.Words && item["Bangla Meaning"]) {
+                                    banglaData[item.Words.toLowerCase()] = item["Bangla Meaning"];
+                                }
+                            });
+                        }
+                    } else {
+                        console.warn('Bangla translation file not found');
+                    }
+                } catch (error) {
+                    console.warn('Error loading Bangla translations:', error);
+                }
+            }
+
+            // Function to translate word
+            function translateWord() {
+                if (!currentWord) return;
+                
+                // Encode the word for URL safety 
+                const encodedWord = encodeURIComponent(currentWord);
+                const translateUrl = `https://translate.google.com/?sl=en&tl=bn&text=${encodedWord}&op=translate`;
+                
+                // Open Google Translate in a new tab
+                window.open(translateUrl, '_blank');
+            }
+
+            // Tab functionality
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                    
+                    // If saved words tab is clicked, update the list
+                    if (tabId === 'saved') {
+                        updateSavedWordsList();
+                    }
+                    
+                    // If synonyms tab is clicked, try to fetch thesaurus data
+                    if (tabId === 'synonyms' && currentWord && !thesaurusCache[currentWord]) {
+                        fetchThesaurusData(currentWord);
+                    }
+                });
+            });
+
+            // Scroll to top functionality
+            scrollToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTop.style.display = 'flex';
+                } else {
+                    scrollToTop.style.display = 'none';
+                }
+            });
+
+            // GRE PDF button functionality - UPDATED
+            grePdfButton.addEventListener('click', () => {
+                window.open('GRE.pdf', '_blank');
+            });
+
+            // IELTS Mentor button functionality
+            ieltsMentorButton.addEventListener('click', () => {
+                window.open('https://www.ielts-mentor.com/', '_blank');
+            });
+
+            // IELTS Tests button functionality
+            ieltsTestsButton.addEventListener('click', () => {
+                window.open('https://ieltsonlinetests.com/', '_blank');
+            });
+
+            // Logo click to refresh page
+            logo.addEventListener('click', () => {
+                location.reload();
+            });
+
+            // Random word button functionality
+            randomWordBtn.addEventListener('click', () => {
+                fetchRandomWord();
+            });
+
+            // Back button functionality
+            backBtn.addEventListener('click', () => {
+                if (currentHistoryIndex > 0) {
+                    currentHistoryIndex--;
+                    const prevWord = searchHistory[currentHistoryIndex];
+                    wordInput.value = prevWord;
+                    currentWord = prevWord;
+                    
+                    // Check if we have cached data for this word
+                    if (searchCache[prevWord]) {
+                        displayWordData(searchCache[prevWord]);
+                    } else {
+                        searchWord();
+                    }
+                    
+                    updateHistoryButtons();
+                }
+            });
+
+            // Forward button functionality
+            forwardBtn.addEventListener('click', () => {
+                if (currentHistoryIndex < searchHistory.length - 1) {
+                    currentHistoryIndex++;
+                    const nextWord = searchHistory[currentHistoryIndex];
+                    wordInput.value = nextWord;
+                    currentWord = nextWord;
+                    
+                    // Check if we have cached data for this word
+                    if (searchCache[nextWord]) {
+                        displayWordData(searchCache[nextWord]);
+                    } else {
+                        searchWord();
+                    }
+                    
+                    updateHistoryButtons();
+                }
+            });
+
+            // Update history navigation buttons state
+            function updateHistoryButtons() {
+                backBtn.disabled = currentHistoryIndex <= 0;
+                forwardBtn.disabled = currentHistoryIndex >= searchHistory.length - 1;
+            }
+
+            // Function to fetch a random word from IELTS or GRE words list
+            function fetchRandomWord() {
+                // 50% chance for IELTS word, 50% chance for GRE word
+                const isIELTS = Math.random() > 0.5;
+                const wordList = isIELTS ? ieltsWords : greWords;
+                
+                if (wordList.length === 0) {
+                    showError('No words available');
+                    return;
+                }
+                
+                const randomIndex = Math.floor(Math.random() * wordList.length);
+                const randomWord = wordList[randomIndex];
+                
+                wordInput.value = randomWord;
+                currentWord = randomWord;
+                searchWord();
+            }
+
+            // Function to search for a word
+            async function searchWord() {
+                const word = wordInput.value.trim().toLowerCase();
+                
+                if (word === '') {
+                    showError('Please enter a word to search');
+                    return;
+                }
+                
+                // Check if we have cached data for this word
+                if (searchCache[word]) {
+                    displayWordData(searchCache[word]);
+                    return;
+                }
+                
+                // Add to search history
+                if (searchHistory[searchHistory.length - 1] !== word) {
+                    searchHistory.push(word);
+                    currentHistoryIndex = searchHistory.length - 1;
+                }
+                
+                updateHistoryButtons();
+                currentWord = word;
+                
+                // Show loading, hide results and error
+                loading.style.display = 'block';
+                resultsContainer.style.display = 'none';
+                errorMessage.style.display = 'none';
+                
+                try {
+                    // Fetch from Free Dictionary API
+                    const freeDictionaryResponse = await fetch(`${FREE_DICTIONARY_API}${word}`);
+                    
+                    let freeDictionaryData = null;
+                    
+                    // Process Free Dictionary response
+                    if (freeDictionaryResponse.ok) {
+                        freeDictionaryData = await freeDictionaryResponse.json();
+                    } else {
+                        throw new Error('Word not found. Please try another word.');
+                    }
+                    
+                    // Cache the result
+                    searchCache[word] = freeDictionaryData;
+                    
+                    // Display the data
+                    displayWordData(freeDictionaryData);
+                    
+                    // Show results, hide loading
+                    resultsContainer.style.display = 'block';
+                    loading.style.display = 'none';
+                    
+                } catch (error) {
+                    console.error('Error fetching word data:', error);
+                    loading.style.display = 'none';
+                    showError(error.message);
+                }
+            }
+
+            // Function to fetch thesaurus data
+            async function fetchThesaurusData(word) {
+                if (!word) return;
+                
+                // Show loading for thesaurus section
+                synonymsGrid.innerHTML = '<div class="loading">Loading synonyms...</div>';
+                antonymsGrid.innerHTML = '<div class="loading">Loading antonyms...</div>';
+                
+                try {
+                    const response = await fetch(`${THESAURUS_API}${word}`, {
+                        headers: {
+                            'X-Api-Key': THESAURUS_API_KEY
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        thesaurusCache[word] = data;
+                        displayThesaurusData(data);
+                    } else {
+                        throw new Error('Thesaurus data not available');
+                    }
+                } catch (error) {
+                    console.error('Error fetching thesaurus data:', error);
+                    synonymsGrid.innerHTML = '<div class="error-message">Unable to load synonyms</div>';
+                    antonymsGrid.innerHTML = '<div class="error-message">Unable to load antonyms</div>';
+                    
+                    // Fallback to Free Dictionary synonyms/antonyms if available
+                    if (searchCache[word] && searchCache[word][0] && searchCache[word][0].meanings) {
+                        displayFallbackSynonymsAntonyms(searchCache[word][0].meanings);
+                    }
+                }
+            }
+
+            // Function to display thesaurus data
+            function displayThesaurusData(data) {
+                // Clear previous data
+                synonymsGrid.innerHTML = '';
+                antonymsGrid.innerHTML = '';
+                
+                // Display synonyms (max 16)
+                if (data.synonyms && data.synonyms.length > 0) {
+                    const limitedSynonyms = data.synonyms.slice(0, 16);
+                    limitedSynonyms.forEach(synonym => {
+                        const synonymItem = document.createElement('div');
+                        synonymItem.className = 'synonym-grid-item';
+                        synonymItem.textContent = synonym;
+                        synonymItem.onclick = () => {
+                            wordInput.value = synonym;
+                            searchWord();
+                        };
+                        synonymsGrid.appendChild(synonymItem);
+                    });
+                } else {
+                    synonymsGrid.innerHTML = '<div>No synonyms available</div>';
+                }
+                
+                // Display antonyms (max 16)
+                if (data.antonyms && data.antonyms.length > 0) {
+                    const limitedAntonyms = data.antonyms.slice(0, 16);
+                    limitedAntonyms.forEach(antonym => {
+                        const antonymItem = document.createElement('div');
+                        antonymItem.className = 'antonym-grid-item';
+                        antonymItem.textContent = antonym;
+                        antonymItem.onclick = () => {
+                            wordInput.value = antonym;
+                            searchWord();
+                        };
+                        antonymsGrid.appendChild(antonymItem);
+                    });
+                } else {
+                    antonymsGrid.innerHTML = '<div>No antonyms available</div>';
+                }
+            }
+
+            // Function to display fallback synonyms/antonyms from Free Dictionary
+            function displayFallbackSynonymsAntonyms(meanings) {
+                let synonyms = [];
+                let antonyms = [];
+                
+                meanings.forEach(meaning => {
+                    if (meaning.synonyms) {
+                        synonyms = [...synonyms, ...meaning.synonyms];
+                    }
+                    if (meaning.antonyms) {
+                        antonyms = [...antonyms, ...meaning.antonyms];
+                    }
+                });
+                
+                // Clear previous data
+                synonymsGrid.innerHTML = '';
+                antonymsGrid.innerHTML = '';
+                
+                // Display synonyms (max 16)
+                if (synonyms.length > 0) {
+                    const limitedSynonyms = synonyms.slice(0, 16);
+                    limitedSynonyms.forEach(synonym => {
+                        const synonymItem = document.createElement('div');
+                        synonymItem.className = 'synonym-grid-item';
+                        synonymItem.textContent = synonym;
+                        synonymItem.onclick = () => {
+                            wordInput.value = synonym;
+                            searchWord();
+                        };
+                        synonymsGrid.appendChild(synonymItem);
+                    });
+                } else {
+                    synonymsGrid.innerHTML = '<div>No synonyms available</div>';
+                }
+                
+                // Display antonyms (max 16)
+                if (antonyms.length > 0) {
+                    const limitedAntonyms = antonyms.slice(0, 16);
+                    limitedAntonyms.forEach(antonym => {
+                        const antonymItem = document.createElement('div');
+                        antonymItem.className = 'antonym-grid-item';
+                        antonymItem.textContent = antonym;
+                        antonymItem.onclick = () => {
+                            wordInput.value = antonym;
+                            searchWord();
+                        };
+                        antonymsGrid.appendChild(antonymItem);
+                    });
+                } else {
+                    antonymsGrid.innerHTML = '<div>No antonyms available</div>';
+                }
+            }
+
+            // Function to display word data
+            function displayWordData(freeDictionaryData) {
+                // Set word title
+                let wordText = currentWord;
+                if (freeDictionaryData && freeDictionaryData[0]) {
+                    wordText = freeDictionaryData[0].word;
+                }
+                
+                wordTitle.textContent = wordText;
+                
+                // Set word type (IELTS or GRE)
+                const wordLower = wordText.toLowerCase();
+                if (ieltsWords.map(w => w.toLowerCase()).includes(wordLower)) {
+                    wordType.textContent = "IELTS";
+                    wordType.className = "word-type ielts-type";
+                } else if (greWords.map(w => w.toLowerCase()).includes(wordLower)) {
+                    wordType.textContent = "GRE";
+                    wordType.className = "word-type gre-type";
+                } else {
+                    wordType.textContent = "";
+                }
+                
+                // Display Bangla translation if available
+                if (banglaData[wordLower]) {
+                    banglaTranslation.textContent = `Bangla: ${banglaData[wordLower]}`;
+                    banglaTranslation.style.display = 'block';
+                } else {
+                    banglaTranslation.style.display = 'none';
+                }
+                
+                // Get phonetic text
+                let phoneticText = "No phonetic available";
+                
+                // Try Free Dictionary
+                if (freeDictionaryData && freeDictionaryData[0] && freeDictionaryData[0].phonetics) {
+                    for (let phoneticData of freeDictionaryData[0].phonetics) {
+                        if (phoneticData.text) {
+                            phoneticText = phoneticData.text;
+                            break;
+                        }
+                    }
+                }
+                
+                phonetic.textContent = phoneticText;
+                
+                // Get audio pronunciation
+                audioUrl = null;
+                
+                // Try Free Dictionary
+                if (freeDictionaryData && freeDictionaryData[0] && freeDictionaryData[0].phonetics) {
+                    for (let phoneticData of freeDictionaryData[0].phonetics) {
+                        if (phoneticData.audio && phoneticData.audio.trim() !== '') {
+                            audioUrl = phoneticData.audio;
+                            break;
+                        }
+                    }
+                }
+                
+                // Set up audio button
+                if (audioUrl) {
+                    audioBtn.style.display = 'flex';
+                    audioBtn.onclick = function() {
+                        const audio = new Audio(audioUrl);
+                        audio.play().catch(e => console.error('Audio playback failed:', e));
+                    };
+                } else {
+                    audioBtn.style.display = 'none';
+                }
+                
+                // Clear previous definitions
+                fdDefinitionsList.innerHTML = '';
+                
+                // Process Free Dictionary definitions
+                if (freeDictionaryData && freeDictionaryData[0]) {
+                    if (freeDictionaryData[0].meanings && freeDictionaryData[0].meanings.length > 0) {
+                        freeDictionaryData[0].meanings.forEach(meaning => {
+                            const partOfSpeech = document.createElement('div');
+                            partOfSpeech.className = 'part-of-speech';
+                            partOfSpeech.textContent = meaning.partOfSpeech;
+                            fdDefinitionsList.appendChild(partOfSpeech);
+                            
+                            if (meaning.definitions && meaning.definitions.length > 0) {
+                                meaning.definitions.forEach((def, index) => {
+                                    const definitionItem = document.createElement('li');
+                                    definitionItem.className = 'definition-item fd-highlight';
+                                    
+                                    const definitionText = document.createElement('div');
+                                    definitionText.className = 'definition-text';
+                                    definitionText.textContent = `${index + 1}. ${def.definition}`;
+                                    definitionItem.appendChild(definitionText);
+                                    
+                                    if (def.example) {
+                                        const example = document.createElement('div');
+                                        example.className = 'example';
+                                        example.textContent = def.example;
+                                        definitionItem.appendChild(example);
+                                    }
+                                    
+                                    fdDefinitionsList.appendChild(definitionItem);
+                                });
+                            }
+                        });
+                    } else {
+                        fdDefinitionsList.innerHTML = '<li class="definition-item">No definitions found</li>';
+                    }
+                } else {
+                    fdDefinitionsList.innerHTML = '<li class="definition-item">No definitions available</li>';
+                }
+                
+                // Update save button state
+                updateSaveButtonState();
+                
+                // If we're on the synonyms tab, try to fetch thesaurus data
+                if (document.querySelector('[data-tab="synonyms"]').classList.contains('active')) {
+                    if (thesaurusCache[currentWord]) {
+                        displayThesaurusData(thesaurusCache[currentWord]);
+                    } else {
+                        fetchThesaurusData(currentWord);
+                    }
+                }
+            }
+
+            // Function to update save button state
+            function updateSaveButtonState() {
+                if (savedWords.includes(currentWord)) {
+                    saveBtnHeader.classList.add('saved');
+                    saveBtnText.textContent = 'Word Saved';
+                } else {
+                    saveBtnHeader.classList.remove('saved');
+                    saveBtnText.textContent = 'Save Word';
+                }
+            }
+
+            // Function to save word
+            function saveWord() {
+                if (!currentWord) return;
+                
+                if (!savedWords.includes(currentWord)) {
+                    savedWords.push(currentWord);
+                    localStorage.setItem('savedWords', JSON.stringify(savedWords));
+                    updateSaveButtonState();
+                    updateSavedWordsList();
+                } else {
+                    // Remove word if already saved
+                    savedWords = savedWords.filter(word => word !== currentWord);
+                    localStorage.setItem('savedWords', JSON.stringify(savedWords));
+                    updateSaveButtonState();
+                    updateSavedWordsList();
+                }
+            }
+
+            // Function to update saved words list
+            function updateSavedWordsList() {
+                savedWordsList.innerHTML = '';
+                
+                if (savedWords.length === 0) {
+                    savedWordsList.innerHTML = '<li class="saved-word-item">No words saved yet</li>';
+                    return;
+                }
+                
+                savedWords.forEach(word => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'saved-word-item';
+                    
+                    const wordContainer = document.createElement('div');
+                    
+                    const wordSpan = document.createElement('span');
+                    wordSpan.className = 'saved-word-text';
+                    wordSpan.textContent = word;
+                    wordSpan.onclick = () => {
+                        wordInput.value = word;
+                        searchWord();
+                        // Switch to definitions tab
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tabContents.forEach(c => c.classList.remove('active'));
+                        document.querySelector('[data-tab="definitions"]').classList.add('active');
+                        document.getElementById('definitions-tab').classList.add('active');
+                    };
+                    
+                    // Add Bangla meaning if available
+                    const wordLower = word.toLowerCase();
+                    if (banglaData[wordLower]) {
+                        const banglaSpan = document.createElement('span');
+                        banglaSpan.className = 'saved-word-bangla';
+                        banglaSpan.textContent = banglaData[wordLower];
+                        wordContainer.appendChild(wordSpan);
+                        wordContainer.appendChild(banglaSpan);
+                    } else {
+                        wordContainer.appendChild(wordSpan);
+                    }
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-saved-word';
+                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    removeBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        savedWords = savedWords.filter(w => w !== word);
+                        localStorage.setItem('savedWords', JSON.stringify(savedWords));
+                        updateSavedWordsList();
+                        if (word === currentWord) {
+                            updateSaveButtonState();
+                        }
+                    };
+                    
+                    listItem.appendChild(wordContainer);
+                    listItem.appendChild(removeBtn);
+                    savedWordsList.appendChild(listItem);
+                });
+            }
+
+            // Function to show error message
+            function showError(message) {
+                errorText.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+
+            // Event listeners
+            searchBtn.addEventListener('click', searchWord);
+            
+            wordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchWord();
+                }
+            });
+
+            saveBtnHeader.addEventListener('click', saveWord);
+            
+            translateBtnHeader.addEventListener('click', translateWord);
+        });
+    </script>
+</body>
+</html>
