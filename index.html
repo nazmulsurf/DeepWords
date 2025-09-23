@@ -679,6 +679,107 @@
             font-size: 0.9rem;
         }
 
+        /* IELTS Books Section */
+        .ielts-books-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .ielts-books-section.active {
+            display: block;
+        }
+
+        .ielts-books-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .ielts-books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .ielts-book-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--ielts-color);
+        }
+
+        .ielts-book-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .pdf-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--ielts-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .pdf-button:hover {
+            background-color: #0d5bc2;
+        }
+
+        .audio-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .audio-button {
+            padding: 8px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .audio-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .back-to-resources {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-resources:hover {
+            background-color: #555;
+        }
+
         @media (max-width: 992px) {
             header {
                 flex-direction: column;
@@ -752,6 +853,10 @@
             }
 
             .home-resources-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ielts-books-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -840,6 +945,13 @@
                     <h3 class="home-resource-title">GRE Vocabulary</h3>
                     <p class="home-resource-description">Download comprehensive GRE vocabulary list in PDF format</p>
                 </div>
+                <div class="home-resource-card ielts" id="ieltsBooksCard">
+                    <div class="home-resource-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="home-resource-title">IELTS Books</h3>
+                    <p class="home-resource-description">Access 20 IELTS books with listening practice audios</p>
+                </div>
                 <div class="home-resource-card ielts" id="ieltsMentorCard">
                     <div class="home-resource-icon">
                         <i class="fas fa-graduation-cap"></i>
@@ -854,14 +966,16 @@
                     <h3 class="home-resource-title">IELTS Online Tests</h3>
                     <p class="home-resource-description">Practice with real IELTS test questions and mock exams</p>
                 </div>
-                <div class="home-resource-card ielts" id="ieltsExtremeCard">
-                    <div class="home-resource-icon">
-                        <i class="fas fa-fire"></i>
-                    </div>
-                    <h3 class="home-resource-title">IELTS Extreme</h3>
-                    <p class="home-resource-description">Advanced IELTS preparation materials and strategies</p>
-                </div>
             </div>
+        </div>
+
+        <!-- IELTS Books Section -->
+        <div class="ielts-books-section" id="ieltsBooksSection">
+            <h2 class="ielts-books-title">IELTS Practice Books</h2>
+            <div class="ielts-books-grid" id="ieltsBooksGrid">
+                <!-- IELTS book cards will be generated here -->
+            </div>
+            <button class="back-to-resources" id="backToResources">Back to Resources</button>
         </div>
 
         <div class="loading" id="loading">
@@ -978,9 +1092,12 @@
             const resourcesLink = document.getElementById('resourcesLink');
             const homeResources = document.getElementById('homeResources');
             const greResourceCard = document.getElementById('greResourceCard');
+            const ieltsBooksCard = document.getElementById('ieltsBooksCard');
             const ieltsMentorCard = document.getElementById('ieltsMentorCard');
             const ieltsTestsCard = document.getElementById('ieltsTestsCard');
-            const ieltsExtremeCard = document.getElementById('ieltsExtremeCard');
+            const ieltsBooksSection = document.getElementById('ieltsBooksSection');
+            const ieltsBooksGrid = document.getElementById('ieltsBooksGrid');
+            const backToResources = document.getElementById('backToResources');
 
             // API endpoints and keys
             const FREE_DICTIONARY_API = "https://api.dictionaryapi.dev/api/v2/entries/en/";
@@ -1387,6 +1504,131 @@
                 "arouse", "incite", "soak"
             ];
 
+
+            // IELTS Audio Links (Replace with actual audio URLs)
+            const ieltsAudioLinks = {
+                1: {
+                    test1: "IELTS/audio/1/test1.mp3",
+                    test2: "IELTS/audio/1/test2.mp3",
+                    test3: "IELTS/audio/1/test3.mp3",
+                    test4: "IELTS/audio/1/test4.mp3"
+                },
+                2: {
+                    test1: "IELTS/audio/2/test1.mp3",
+                    test2: "IELTS/audio/2/test2.mp3",
+                    test3: "IELTS/audio/2/test3.mp3",
+                    test4: "IELTS/audio/2/test4.mp3"
+                },
+                3: {
+                    test1: "IELTS/audio/3/test1.mp3",
+                    test2: "IELTS/audio/3/test2.mp3",
+                    test3: "IELTS/audio/3/test3.mp3",
+                    test4: "IELTS/audio/3/test4.mp3"
+                },
+                4: {
+                    test1: "IELTS/audio/4/test1.mp3",
+                    test2: "IELTS/audio/4/test2.mp3",
+                    test3: "IELTS/audio/4/test3.mp3",
+                    test4: "IELTS/audio/4/test4.mp3"
+                },
+                5: {
+                    test1: "IELTS/audio/5/test1.mp3",
+                    test2: "IELTS/audio/5/test2.mp3",
+                    test3: "IELTS/audio/5/test3.mp3",
+                    test4: "IELTS/audio/5/test4.mp3"
+                },
+                6: {
+                    test1: "IELTS/audio/6/test1.mp3",
+                    test2: "IELTS/audio/6/test2.mp3",
+                    test3: "IELTS/audio/6/test3.mp3",
+                    test4: "IELTS/audio/6/test4.mp3"
+                },
+                7: {
+                    test1: "IELTS/audio/7/test1.mp3",
+                    test2: "IELTS/audio/7/test2.mp3",
+                    test3: "IELTS/audio/7/test3.mp3",
+                    test4: "IELTS/audio/7/test4.mp3"
+                },
+                8: {
+                    test1: "IELTS/audio/8/test1.mp3",
+                    test2: "IELTS/audio/8/test2.mp3",
+                    test3: "IELTS/audio/8/test3.mp3",
+                    test4: "IELTS/audio/8/test4.mp3"
+                },
+                9: {
+                    test1: "IELTS/audio/9/test1.mp3",
+                    test2: "IELTS/audio/9/test2.mp3",
+                    test3: "IELTS/audio/9/test3.mp3",
+                    test4: "IELTS/audio/9/test4.mp3"
+                },
+                10: {
+                    test1: "IELTS/audio/10/test1.mp3",
+                    test2: "IELTS/audio/10/test2.mp3",
+                    test3: "IELTS/audio/10/test3.mp3",
+                    test4: "IELTS/audio/10/test4.mp3"
+                },
+                11: {
+                    test1: "IELTS/audio/11/test1.mp3",
+                    test2: "IELTS/audio/11/test2.mp3",
+                    test3: "IELTS/audio/11/test3.mp3",
+                    test4: "IELTS/audio/11/test4.mp3"
+                },
+                12: {
+                    test1: "IELTS/audio/12/test1.mp3",
+                    test2: "IELTS/audio/12/test2.mp3",
+                    test3: "IELTS/audio/12/test3.mp3",
+                    test4: "IELTS/audio/12/test4.mp3"
+                },
+                13: {
+                    test1: "IELTS/audio/13/test1.mp3",
+                    test2: "IELTS/audio/13/test2.mp3",
+                    test3: "IELTS/audio/13/test3.mp3",
+                    test4: "IELTS/audio/13/test4.mp3"
+                },
+                14: {
+                    test1: "IELTS/audio/14/test1.mp3",
+                    test2: "IELTS/audio/14/test2.mp3",
+                    test3: "IELTS/audio/14/test3.mp3",
+                    test4: "IELTS/audio/14/test4.mp3"
+                },
+                15: {
+                    test1: "IELTS/audio/15/test1.mp3",
+                    test2: "IELTS/audio/15/test2.mp3",
+                    test3: "IELTS/audio/15/test3.mp3",
+                    test4: "IELTS/audio/15/test4.mp3"
+                },
+                16: {
+                    test1: "IELTS/audio/16/test1.mp3",
+                    test2: "IELTS/audio/16/test2.mp3",
+                    test3: "IELTS/audio/16/test3.mp3",
+                    test4: "IELTS/audio/16/test4.mp3"
+                },
+                17: {
+                    test1: "IELTS/audio/17/test1.mp3",
+                    test2: "IELTS/audio/17/test2.mp3",
+                    test3: "IELTS/audio/17/test3.mp3",
+                    test4: "IELTS/audio/17/test4.mp3"
+                },
+                18: {
+                    test1: "IELTS/audio/18/test1.mp3",
+                    test2: "IELTS/audio/18/test2.mp3",
+                    test3: "IELTS/audio/18/test3.mp3",
+                    test4: "IELTS/audio/18/test4.mp3"
+                },
+                19: {
+                    test1: "IELTS/audio/19/test1.mp3",
+                    test2: "IELTS/audio/19/test2.mp3",
+                    test3: "IELTS/audio/19/test3.mp3",
+                    test4: "IELTS/audio/19/test4.mp3"
+                },
+                20: {
+                    test1: "IELTS/audio/20/test1.mp3",
+                    test2: "IELTS/audio/20/test2.mp3",
+                    test3: "IELTS/audio/20/test3.mp3",
+                    test4: "IELTS/audio/20/test4.mp3"
+                }
+            };
+
             // App state
             let currentWord = '';
             let savedWords = JSON.parse(localStorage.getItem('savedWords')) || [];
@@ -1400,7 +1642,60 @@
             // Initialize the app
             updateSavedWordsList();
             loadBanglaData();
+            generateIELTSBooks();
             
+            // Generate IELTS book cards
+            function generateIELTSBooks() {
+                ieltsBooksGrid.innerHTML = '';
+                
+                for (let i = 1; i <= 20; i++) {
+                    const bookCard = document.createElement('div');
+                    bookCard.className = 'ielts-book-card';
+                    
+                    const title = document.createElement('h3');
+                    title.className = 'ielts-book-title';
+                    title.textContent = `IELTS Book ${i}`;
+                    
+                    const pdfButton = document.createElement('button');
+                    pdfButton.className = 'pdf-button';
+                    pdfButton.innerHTML = `<i class="fas fa-book-open"></i> Open Book ${i}`;
+                    pdfButton.onclick = () => {
+                        // Open PDF in new tab
+                        window.open(`IELTS/${i}.pdf`, '_blank');
+                    };
+                    
+                    const audioButtons = document.createElement('div');
+                    audioButtons.className = 'audio-buttons';
+                    
+                    // Create 4 audio buttons for each book
+                    for (let j = 1; j <= 4; j++) {
+                        const audioButton = document.createElement('button');
+                        audioButton.className = 'audio-button';
+                        audioButton.innerHTML = `<i class="fas fa-volume-up"></i> Test ${j}`;
+                        
+                        // Get audio URL from the ieltsAudioLinks object
+                        const audioUrl = ieltsAudioLinks[i] ? ieltsAudioLinks[i][`test${j}`] : null;
+                        
+                        audioButton.onclick = () => {
+                            if (audioUrl) {
+                                const audio = new Audio(audioUrl);
+                                audio.play().catch(e => console.error('Audio playback failed:', e));
+                            } else {
+                                alert(`Audio for Book ${i}, Test ${j} is not available. Please add the audio link in the code.`);
+                            }
+                        };
+                        
+                        audioButtons.appendChild(audioButton);
+                    }
+                    
+                    bookCard.appendChild(title);
+                    bookCard.appendChild(pdfButton);
+                    bookCard.appendChild(audioButtons);
+                    
+                    ieltsBooksGrid.appendChild(bookCard);
+                }
+            }
+
             // Load Bangla data from JSON file
             async function loadBanglaData() {
                 try {
@@ -1461,6 +1756,7 @@
                     
                     // Hide home resources when any tab is clicked
                     homeResources.classList.remove('active');
+                    ieltsBooksSection.classList.remove('active');
                 });
             });
 
@@ -1473,9 +1769,24 @@
                     homeResources.classList.remove('active');
                 } else {
                     homeResources.classList.add('active');
+                    ieltsBooksSection.classList.remove('active');
                     // Scroll to resources section
                     homeResources.scrollIntoView({ behavior: 'smooth' });
                 }
+            });
+
+            // IELTS Books card functionality
+            ieltsBooksCard.addEventListener('click', () => {
+                homeResources.classList.remove('active');
+                ieltsBooksSection.classList.add('active');
+                ieltsBooksSection.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Back to resources button
+            backToResources.addEventListener('click', () => {
+                ieltsBooksSection.classList.remove('active');
+                homeResources.classList.add('active');
+                homeResources.scrollIntoView({ behavior: 'smooth' });
             });
 
             // Home resource card click handlers
@@ -1489,10 +1800,6 @@
 
             ieltsTestsCard.addEventListener('click', () => {
                 window.open('https://ieltsonlinetests.com/', '_blank');
-            });
-
-            ieltsExtremeCard.addEventListener('click', () => {
-                window.open('https://ieltsextremes.com/ielts-material/', '_blank');
             });
 
             // Scroll to top functionality
@@ -1610,6 +1917,7 @@
                 resultsContainer.style.display = 'none';
                 errorMessage.style.display = 'none';
                 homeResources.classList.remove('active');
+                ieltsBooksSection.classList.remove('active');
                 
                 try {
                     // Fetch from Free Dictionary API
