@@ -27,7 +27,7 @@
             --antonym-color: #ff5252;
             --related-color: #ffc107;
             --langeek-color: #ff6b35;
-            --typlingtest-color: #17a2b8;
+            --resources-color: #d35400;
         }
 
         * {
@@ -87,7 +87,7 @@
             white-space: nowrap;
         }
 
-        .langeek-container, .typlingtest-container {
+        .langeek-container, .resources-container {
             display: flex;
             align-items: center;
             margin-left: 15px;
@@ -103,11 +103,11 @@
             transition: all 0.3s ease;
         }
         
-        .typlingtest-link {
+        .resources-link {
             display: flex;
             align-items: center;
             text-decoration: none;
-            color: var(--typlingtest-color);
+            color: var(--resources-color);
             font-weight: 800;
             font-size: 1.5rem;
             transition: all 0.3s ease;
@@ -117,7 +117,7 @@
             color: var(--primary);
         }
         
-        .typlingtest-link:hover {
+        .resources-link:hover {
             color: var(--primary);
         }
 
@@ -608,75 +608,75 @@
             margin-bottom: 10px;
         }
 
-        /* Resources section styles */
-        .resources-section {
-            text-align: center;
+        /* Home resources section */
+        .home-resources {
+            background-color: #f9f9f9;
+            border-radius: 16px;
             padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: none;
         }
 
-        .resources-button {
-            background: var(--gre-color);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            margin: 10px;
+        .home-resources.active {
+            display: block;
         }
 
-        .resources-button:hover {
-            background: #e67e22;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        
-        .ielts-resource-button {
-            background: var(--ielts-color);
-        }
-        
-        .ielts-resource-button:hover {
-            background: #0d5ccc;
-        }
-
-        /* Synonyms & Antonyms grid layout */
-        .synonyms-grid, .antonyms-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .synonym-grid-item, .antonym-grid-item {
-            background: var(--light-bg);
-            padding: 10px;
-            border-radius: 6px;
+        .home-resources-title {
+            font-size: 1.8rem;
+            color: var(--primary);
             text-align: center;
-            font-weight: bold;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .home-resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .home-resource-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
             cursor: pointer;
-            transition: all 0.2s ease;
+            border-top: 4px solid var(--gre-color);
         }
-        
-        .synonym-grid-item {
-            border: 1px solid var(--synonym-color);
-            color: var(--synonym-color);
+
+        .home-resource-card.ielts {
+            border-top-color: var(--ielts-color);
         }
-        
-        .antonym-grid-item {
-            border: 1px solid var(--antonym-color);
-            color: var(--antonym-color);
+
+        .home-resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
-        
-        .synonym-grid-item:hover {
-            background-color: rgba(76, 175, 80, 0.1);
+
+        .home-resource-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--gre-color);
         }
-        
-        .antonym-grid-item:hover {
-            background-color: rgba(255, 82, 82, 0.1);
+
+        .home-resource-card.ielts .home-resource-icon {
+            color: var(--ielts-color);
+        }
+
+        .home-resource-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .home-resource-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
         @media (max-width: 992px) {
@@ -700,7 +700,7 @@
                 font-size: 1.8rem;
             }
             
-            .langeek-link, .typlingtest-link {
+            .langeek-link, .resources-link {
                 font-size: 1rem;
             }
             
@@ -743,16 +743,16 @@
                 white-space: nowrap;
             }
             
-            .synonyms-grid, .antonyms-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
             .translate-btn-header span {
                 display: none;
             }
             
             .translate-btn-header {
                 padding: 12px;
+            }
+
+            .home-resources-grid {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -763,7 +763,7 @@
                 gap: 10px;
             }
             
-            .langeek-container, .typlingtest-container {
+            .langeek-container, .resources-container {
                 margin-left: 0;
             }
             
@@ -785,10 +785,6 @@
                 margin-top: 0;
                 border-radius: 50%;
             }
-            
-            .synonyms-grid, .antonyms-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -807,9 +803,9 @@
                     </a>
                 </div>
                 
-                <div class="typlingtest-container">
-                    <a href="https://www.typingtest.com/" target="_blank" class="typlingtest-link">
-                        <span>TyplingTest</span>
+                <div class="resources-container">
+                    <a href="#" id="resourcesLink" class="resources-link">
+                        <span>Resources</span>
                     </a>
                 </div>
             </div>
@@ -832,6 +828,41 @@
                 </button>
             </div>
         </header>
+
+        <!-- Home Resources Section -->
+        <div class="home-resources" id="homeResources">
+            <h2 class="home-resources-title">Learning Resources</h2>
+            <div class="home-resources-grid">
+                <div class="home-resource-card" id="greResourceCard">
+                    <div class="home-resource-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="home-resource-title">GRE Vocabulary</h3>
+                    <p class="home-resource-description">Download comprehensive GRE vocabulary list in PDF format</p>
+                </div>
+                <div class="home-resource-card ielts" id="ieltsMentorCard">
+                    <div class="home-resource-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="home-resource-title">IELTS Mentor</h3>
+                    <p class="home-resource-description">Comprehensive IELTS preparation resources and tips</p>
+                </div>
+                <div class="home-resource-card ielts" id="ieltsTestsCard">
+                    <div class="home-resource-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3 class="home-resource-title">IELTS Online Tests</h3>
+                    <p class="home-resource-description">Practice with real IELTS test questions and mock exams</p>
+                </div>
+                <div class="home-resource-card ielts" id="ieltsExtremeCard">
+                    <div class="home-resource-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="home-resource-title">IELTS Extreme</h3>
+                    <p class="home-resource-description">Advanced IELTS preparation materials and strategies</p>
+                </div>
+            </div>
+        </div>
 
         <div class="loading" id="loading">
             <i class="fas fa-spinner"></i> Fetching word data...
@@ -865,7 +896,6 @@
                 <div class="tab active" data-tab="definitions">Definitions</div>
                 <div class="tab" data-tab="synonyms">Synonyms & Antonyms</div>
                 <div class="tab" data-tab="saved">Saved Words</div>
-                <div class="tab" data-tab="resources">Resources</div>
             </div>
 
             <div class="tab-content active" id="definitions-tab">
@@ -902,20 +932,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="tab-content" id="resources-tab">
-                <div class="resources-section">
-                    <button class="resources-button" id="grePdfButton">
-                        <i class="fas fa-download"></i> GRE Vocabulary
-                    </button>
-                    <button class="resources-button ielts-resource-button" id="ieltsMentorButton">
-                        <i class="fas fa-external-link-alt"></i> IELTS Mentor
-                    </button>
-                    <button class="resources-button ielts-resource-button" id="ieltsTestsButton">
-                        <i class="fas fa-external-link-alt"></i> IELTS Online Tests
-                    </button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -925,7 +941,7 @@
 
     <footer>
         <div class="container">
-            <p>&nbsp;</p>
+            <p>© 2025 DeepWords - Md Nazmul Islam</p>
         </div>
     </footer>
 
@@ -953,15 +969,18 @@
             const randomWordBtn = document.getElementById('randomWordBtn');
             const savedWordsList = document.getElementById('savedWordsList');
             const audioBtn = document.getElementById('audioBtn');
-            const grePdfButton = document.getElementById('grePdfButton');
-            const ieltsMentorButton = document.getElementById('ieltsMentorButton');
-            const ieltsTestsButton = document.getElementById('ieltsTestsButton');
             const logo = document.getElementById('logo');
             const synonymsSection = document.getElementById('synonymsSection');
             const antonymsSection = document.getElementById('antonymsSection');
             const backBtn = document.getElementById('backBtn');
             const forwardBtn = document.getElementById('forwardBtn');
             const translateBtnHeader = document.getElementById('translateBtnHeader');
+            const resourcesLink = document.getElementById('resourcesLink');
+            const homeResources = document.getElementById('homeResources');
+            const greResourceCard = document.getElementById('greResourceCard');
+            const ieltsMentorCard = document.getElementById('ieltsMentorCard');
+            const ieltsTestsCard = document.getElementById('ieltsTestsCard');
+            const ieltsExtremeCard = document.getElementById('ieltsExtremeCard');
 
             // API endpoints and keys
             const FREE_DICTIONARY_API = "https://api.dictionaryapi.dev/api/v2/entries/en/";
@@ -1075,8 +1094,7 @@
                 "initiative", "inspection", "integral", "intervention", "intrinsic", "likewise", "link", "manage", "manipulation", "merge",
                 "nonetheless", "notwithstanding", "overlap", "persistent", "pose", "possess", "preliminary", "presumption", "ratio", "refine",
                 "relate", "restore", "restraint", "rigid", "route", "sacrifice", "scale", "so-called", "straightforward", "subordinate",
-                "supplementary", "sympathy", "termination", "transmission", "undergo", "unify", "voluntary", "whereby"
-            ];
+                "supplementary", "sympathy", "termination", "transmission", "undergo", "unify", "voluntary", "whereby"            ];
 
             // Full GRE word list (from provided Excel file)
             const greWords = [
@@ -1411,7 +1429,8 @@
                 
                 // Encode the word for URL safety 
                 const encodedWord = encodeURIComponent(currentWord);
-                const translateUrl = `https://translate.google.com/?sl=en&tl=bn&text=${encodedWord}&op=translate`;
+                // Updated Google Translate URL
+                const translateUrl = `https://translate.google.com/details?sl=en&tl=bn&text=${encodedWord}&op=translate`;
                 
                 // Open Google Translate in a new tab
                 window.open(translateUrl, '_blank');
@@ -1439,7 +1458,41 @@
                     if (tabId === 'synonyms' && currentWord && !thesaurusCache[currentWord]) {
                         fetchThesaurusData(currentWord);
                     }
+                    
+                    // Hide home resources when any tab is clicked
+                    homeResources.classList.remove('active');
                 });
+            });
+
+            // Resources link functionality
+            resourcesLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Toggle home resources visibility
+                if (homeResources.classList.contains('active')) {
+                    homeResources.classList.remove('active');
+                } else {
+                    homeResources.classList.add('active');
+                    // Scroll to resources section
+                    homeResources.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+
+            // Home resource card click handlers
+            greResourceCard.addEventListener('click', () => {
+                window.open('GRE.pdf', '_blank');
+            });
+
+            ieltsMentorCard.addEventListener('click', () => {
+                window.open('https://www.ielts-mentor.com/', '_blank');
+            });
+
+            ieltsTestsCard.addEventListener('click', () => {
+                window.open('https://ieltsonlinetests.com/', '_blank');
+            });
+
+            ieltsExtremeCard.addEventListener('click', () => {
+                window.open('https://ieltsextremes.com/ielts-material/', '_blank');
             });
 
             // Scroll to top functionality
@@ -1453,21 +1506,6 @@
                 } else {
                     scrollToTop.style.display = 'none';
                 }
-            });
-
-            // GRE PDF button functionality - UPDATED
-            grePdfButton.addEventListener('click', () => {
-                window.open('GRE.pdf', '_blank');
-            });
-
-            // IELTS Mentor button functionality
-            ieltsMentorButton.addEventListener('click', () => {
-                window.open('https://www.ielts-mentor.com/', '_blank');
-            });
-
-            // IELTS Tests button functionality
-            ieltsTestsButton.addEventListener('click', () => {
-                window.open('https://ieltsonlinetests.com/', '_blank');
             });
 
             // Logo click to refresh page
@@ -1571,6 +1609,7 @@
                 loading.style.display = 'block';
                 resultsContainer.style.display = 'none';
                 errorMessage.style.display = 'none';
+                homeResources.classList.remove('active');
                 
                 try {
                     // Fetch from Free Dictionary API
