@@ -211,24 +211,6 @@
             cursor: not-allowed;
         }
 
-        .search-section {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .search-container {
-            padding: 25px;
-            border-radius: 16px;
-        }
-
-        .input-group {
-            display: flex;
-            width: 100%;
-            gap: 10px;
-        }
-
         .loading {
             display: none;
             text-align: center;
@@ -780,6 +762,205 @@
             background-color: #555;
         }
 
+        /* Audio Player Modal */
+        .audio-player-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .audio-player-modal.active {
+            display: flex;
+        }
+
+        .audio-player-container {
+            background: white;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .audio-player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .audio-player-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .close-audio-player {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .close-audio-player:hover {
+            color: var(--primary);
+        }
+
+        .audio-player {
+            width: 100%;
+        }
+
+        .audio-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .audio-track-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .audio-book-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: var(--ielts-color);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+        }
+
+        .control-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        .play-pause-btn {
+            width: 60px;
+            height: 60px;
+            font-size: 1.8rem;
+            background-color: var(--ielts-color);
+            color: white;
+        }
+
+        .play-pause-btn:hover {
+            background-color: #0d5bc2;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .volume-icon {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .volume-slider {
+            flex: 1;
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--ielts-color);
+            cursor: pointer;
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--ielts-color);
+            cursor: pointer;
+            border: none;
+        }
+
+        .playback-speed {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .speed-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .speed-select {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+        }
+
         @media (max-width: 992px) {
             header {
                 flex-direction: column;
@@ -858,6 +1039,27 @@
             
             .ielts-books-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .audio-player-container {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .control-buttons {
+                gap: 10px;
+            }
+            
+            .control-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .play-pause-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
             }
         }
         
@@ -1049,6 +1251,62 @@
         </div>
     </div>
 
+    <!-- Audio Player Modal -->
+    <div class="audio-player-modal" id="audioPlayerModal">
+        <div class="audio-player-container">
+            <div class="audio-player-header">
+                <h3 class="audio-player-title">IELTS Listening Practice</h3>
+                <button class="close-audio-player" id="closeAudioPlayer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="audio-player">
+                <div class="audio-info">
+                    <div class="audio-track-name" id="audioTrackName">Test 1</div>
+                    <div class="audio-book-info" id="audioBookInfo">IELTS Book 1</div>
+                </div>
+                
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+                
+                <div class="control-buttons">
+                    <button class="control-btn" id="rewindBtn" title="Rewind 10 seconds">
+                        <i class="fas fa-backward"></i>
+                    </button>
+                    <button class="control-btn play-pause-btn" id="playPauseBtn" title="Play/Pause">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="control-btn" id="forwardBtn" title="Forward 10 seconds">
+                        <i class="fas fa-forward"></i>
+                    </button>
+                </div>
+                
+                <div class="volume-control">
+                    <i class="fas fa-volume-up volume-icon"></i>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
+                </div>
+                
+                <div class="playback-speed">
+                    <span class="speed-label">Speed:</span>
+                    <select class="speed-select" id="speedSelect">
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1.0x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2.0x</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="floating-button" id="scrollToTop">
         <i class="fas fa-arrow-up"></i>
     </div>
@@ -1098,6 +1356,21 @@
             const ieltsBooksSection = document.getElementById('ieltsBooksSection');
             const ieltsBooksGrid = document.getElementById('ieltsBooksGrid');
             const backToResources = document.getElementById('backToResources');
+
+            // Audio Player Elements
+            const audioPlayerModal = document.getElementById('audioPlayerModal');
+            const closeAudioPlayer = document.getElementById('closeAudioPlayer');
+            const audioTrackName = document.getElementById('audioTrackName');
+            const audioBookInfo = document.getElementById('audioBookInfo');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const currentTimeDisplay = document.getElementById('currentTime');
+            const durationDisplay = document.getElementById('duration');
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const rewindBtn = document.getElementById('rewindBtn');
+            const forwardBtnAudio = document.getElementById('forwardBtn');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const speedSelect = document.getElementById('speedSelect');
 
             // API endpoints and keys
             const FREE_DICTIONARY_API = "https://api.dictionaryapi.dev/api/v2/entries/en/";
@@ -1639,10 +1912,17 @@
             let searchCache = {}; // Cache for search results
             let thesaurusCache = {}; // Cache for thesaurus results
 
+            // Audio Player State
+            let audioPlayer = new Audio();
+            let isPlaying = false;
+            let currentAudioBook = null;
+            let currentAudioTest = null;
+
             // Initialize the app
             updateSavedWordsList();
             loadBanglaData();
             generateIELTSBooks();
+            setupAudioPlayer();
             
             // Generate IELTS book cards
             function generateIELTSBooks() {
@@ -1673,16 +1953,8 @@
                         audioButton.className = 'audio-button';
                         audioButton.innerHTML = `<i class="fas fa-volume-up"></i> Test ${j}`;
                         
-                        // Get audio URL from the ieltsAudioLinks object
-                        const audioUrl = ieltsAudioLinks[i] ? ieltsAudioLinks[i][`test${j}`] : null;
-                        
                         audioButton.onclick = () => {
-                            if (audioUrl) {
-                                const audio = new Audio(audioUrl);
-                                audio.play().catch(e => console.error('Audio playback failed:', e));
-                            } else {
-                                alert(`Audio for Book ${i}, Test ${j} is not available. Please add the audio link in the code.`);
-                            }
+                            playIELTSAudio(i, j);
                         };
                         
                         audioButtons.appendChild(audioButton);
@@ -1694,6 +1966,134 @@
                     
                     ieltsBooksGrid.appendChild(bookCard);
                 }
+            }
+
+            // Setup audio player functionality
+            function setupAudioPlayer() {
+                // Play/Pause button
+                playPauseBtn.addEventListener('click', togglePlayPause);
+                
+                // Rewind button
+                rewindBtn.addEventListener('click', () => {
+                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 10);
+                });
+                
+                // Forward button
+                forwardBtnAudio.addEventListener('click', () => {
+                    audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 10);
+                });
+                
+                // Volume slider
+                volumeSlider.addEventListener('input', () => {
+                    audioPlayer.volume = volumeSlider.value / 100;
+                });
+                
+                // Speed control
+                speedSelect.addEventListener('change', () => {
+                    audioPlayer.playbackRate = parseFloat(speedSelect.value);
+                });
+                
+                // Progress bar click to seek
+                progressContainer.addEventListener('click', (e) => {
+                    const rect = progressContainer.getBoundingClientRect();
+                    const percent = (e.clientX - rect.left) / rect.width;
+                    audioPlayer.currentTime = percent * audioPlayer.duration;
+                });
+                
+                // Update progress bar and time display
+                audioPlayer.addEventListener('timeupdate', updateProgress);
+                
+                // Update play/pause button when audio ends
+                audioPlayer.addEventListener('ended', () => {
+                    isPlaying = false;
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                });
+                
+                // Close modal
+                closeAudioPlayer.addEventListener('click', closeAudioPlayerModal);
+                
+                // Close modal when clicking outside
+                audioPlayerModal.addEventListener('click', (e) => {
+                    if (e.target === audioPlayerModal) {
+                        closeAudioPlayerModal();
+                    }
+                });
+            }
+            
+            // Play IELTS audio
+            function playIELTSAudio(bookNumber, testNumber) {
+                // Get audio URL from the ieltsAudioLinks object
+                const audioUrl = ieltsAudioLinks[bookNumber] ? ieltsAudioLinks[bookNumber][`test${testNumber}`] : null;
+                
+                if (audioUrl) {
+                    // Set audio source
+                    audioPlayer.src = audioUrl;
+                    
+                    // Update track info
+                    audioTrackName.textContent = `Test ${testNumber}`;
+                    audioBookInfo.textContent = `IELTS Book ${bookNumber}`;
+                    
+                    // Store current audio info
+                    currentAudioBook = bookNumber;
+                    currentAudioTest = testNumber;
+                    
+                    // Show modal
+                    audioPlayerModal.classList.add('active');
+                    
+                    // Play audio
+                    audioPlayer.play().then(() => {
+                        isPlaying = true;
+                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    }).catch(e => {
+                        console.error('Audio playback failed:', e);
+                        alert('Failed to play audio. Please check if the audio file exists.');
+                    });
+                } else {
+                    alert(`Audio for Book ${bookNumber}, Test ${testNumber} is not available. Please add the audio link in the code.`);
+                }
+            }
+            
+            // Toggle play/pause
+            function togglePlayPause() {
+                if (isPlaying) {
+                    audioPlayer.pause();
+                    isPlaying = false;
+                    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    audioPlayer.play().then(() => {
+                        isPlaying = true;
+                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    }).catch(e => {
+                        console.error('Audio playback failed:', e);
+                    });
+                }
+            }
+            
+            // Update progress bar and time display
+            function updateProgress() {
+                if (audioPlayer.duration) {
+                    const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                    progressBar.style.width = `${percent}%`;
+                    
+                    // Update time displays
+                    currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+                    durationDisplay.textContent = formatTime(audioPlayer.duration);
+                }
+            }
+            
+            // Format time in MM:SS
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+            
+            // Close audio player modal
+            function closeAudioPlayerModal() {
+                audioPlayerModal.classList.remove('active');
+                audioPlayer.pause();
+                isPlaying = false;
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
             }
 
             // Load Bangla data from JSON file
