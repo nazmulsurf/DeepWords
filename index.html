@@ -8,26 +8,29 @@
     <link rel="icon" type="image/x-icon" href="fav.png">
     <style>
         :root {
-            --primary: #000000;
-            --primary-light: #333333;
-            --secondary: #666666;
-            --light-bg: #ffffff;
-            --light-card: #f8f8f8;
-            --text: #000000;
-            --text-secondary: #444444;
-            --success: #4CAF50;
-            --error: #cc0000;
-            --border: #dddddd;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --mw-color: #2c5aa0;
-            --fd-color: #6a0dad;
-            --gre-color: #d35400;
-            --ielts-color: #1a73e8;
-            --synonym-color: #4CAF50;
-            --antonym-color: #ff5252;
-            --related-color: #ffc107;
-            --langeek-color: #ff6b35;
+            --primary: #2c3e50;
+            --primary-light: #34495e;
+            --secondary: #7f8c8d;
+            --light-bg: #f9f9f9;
+            --light-card: #ffffff;
+            --text: #2c3e50;
+            --text-secondary: #5d6d7e;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --border: #e0e0e0;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.12);
+            --mw-color: #3498db;
+            --fd-color: #9b59b6;
+            --gre-color: #e67e22;
+            --ielts-color: #2980b9;
+            --synonym-color: #27ae60;
+            --antonym-color: #e74c3c;
+            --related-color: #f39c12;
+            --langeek-color: #e74c3c;
             --resources-color: #d35400;
+            --accent: #3498db;
+            --accent-light: #5dade2;
         }
 
         * {
@@ -74,7 +77,7 @@
         .logo-img {
             width: 40px;
             height: 40px;
-            border-radius: 6px;
+            border-radius: 8px;
             margin-right: 10px;
             object-fit: contain;
         }
@@ -146,11 +149,12 @@
             color: var(--text);
             outline: none;
             transition: all 0.3s ease;
+            box-shadow: var(--shadow);
         }
 
         .search-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
         }
 
         .search-btn {
@@ -171,14 +175,14 @@
         }
 
         .search-btn:hover {
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.05);
             color: var(--primary-light);
         }
 
         .random-btn, .history-btn {
             width: 50px;
             height: 50px;
-            background: var(--primary);
+            background: var(--accent);
             color: white;
             border: none;
             border-radius: 50%;
@@ -195,7 +199,9 @@
         }
 
         .random-btn:hover, .history-btn:hover {
-            background: var(--primary-light);
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
         .random-btn {
@@ -209,6 +215,8 @@
         .history-btn:disabled {
             background: #cccccc;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .loading {
@@ -235,6 +243,7 @@
             box-shadow: var(--shadow);
             display: none;
             border: 1px solid var(--border);
+            transition: all 0.3s ease;
         }
 
         .word-header {
@@ -307,15 +316,18 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid var(--border);
+            box-shadow: var(--shadow);
         }
 
         .audio-btn:hover {
-            background: var(--primary);
+            background: var(--accent);
             color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
         .save-btn-header {
-            background: var(--primary);
+            background: var(--accent);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -328,10 +340,13 @@
             gap: 8px;
             transition: all 0.3s ease;
             white-space: nowrap;
+            box-shadow: var(--shadow);
         }
 
         .save-btn-header:hover {
-            background: var(--primary-light);
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
         .save-btn-header.saved {
@@ -352,10 +367,13 @@
             gap: 8px;
             transition: all 0.3s ease;
             white-space: nowrap;
+            box-shadow: var(--shadow);
         }
 
         .translate-btn-header:hover {
             background: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
         .tab-container {
@@ -376,8 +394,8 @@
         }
 
         .tab.active {
-            border-bottom: 3px solid var(--primary);
-            color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            color: var(--accent);
         }
 
         .tab-content {
@@ -409,13 +427,15 @@
             background: var(--light-bg);
             margin-bottom: 12px;
             padding: 16px;
-            border-radius: 8px;
+            border-radius: 12px;
             transition: all 0.3s ease;
             border-left: 4px solid var(--primary);
+            box-shadow: var(--shadow);
         }
 
         .definition-item:hover, .example-item:hover, .saved-word-item:hover {
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
         }
 
         .synonym-item {
@@ -424,8 +444,9 @@
         }
 
         .synonym-item:hover {
-            background-color: rgba(76, 175, 80, 0.1);
-            box-shadow: var(--shadow);
+            background-color: rgba(39, 174, 96, 0.1);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
         }
 
         .antonym-item {
@@ -434,8 +455,9 @@
         }
 
         .antonym-item:hover {
-            background-color: rgba(255, 82, 82, 0.1);
-            box-shadow: var(--shadow);
+            background-color: rgba(231, 76, 60, 0.1);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
         }
 
         .related-word-item {
@@ -444,8 +466,9 @@
         }
 
         .related-word-item:hover {
-            background-color: rgba(255, 193, 7, 0.1);
-            box-shadow: var(--shadow);
+            background-color: rgba(243, 156, 18, 0.1);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
         }
 
         .definition-text {
@@ -533,14 +556,14 @@
             right: 30px;
             width: 50px;
             height: 50px;
-            background: var(--primary);
+            background: var(--accent);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-hover);
             cursor: pointer;
             z-index: 100;
             transition: all 0.3s ease;
@@ -548,7 +571,9 @@
         }
 
         .floating-button:hover {
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+            background: var(--accent-light);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
         .api-source {
@@ -598,6 +623,7 @@
             margin-bottom: 30px;
             box-shadow: var(--shadow);
             display: none;
+            transition: all 0.3s ease;
         }
 
         .home-resources.active {
@@ -621,13 +647,14 @@
 
         .home-resource-card {
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
             transition: transform 0.3s ease;
             cursor: pointer;
             border-top: 4px solid var(--gre-color);
+            transition: all 0.3s ease;
         }
 
         .home-resource-card.ielts {
@@ -636,7 +663,7 @@
 
         .home-resource-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-hover);
         }
 
         .home-resource-icon {
@@ -688,10 +715,16 @@
 
         .ielts-book-card {
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
             border-top: 4px solid var(--ielts-color);
+            transition: all 0.3s ease;
+        }
+
+        .ielts-book-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
         }
 
         .ielts-book-title {
@@ -709,16 +742,19 @@
             background-color: var(--ielts-color);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             margin-bottom: 15px;
             transition: background-color 0.3s ease;
+            box-shadow: var(--shadow);
         }
 
         .pdf-button:hover {
             background-color: #0d5bc2;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
         .audio-buttons {
@@ -731,7 +767,7 @@
             padding: 8px;
             background-color: #f0f0f0;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 0.9rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
@@ -752,17 +788,20 @@
             background-color: var(--secondary);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            box-shadow: var(--shadow);
         }
 
         .back-to-resources:hover {
             background-color: #555;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
-        /* Audio Player Modal */
+        /* Audio Player Modal - Modern Design */
         .audio-player-modal {
             display: none;
             position: fixed;
@@ -782,11 +821,12 @@
 
         .audio-player-container {
             background: white;
-            border-radius: 16px;
+            border-radius: 20px;
             width: 90%;
-            max-width: 600px;
+            max-width: 500px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
         }
 
         .audio-player-header {
@@ -809,9 +849,16 @@
             cursor: pointer;
             color: var(--text-secondary);
             transition: color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .close-audio-player:hover {
+            background-color: #f0f0f0;
             color: var(--primary);
         }
 
@@ -828,6 +875,7 @@
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 5px;
+            color: var(--primary);
         }
 
         .audio-book-info {
@@ -839,18 +887,33 @@
             width: 100%;
             height: 8px;
             background-color: #e0e0e0;
-            border-radius: 4px;
+            border-radius: 10px;
             margin: 20px 0;
             cursor: pointer;
             position: relative;
+            overflow: hidden;
         }
 
         .progress-bar {
             height: 100%;
-            background-color: var(--ielts-color);
-            border-radius: 4px;
+            background: linear-gradient(to right, var(--ielts-color), var(--accent));
+            border-radius: 10px;
             width: 0%;
             transition: width 0.1s ease;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--ielts-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .time-display {
@@ -865,40 +928,43 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 20px;
         }
 
         .control-btn {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
             color: var(--primary);
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            background-color: #f0f0f0;
+            background-color: #f5f5f5;
         }
 
         .control-btn:hover {
             background-color: #e0e0e0;
+            transform: scale(1.1);
         }
 
         .play-pause-btn {
             width: 60px;
             height: 60px;
-            font-size: 1.8rem;
-            background-color: var(--ielts-color);
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--ielts-color), var(--accent));
             color: white;
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4);
         }
 
         .play-pause-btn:hover {
-            background-color: #0d5bc2;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(41, 128, 185, 0.5);
         }
 
         .volume-control {
@@ -911,15 +977,22 @@
         .volume-icon {
             font-size: 1.2rem;
             color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .volume-icon:hover {
+            color: var(--primary);
         }
 
         .volume-slider {
             flex: 1;
             height: 6px;
             background-color: #e0e0e0;
-            border-radius: 3px;
+            border-radius: 10px;
             outline: none;
             -webkit-appearance: none;
+            cursor: pointer;
         }
 
         .volume-slider::-webkit-slider-thumb {
@@ -929,6 +1002,7 @@
             border-radius: 50%;
             background: var(--ielts-color);
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .volume-slider::-moz-range-thumb {
@@ -938,6 +1012,7 @@
             background: var(--ielts-color);
             cursor: pointer;
             border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .playback-speed {
@@ -955,10 +1030,11 @@
 
         .speed-select {
             padding: 5px 10px;
-            border-radius: 4px;
+            border-radius: 6px;
             border: 1px solid var(--border);
             background: white;
             color: var(--text);
+            cursor: pointer;
         }
 
         @media (max-width: 992px) {
@@ -1276,19 +1352,19 @@
                 </div>
                 
                 <div class="control-buttons">
-                    <button class="control-btn" id="rewindBtn" title="Rewind 10 seconds">
+                    <button class="control-btn" id="rewindBtn" title="Rewind 5 seconds">
                         <i class="fas fa-backward"></i>
                     </button>
                     <button class="control-btn play-pause-btn" id="playPauseBtn" title="Play/Pause">
                         <i class="fas fa-play"></i>
                     </button>
-                    <button class="control-btn" id="forwardBtn" title="Forward 10 seconds">
+                    <button class="control-btn" id="audioForwardBtn" title="Forward 5 seconds">
                         <i class="fas fa-forward"></i>
                     </button>
                 </div>
                 
                 <div class="volume-control">
-                    <i class="fas fa-volume-up volume-icon"></i>
+                    <i class="fas fa-volume-up volume-icon" id="volumeIcon"></i>
                     <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="100">
                 </div>
                 
@@ -1368,8 +1444,9 @@
             const durationDisplay = document.getElementById('duration');
             const playPauseBtn = document.getElementById('playPauseBtn');
             const rewindBtn = document.getElementById('rewindBtn');
-            const forwardBtnAudio = document.getElementById('forwardBtn');
+            const audioForwardBtn = document.getElementById('audioForwardBtn');
             const volumeSlider = document.getElementById('volumeSlider');
+            const volumeIcon = document.getElementById('volumeIcon');
             const speedSelect = document.getElementById('speedSelect');
 
             // API endpoints and keys
@@ -1484,7 +1561,8 @@
                 "initiative", "inspection", "integral", "intervention", "intrinsic", "likewise", "link", "manage", "manipulation", "merge",
                 "nonetheless", "notwithstanding", "overlap", "persistent", "pose", "possess", "preliminary", "presumption", "ratio", "refine",
                 "relate", "restore", "restraint", "rigid", "route", "sacrifice", "scale", "so-called", "straightforward", "subordinate",
-                "supplementary", "sympathy", "termination", "transmission", "undergo", "unify", "voluntary", "whereby"            ];
+                "supplementary", "sympathy", "termination", "transmission", "undergo", "unify", "voluntary", "whereby"
+            ];
 
             // Full GRE word list (from provided Excel file)
             const greWords = [
@@ -1917,6 +1995,8 @@
             let isPlaying = false;
             let currentAudioBook = null;
             let currentAudioTest = null;
+            let isMuted = false;
+            let lastVolume = 100;
 
             // Initialize the app
             updateSavedWordsList();
@@ -1973,20 +2053,34 @@
                 // Play/Pause button
                 playPauseBtn.addEventListener('click', togglePlayPause);
                 
-                // Rewind button
+                // Rewind button (5 seconds)
                 rewindBtn.addEventListener('click', () => {
-                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 10);
+                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
                 });
                 
-                // Forward button
-                forwardBtnAudio.addEventListener('click', () => {
-                    audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 10);
+                // Forward button (5 seconds)
+                audioForwardBtn.addEventListener('click', () => {
+                    audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
                 });
                 
                 // Volume slider
                 volumeSlider.addEventListener('input', () => {
-                    audioPlayer.volume = volumeSlider.value / 100;
+                    const volumeValue = volumeSlider.value;
+                    audioPlayer.volume = volumeValue / 100;
+                    
+                    // Update mute state based on volume
+                    if (volumeValue == 0) {
+                        isMuted = true;
+                        volumeIcon.className = 'fas fa-volume-mute volume-icon';
+                    } else {
+                        isMuted = false;
+                        volumeIcon.className = 'fas fa-volume-up volume-icon';
+                        lastVolume = volumeValue;
+                    }
                 });
+                
+                // Mute/Unmute functionality
+                volumeIcon.addEventListener('click', toggleMute);
                 
                 // Speed control
                 speedSelect.addEventListener('change', () => {
@@ -2018,6 +2112,24 @@
                         closeAudioPlayerModal();
                     }
                 });
+            }
+            
+            // Toggle mute/unmute
+            function toggleMute() {
+                if (isMuted) {
+                    // Unmute
+                    audioPlayer.volume = lastVolume / 100;
+                    volumeSlider.value = lastVolume;
+                    volumeIcon.className = 'fas fa-volume-up volume-icon';
+                    isMuted = false;
+                } else {
+                    // Mute
+                    lastVolume = volumeSlider.value;
+                    audioPlayer.volume = 0;
+                    volumeSlider.value = 0;
+                    volumeIcon.className = 'fas fa-volume-mute volume-icon';
+                    isMuted = true;
+                }
             }
             
             // Play IELTS audio
